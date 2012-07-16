@@ -7,6 +7,9 @@ of the ejsapp module, to store data files saved from.
 The Java applets should be compiled with version 4.37 (build 20120715 or later) of EJS to 
 properly work.
 
+If you downloaded this plugin from github, you will need to change the folder's name to
+ejsapp_file_browser. If you downloaded it from Moodle.org, then you are fine.
+
 This is a block plugin for Moodle so you should place the ejsapp_file_browser folder in 
 your /blocks folder, inside you Moodle installation.
 This block has been tested in Moodle versions 2.0, 2.1, 2.2 and 2.3.
