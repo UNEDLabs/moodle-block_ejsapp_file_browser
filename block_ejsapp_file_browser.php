@@ -81,7 +81,7 @@ End_Of_Javascript;
             $this->content->text .= $this->get_javascript_code();
             $renderer = $this->page->get_renderer('block_ejsapp_file_browser');
             $this->content->text .= $renderer->ejsapp_file_browser_tree();
-            $refresh_button = '<input type="image" align="left" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/images/refresh.png" name="image" width="25" height="25" onclick="reload_files();";>';
+            $refresh_button = '<input type="image" align="left" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/refresh.png" name="image" width="25" height="25" onclick="reload_files();";>';
             if (has_capability('moodle/user:manageownfiles', $this->context)) {
             	if ($CFG->version > 2012062500) {  //Moodle 2.3 or higher
                 $filespath = '/user/files.php';
@@ -124,7 +124,7 @@ End_Of_Javascript;
        
                 $this->content->text = preg_replace("/(<img.+$state_file.+src=[\"|']).+([\"|'].+>)/Ui",
                 $image_match[1] .
-                $CFG->wwwroot . '/blocks/ejsapp_file_browser/images/ejsapp_icon.gif' . 
+                $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/ejsapp_icon.gif' . 
                 $image_match[2],
                 $this->content->text);
               }
