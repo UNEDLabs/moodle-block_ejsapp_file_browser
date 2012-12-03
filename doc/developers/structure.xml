@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project version="2.0.0a11" title="">
+  <file path="block_ejsapp_file_browser.php" hash="b645176c64917a7bcdf1a0b1d6ad2ca3" package="block\ejsapp\file\browser">
+    <docblock line="25">
+      <description>Manage user private area files
+This file modifies the standard moodle block "private_files" to support
+the loading of state files for EJSApp simulations</description>
+      <long-description></long-description>
+      <tag line="25" name="package" description="block"/>
+      <tag line="25" name="subpackage" description="ejsapp_file_browser"/>
+      <tag line="25" name="copyright" description="2012 Luis de la Torre, Ruben Heradio and Carlos Jara"/>
+      <tag line="25" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="39" package="Default">
+      <extends>\block_base</extends>
+      <name>block_ejsapp_file_browser</name>
+      <full_name>\block_ejsapp_file_browser</full_name>
+      <docblock line="36">
+        <description>Class that defines the EJSApp File Browser block.</description>
+        <long-description></long-description>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="44" package="Default">
+        <name>init</name>
+        <full_name>init</full_name>
+        <docblock line="41">
+          <description>init function for the EJSApp File Browser block</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="52" package="Default">
+        <name>specialization</name>
+        <full_name>specialization</full_name>
+        <docblock line="49">
+          <description>specialization function for the EJSApp File Browser block</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="59" package="Default">
+        <name>applicable_formats</name>
+        <full_name>applicable_formats</full_name>
+        <docblock line="56">
+          <description>applicable_formats function for the EJSApp File Browser block</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="67" package="Default">
+        <name>instance_allow_multiple</name>
+        <full_name>instance_allow_multiple</full_name>
+        <docblock line="64">
+          <description>instance_allow_multiple function for the EJSApp File Browser block</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="79" package="Default">
+        <name>get_javascript_code</name>
+        <full_name>get_javascript_code</full_name>
+        <docblock line="72">
+          <description>Defines the javascript code for refreshing the page in which the block is
+embedded.</description>
+          <long-description>&lt;p&gt;.&lt;/p&gt;</long-description>
+          <tag line="72" name="no" description="params"/>
+          <tag line="72" name="return" description="Javascript code for refreshing the page" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="97" package="Default">
+        <name>get_content</name>
+        <full_name>get_content</full_name>
+        <docblock line="91">
+          <description>Defines the content of the block.</description>
+          <long-description></long-description>
+          <tag line="91" name="no" description="params"/>
+          <tag line="91" name="return" description="The content of the block" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+      </method>
+    </class>
+  </file>
+  <file path="edit.php" hash="5847c6203a176287206b3c68199b30d2" package="block\ejsapp\file\browser">
+    <docblock line="25">
+      <description>Manage files in folder in private area</description>
+      <long-description></long-description>
+      <tag line="25" name="package" description="block"/>
+      <tag line="25" name="subpackage" description="ejsapp_file_browser"/>
+      <tag line="25" name="copyright" description="2012 Luis de la Torre, Ruben Heradio and Carlos Jara"/>
+      <tag line="25" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later"/>
+    </docblock>
+    <include line="34" type="Require" package="Default">
+      <name>../../config.php</name>
+    </include>
+    <include line="35" type="Require Once" package="Default">
+      <name/>
+    </include>
+    <include line="36" type="Require Once" package="Default">
+      <name/>
+    </include>
+  </file>
+  <file path="edit_form.php" hash="4b8548ec935159f73ff52574ed6fefee" package="block\ejsapp\file\browser">
+    <docblock line="25">
+      <description>Minimalistic edit form</description>
+      <long-description></long-description>
+      <tag line="25" name="package" description="block"/>
+      <tag line="25" name="subpackage" description="ejsapp_file_browser"/>
+      <tag line="25" name="copyright" description="2012 Luis de la Torre, Ruben Heradio and Carlos Jara"/>
+      <tag line="25" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later"/>
+    </docblock>
+    <include line="36" type="Require Once" package="Default">
+      <name/>
+    </include>
+    <class final="false" abstract="false" namespace="global" line="41" package="Default">
+      <extends>\moodleform</extends>
+      <name>block_ejsapp_file_browser_form</name>
+      <full_name>\block_ejsapp_file_browser_form</full_name>
+      <docblock line="38">
+        <description>Minimalistic edit form</description>
+        <long-description></long-description>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="45" package="Default">
+        <name>definition</name>
+        <full_name>definition</full_name>
+        <docblock line="42">
+          <description>Minimalistic edit form definition</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+    </class>
+  </file>
+  <file path="lang\en\block_ejsapp_file_browser.php" hash="8665184d22393daef858ba0d6273a2c8" package="block\ejsapp\file\browser">
+    <docblock line="24">
+      <description>English labels for the ejsapp_file_browser block</description>
+      <long-description></long-description>
+      <tag line="24" name="package" description="block"/>
+      <tag line="24" name="subpackage" description="ejsapp_file_browser"/>
+      <tag line="24" name="copyright" description="2012 Luis de la Torre and Ruben Heradio"/>
+      <tag line="24" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later"/>
+    </docblock>
+  </file>
+  <file path="lang\es\block_ejsapp_file_browser.php" hash="1063034d1e8a985e0a11bcc81dde82fa" package="block\ejsapp\file\browser">
+    <docblock line="25">
+      <description>Spanish labels for the ejsapp_file_browser block</description>
+      <long-description></long-description>
+      <tag line="25" name="package" description="block"/>
+      <tag line="25" name="subpackage" description="ejsapp_file_browser"/>
+      <tag line="25" name="copyright" description="2012 Luis de la Torre and Ruben Heradio"/>
+      <tag line="25" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later"/>
+    </docblock>
+  </file>
+  <file path="renderer.php" hash="e33e104212ad935d5f4b5fd46b711c8f" package="block\ejsapp\file\browser">
+    <docblock line="25">
+      <description>Prints the private files tree</description>
+      <long-description></long-description>
+      <tag line="25" name="package" description="block"/>
+      <tag line="25" name="subpackage" description="ejsapp_file_browser"/>
+      <tag line="25" name="copyright" description="2012 Luis de la Torre, Ruben Heradio and Carlos Jara"/>
+      <tag line="25" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="39" package="Default">
+      <extends>\plugin_renderer_base</extends>
+      <name>block_ejsapp_file_browser_renderer</name>
+      <full_name>\block_ejsapp_file_browser_renderer</full_name>
+      <docblock line="36">
+        <description>Prints the private files tree</description>
+        <long-description></long-description>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="45" package="Default">
+        <name>ejsapp_file_browser_tree</name>
+        <full_name>ejsapp_file_browser_tree</full_name>
+        <docblock line="41">
+          <description>Prints ejsapp file browser tree view</description>
+          <long-description></long-description>
+          <tag line="41" name="return" description="Html code that prints the tree view" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="55" package="Default">
+        <name>render_ejsapp_file_browser_tree</name>
+        <full_name>render_ejsapp_file_browser_tree</full_name>
+        <docblock line="49">
+          <description>Prints ejsapp file browser tree view</description>
+          <long-description></long-description>
+          <tag line="49" name="return" description="Html code that prints the tree view" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="49" name="param" description="" type="\ejsapp_file_browser_tree" variable="$tree">
+            <type by_reference="false">\ejsapp_file_browser_tree</type>
+          </tag>
+        </docblock>
+        <argument line="55">
+          <name>$tree</name>
+          <default></default>
+          <type>\ejsapp_file_browser_tree</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="77" package="Default">
+        <name>htmllize_tree</name>
+        <full_name>htmllize_tree</full_name>
+        <docblock line="70">
+          <description>Internal function - creates htmls structure suitable for YUI tree</description>
+          <long-description></long-description>
+          <tag line="70" name="param" description="" type="\global\" variable="$tree"/>
+          <tag line="70" name="param" description="" type="\global\" variable="$dir_user"/>
+          <tag line="70" name="param" description="" type="\global\" variable="$dir_ejsapp"/>
+        </docblock>
+        <argument line="77">
+          <name>$tree</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="77">
+          <name>$dir_user</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="77">
+          <name>$dir_ejsapp</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+    <class final="false" abstract="false" namespace="global" line="121" package="Default">
+      <extends/>
+      <implements>\renderable</implements>
+      <name>ejsapp_file_browser_tree</name>
+      <full_name>\ejsapp_file_browser_tree</full_name>
+      <docblock line="118">
+        <description>Auxilar class to Print the private files tree</description>
+        <long-description></long-description>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="125" namespace="global" package="Default">
+        <name>$context</name>
+        <default></default>
+        <docblock line="122">
+          <description>context</description>
+          <long-description></long-description>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="129" namespace="global" package="Default">
+        <name>$dir</name>
+        <default></default>
+        <docblock line="126">
+          <description>dir</description>
+          <long-description></long-description>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="133" package="Default">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="130">
+          <description>__construct</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+    </class>
+  </file>
+  <file path="version.php" hash="719eb336b21aa8d772b22435c2e772d9" package="block\ejsapp\file\browser">
+    <docblock line="25">
+      <description>Defines the version of ejsapp_file_browser</description>
+      <long-description></long-description>
+      <tag line="25" name="package" description="block"/>
+      <tag line="25" name="subpackage" description="ejsapp_file_browser"/>
+      <tag line="25" name="copyright" description="2012 Luis de la Torre, Ruben Heradio"/>
+      <tag line="25" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later"/>
+    </docblock>
+  </file>
+  <package name="Default" full_name="Default"/>
+  <package name="block" full_name="block">
+    <package name="ejsapp" full_name="block\ejsapp">
+      <package name="file" full_name="block\ejsapp\file">
+        <package name="browser" full_name="block\ejsapp\file\browser"/>
+      </package>
+    </package>
+  </package>
+  <namespace name="global" full_name="global"/>
+  <marker count="0">todo</marker>
+  <marker count="0">fixme</marker>
+  <deprecated count="0"/>
+</project>

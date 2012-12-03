@@ -23,7 +23,8 @@
 
 
 /**
- *    
+ * Minimalistic edit form
+ *     
  * @package    block
  * @subpackage ejsapp_file_browser
  * @copyright  2012 Luis de la Torre, Ruben Heradio and Carlos Jara
@@ -34,7 +35,13 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once("$CFG->libdir/formslib.php");
 
+/**
+ * Minimalistic edit form
+ */
 class block_ejsapp_file_browser_form extends moodleform {
+    /**
+    * Minimalistic edit form definition
+    */
     function definition() {
         $mform = $this->_form;
 

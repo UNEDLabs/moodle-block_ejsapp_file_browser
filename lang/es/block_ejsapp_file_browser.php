@@ -23,7 +23,8 @@
 
 
 /**
- *    
+ * Spanish labels for the ejsapp_file_browser block
+ *      
  * @package    block
  * @subpackage ejsapp_file_browser
  * @copyright  2012 Luis de la Torre and Ruben Heradio

@@ -22,6 +22,7 @@
 
 
 /**
+ * English labels for the ejsapp_file_browser block
  *    
  * @package    block
  * @subpackage ejsapp_file_browser

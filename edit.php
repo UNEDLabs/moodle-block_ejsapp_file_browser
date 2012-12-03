@@ -23,7 +23,8 @@
 
 
 /**
- *    
+ * Manage files in folder in private area
+ *     
  * @package    block
  * @subpackage ejsapp_file_browser
  * @copyright  2012 Luis de la Torre, Ruben Heradio and Carlos Jara
