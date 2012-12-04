@@ -49,10 +49,11 @@ file with relevant links.
 
 5. Authors
 ==========
+
 EJSApp File Browser has been developed by:
  - Luis de la Torre: ldelatorre@dia.uned.es
  - Ruben Heradio: rheradio@issi.uned.es
 
-  at the Computer Science and Automatic Control, Spanish Open University
+  at the Computer Science and Automatic Control Department, Spanish Open University
   (UNED), Madrid, Spain.
                                                      
