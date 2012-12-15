@@ -29,7 +29,7 @@
  *     
  * @package    block
  * @subpackage ejsapp_file_browser
- * @copyright  2012 Luis de la Torre, Ruben Heradio and Carlos Jara
+ * @copyright  2012 Luis de la Torre and Ruben Heradio
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -96,7 +96,7 @@ End_Of_Javascript;
     */
     function get_content()
     {
-        global $CFG, $USER, $PAGE, $OUTPUT, $DB, $COURSE;
+        global $CFG, $USER, $PAGE, $OUTPUT, $DB;
 
         if ($this->content !== null) {
             return $this->content;
@@ -109,18 +109,23 @@ End_Of_Javascript;
         $this->content->text = '';
         $this->content->footer = '';
         if (isloggedin() && !isguestuser()) { // Show the block
-            $this->content = new stdClass;
-            $this->content->text .= $this->get_javascript_code();
-            $renderer = $this->page->get_renderer('block_ejsapp_file_browser');
-            $this->content->text .= $renderer->ejsapp_file_browser_tree();
+            $this->content = new stdClass();
+            //ejsapp_file_browser renderer:
+            //$renderer = $this->page->get_renderer('block_ejsapp_file_browser');
+            //$this->content->text = $renderer->ejsapp_file_browser_tree();
+            //original private_files renderer:
+            $renderer = $this->page->get_renderer('block_private_files');
+            $this->content->text = $renderer->private_files_tree();
+            $this->content->text .= $this->get_javascript_code(); 
             $refresh_button = '<input type="image" align="left" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/refresh.png" name="image" width="25" height="25" onclick="reload_files();";>';
             if (has_capability('moodle/user:manageownfiles', $this->context)) {
             	if ($CFG->version > 2012062500) {  //Moodle 2.3 or higher
                 $filespath = '/user/files.php';
               } else {
                 $filespath = '/user/filesedit.php';
-              }              
-              $manage_files_button = $OUTPUT->single_button(new moodle_url($filespath, array('returnurl' => "{$CFG->wwwroot}/course/view.php?id={$COURSE->id}")), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
+              }
+              $manage_files_button = $OUTPUT->single_button(new moodle_url($filespath, array('returnurl'=>$PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');              
+              //$manage_files_button = $OUTPUT->single_button(new moodle_url($filespath, array('returnurl' => "{$CFG->wwwroot}/course/view.php?id={$COURSE->id}")), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
            	  $this->content->text .= '<table><tr><td>' . $refresh_button . '</td><td>' . $manage_files_button . '</td></tr></table>';
             } else {
                 $this->content->text .= $refresh_button;

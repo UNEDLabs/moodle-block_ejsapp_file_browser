@@ -27,7 +27,7 @@
  *     
  * @package    block
  * @subpackage ejsapp_file_browser
- * @copyright  2012 Luis de la Torre, Ruben Heradio and Carlos Jara
+ * @copyright  2012 Luis de la Torre and Ruben Heradio
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
  
@@ -54,13 +54,13 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
      */
     public function render_ejsapp_file_browser_tree(ejsapp_file_browser_tree $tree) {
         $module = array('name'=>'block_ejsapp_file_browser', 'fullpath'=>'/blocks/ejsapp_file_browser/module.js', 'requires'=>array('yui2-treeview'));
-        if (empty($tree->dir_user['subdirs']) && empty($tree->dir_user['files']) && empty($tree->dir_ejsapp['subdirs']) && empty($tree->dir_ejsapp['files'])) {
+        if (empty($tree->dir['subdirs']) && empty($tree->dir['files'])) {
             $html = $this->output->box(get_string('nofilesavailable', 'repository'));
         } else {
             $htmlid = 'ejsapp_file_browser_tree_'.uniqid();
             $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $htmlid));
             $html = '<div id="'.$htmlid.'">';
-            $html .= $this->htmllize_tree($tree, $tree->dir_user, $tree->dir_ejsapp);
+            $html .= $this->htmllize_tree($tree, $tree->dir);
             $html .= '</div>';
         }
 
@@ -71,44 +71,27 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
      * Internal function - creates htmls structure suitable for YUI tree
      *
      * @param $tree
-     * @param $dir_user
-     * @param $dir_ejsapp
+     * @param $dir
      */
-    protected function htmllize_tree($tree, $dir_user, $dir_ejsapp) {
+    protected function htmllize_tree($tree, $dir) {
         global $CFG;
         $yuiconfig = array();
         $yuiconfig['type'] = 'html';
 
-        if (empty($dir_user['subdirs']) and empty($dir_user['files']) and empty($dir_ejsapp['subdirs']) and empty($dir_ejsapp['files'])) {
+        if (empty($dir['subdirs']) and empty($dir['files'])) {
             return '';
         }
         $result = '<ul>';
-        // content = user, filearea = private (directories)
-        foreach ($dir_user['subdirs'] as $subdir_user) {
-            $image = $this->output->pix_icon("f/folder", $subdir_user['dirname'], 'moodle', array('class'=>'icon'));
-            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.' '.s($subdir_user['dirname']).'</div> '.$this->htmllize_tree($tree, $subdir_user).'</li>';
+        foreach ($dir['subdirs'] as $subdir) {
+            $image = $this->output->pix_icon(file_folder_icon(), $subdir['dirname'], 'moodle', array('class'=>'icon'));
+            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.s($subdir['dirname']).'</div> '.$this->htmllize_tree($tree, $subdir).'</li>';
         }
-        // content = mod_ejsapp, filearea = private (directories)
-        /*foreach ($dir_ejsapp['subdirs'] as $subdir_ejsapp) {
-            $image = $this->output->pix_icon("f/folder", $subdir_ejsapp['dirname'], 'moodle', array('class'=>'icon'));
-            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.' '.s($subdir_ejsapp['dirname']).'</div> '.$this->htmllize_tree($tree, $subdir_ejsapp).'</li>';
-        }*/
-        // content = user, filearea = private (files)
-        foreach ($dir_user['files'] as $file) {
+        foreach ($dir['files'] as $file) {
             $url = file_encode_url("$CFG->wwwroot/pluginfile.php", '/'.$tree->context->id.'/user/private'.$file->get_filepath().$file->get_filename(), true);
             $filename = $file->get_filename();
-            $icon = mimeinfo("icon", $filename);
-            $image = $this->output->pix_icon("f/$icon", $filename, 'moodle', array('class'=>'icon'));
-            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.html_writer::link($url, $image.'&nbsp;'.$filename).'</div></li>';
+            $image = $this->output->pix_icon(file_file_icon($file), $filename, 'moodle', array('class'=>'icon'));
+            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.html_writer::link($url, $image.$filename).'</div></li>';
         }
-        // content = mod_ejsapp, filearea = private (files)
-        /*foreach ($dir_ejsapp['files'] as $file) {
-            $url = file_encode_url("$CFG->wwwroot/pluginfile.php", '/'.$tree->context->id.'/user/private'.$file->get_filepath().$file->get_filename(), true);
-            $filename = $file->get_filename();
-            $icon = mimeinfo("icon", $filename);
-            $image = $this->output->pix_icon("f/$icon", $filename, 'moodle', array('class'=>'icon'));
-            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.html_writer::link($url, $image.'&nbsp;'.$filename).'</div></li>';
-        }*/
         $result .= '</ul>';
 
         return $result;
@@ -132,9 +115,8 @@ class ejsapp_file_browser_tree implements renderable {
      */
     public function __construct() {
         global $USER;
-        $this->context = get_context_instance(CONTEXT_USER, $USER->id);
+        $this->context = context_user::instance($USER->id);
         $fs = get_file_storage();
-        $this->dir_user = $fs->get_area_tree($this->context->id, 'user', 'private', 0);
-        $this->dir_ejsapp = $fs->get_area_tree($this->context->id, 'mod_ejsapp', 'private', 0);
+        $this->dir = $fs->get_area_tree($this->context->id, 'user', 'private', 0);
     }
 }

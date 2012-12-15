@@ -19,7 +19,7 @@
  *
  * @package    block
  * @subpackage ejsapp_file_browser
- * @copyright  2012 Luis de la Torre, Ruben Heradio and Carlos Jara
+ * @copyright  2012 Luis de la Torre and Ruben Heradio
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
