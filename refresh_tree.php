@@ -21,20 +21,37 @@
 //  at the Computer Science and Automatic Control, Spanish Open University
 //  (UNED), Madrid, Spain
 
-
 /**
- * Defines the version of ejsapp_file_browser
- *
+ * Ajax update of the ejsapp files browser html structure, suitable for YUI tree
+ *  
  * @package    block
  * @subpackage ejsapp_file_browser
  * @copyright  2012 Luis de la Torre and Ruben Heradio
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later 
  */
 
-$plugin->version = 2013013000;
-$plugin->requires = 2010112400;
-$plugin->cron = 0;
-$plugin->component = 'block_ejsapp_file_browser'; // To check on upgrade, that module sits in correct place
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.1 (Build: 2013013000)';
-$plugin->dependencies = array('mod_ejsapp' => 2012121800);
+//defined('MOODLE_INTERNAL') || die();
+
+require_once('../../config.php'); 
+
+require_login(0, false);
+
+$htmlid = required_param('htmlid', PARAM_TEXT);
+
+$context = get_context_instance(CONTEXT_USER, $USER->id);
+//$context = get_context_instance(CONTEXT_SYSTEM);
+$PAGE->set_context($context);
+$content = new stdClass();
+$renderer = $PAGE->get_renderer('block_ejsapp_file_browser'); 
+$content->text = $renderer->ejsapp_file_browser_tree($htmlid);
+
+//Delete the repeated <div id=> and last </div>
+$content->text = str_replace('<div id="'.$htmlid.'">', '', $content->text);
+$content->text = substr_replace($content->text, '', -6);
+
+include('process_state_files.php');
+$content->text = process_state_files($content->text);
+
+echo $content->text; 
+
+?>

@@ -1,14 +1,15 @@
 ###########################
-# EJSApp File Browser 1.0 #
+# EJSApp File Browser 1.1 #
 ###########################
 
 1. Content
 ==========
 
-This is the first release of the ejsapp_file_browser plugin.
+This is the second release of the ejsapp_file_browser plugin.
 This plugin is a small modification of the "Private Files" block of Moodle and lets your 
 Java applets, created with Easy Java Simulations (EJS) added to your Moodle course by means 
-of the ejsapp module, to store data files saved from these applets.
+of the ejsapp module, to store data files saved from these applets. It also includes a little
+AJAX feature that let users to refresh their files block without refreshing the entire page.
 The Java applets should be compiled with version 4.37 (build 20120715 or later) of EJS to 
 properly work.
 

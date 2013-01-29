@@ -43,7 +43,7 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
      * @return string Html code that prints the tree view
      */
     public function ejsapp_file_browser_tree() {
-        return $this->render(new ejsapp_file_browser_tree);
+        return $this->render(new ejsapp_file_browser_tree());
     }
 
     /**
@@ -53,15 +53,19 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
      * @param ejsapp_file_browser_tree $tree
      */
     public function render_ejsapp_file_browser_tree(ejsapp_file_browser_tree $tree) {
+        global $CFG;
         $module = array('name'=>'block_ejsapp_file_browser', 'fullpath'=>'/blocks/ejsapp_file_browser/module.js', 'requires'=>array('yui2-treeview'));
         if (empty($tree->dir['subdirs']) && empty($tree->dir['files'])) {
             $html = $this->output->box(get_string('nofilesavailable', 'repository'));
         } else {
-            $htmlid = 'ejsapp_file_browser_tree_'.uniqid();
-            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $htmlid));
+            $htmlid = 'ejsapp_file_browser_tree_';//.uniqid();
+            $url = $CFG->wwwroot . '/blocks/ejsapp_file_browser/refresh_tree.php?htmlid=';
+            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_reload', array($url, $CFG->version, $htmlid));
+            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $CFG->version, $htmlid));  
             $html = '<div id="'.$htmlid.'">';
             $html .= $this->htmllize_tree($tree, $tree->dir);
-            $html .= '</div>';
+            $html .= '</div>';                                                           
+            //$html .= var_dump($tree->context);
         }
 
         return $html;
@@ -76,7 +80,7 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
     protected function htmllize_tree($tree, $dir) {
         global $CFG;
         $yuiconfig = array();
-        $yuiconfig['type'] = 'html';
+        $yuiconfig['type'] = 'html'; 
 
         if (empty($dir['subdirs']) and empty($dir['files'])) {
             return '';
@@ -118,5 +122,5 @@ class ejsapp_file_browser_tree implements renderable {
         $this->context = context_user::instance($USER->id);
         $fs = get_file_storage();
         $this->dir = $fs->get_area_tree($this->context->id, 'user', 'private', 0);
-    }
-}
+    }   
+}    
