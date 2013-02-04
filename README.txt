@@ -36,7 +36,7 @@ ejsapp_file_browser. If you downloaded it from Moodle.org, then you are fine.
 
 This is a block plugin for Moodle so you should place the ejsapp_file_browser folder in 
 your /blocks folder, inside you Moodle installation.
-This block has been tested in Moodle versions 2.0, 2.1, 2.2 and 2.3.
+This block has been tested in all Moodle 2.x versions.
 
 4. Dependencies
 ===============

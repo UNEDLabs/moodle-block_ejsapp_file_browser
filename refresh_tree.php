@@ -38,8 +38,8 @@ require_login(0, false);
 
 $htmlid = required_param('htmlid', PARAM_TEXT);
 
-$context = get_context_instance(CONTEXT_USER, $USER->id);
-//$context = get_context_instance(CONTEXT_SYSTEM);
+//$context = get_context_instance(CONTEXT_USER, $USER->id);
+$context = get_context_instance(CONTEXT_SYSTEM);
 $PAGE->set_context($context);
 $content = new stdClass();
 $renderer = $PAGE->get_renderer('block_ejsapp_file_browser'); 

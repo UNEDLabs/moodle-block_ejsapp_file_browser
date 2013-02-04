@@ -32,12 +32,10 @@ M.block_ejsapp_file_browser = {};
 
 M.block_ejsapp_file_browser.init_tree = function(Y, expand_all, version, htmlid) {
     Y.use('yui2-treeview', function(Y) {
-        if (version < 2012120300) { //Moodle 2.3 or lower
-            var tree = new YAHOO.widget.TreeView(htmlid);
+        if (version >= 2012120300) { //Moodle 2.4 or higher
+            var YAHOO = Y.YUI2;
         }
-        else {                      //Moodle 2.4 or higher
-            var tree = new Y.YUI2.widget.TreeView(htmlid);
-        }   
+        var tree = new YAHOO.widget.TreeView(htmlid);   
 
         tree.subscribe("clickEvent", function(node, event) {
             // we want normal clicking which redirects to url
@@ -62,27 +60,19 @@ M.block_ejsapp_file_browser.init_reload = function(Y, url, version, htmlid){
     };
     var handleFailure = function(o) {
         /*failure handler code*/
-    }
+    };
     var callback = {
         success:handleSuccess,
         failure:handleFailure
     };
-    var url_complete = url + htmlid;
-    var button = Y.one("#refreshEJSAppFBBut");
-    button.on("click", function (e) { 
-        if (version < 2012120300) { //Moodle 2.3 or lower
-            div = YAHOO.util.Dom.get(htmlid);
+    var refreshBut = Y.one("#refreshEJSAppFBBut");
+    refreshBut.on("click", function (e) { 
+        if (version >= 2012120300) { //Moodle 2.4 or higher
+            var YAHOO = Y.YUI2;
         }
-        else {                      //Moodle 2.4 or higher
-            div = Y.YUI2.util.Dom.get(htmlid);
-        } 
-        Y.use('yui2-connection', function(Y) { //Moodle 2.3 or lower
-            if (version < 2012120300) {
-                YAHOO.util.Connect.asyncRequest('GET', url_complete, callback);
-            }
-            else {                             //Moodle 2.4 or higher
-                Y.YUI2.util.Connect.asyncRequest('GET', url_complete, callback);
-            }
+        div = Y.YUI2.util.Dom.get(htmlid);
+        Y.use('yui2-connection', function(Y) {
+            YAHOO.util.Connect.asyncRequest('GET', url, callback);
         });       
     });
 };

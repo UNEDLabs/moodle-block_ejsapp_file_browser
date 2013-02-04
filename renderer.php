@@ -59,7 +59,7 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
             $html = $this->output->box(get_string('nofilesavailable', 'repository'));
         } else {
             $htmlid = 'ejsapp_file_browser_tree_';//.uniqid();
-            $url = $CFG->wwwroot . '/blocks/ejsapp_file_browser/refresh_tree.php?htmlid=';
+            $url = $CFG->wwwroot . '/blocks/ejsapp_file_browser/refresh_tree.php?htmlid=' . $htmlid;
             $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_reload', array($url, $CFG->version, $htmlid));
             $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $CFG->version, $htmlid));  
             $html = '<div id="'.$htmlid.'">';
