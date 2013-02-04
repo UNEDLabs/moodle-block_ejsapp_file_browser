@@ -57,6 +57,7 @@ M.block_ejsapp_file_browser.init_tree = function(Y, expand_all, version, htmlid)
 M.block_ejsapp_file_browser.init_reload = function(Y, url, version, htmlid){
     var handleSuccess = function(o) {
         div.innerHTML = o.responseText;
+        M.block_ejsapp_file_browser.init_tree(Y, false, version, htmlid);
     };
     var handleFailure = function(o) {
         /*failure handler code*/
@@ -70,7 +71,7 @@ M.block_ejsapp_file_browser.init_reload = function(Y, url, version, htmlid){
         if (version >= 2012120300) { //Moodle 2.4 or higher
             var YAHOO = Y.YUI2;
         }
-        div = Y.YUI2.util.Dom.get(htmlid);
+        div = YAHOO.util.Dom.get(htmlid);
         Y.use('yui2-connection', function(Y) {
             YAHOO.util.Connect.asyncRequest('GET', url, callback);
         });       

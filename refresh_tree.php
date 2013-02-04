@@ -26,32 +26,29 @@
  *  
  * @package    block
  * @subpackage ejsapp_file_browser
- * @copyright  2012 Luis de la Torre and Ruben Heradio
+ * @copyright  2013 Luis de la Torre and Ruben Heradio
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later 
  */
 
-//defined('MOODLE_INTERNAL') || die();
-
-require_once('../../config.php'); 
+require_once('/../../config.php');
+require_once('renderer.php');
+require_once('process_state_files.php');
 
 require_login(0, false);
 
-$htmlid = required_param('htmlid', PARAM_TEXT);
+global $OUTPUT;
 
-//$context = get_context_instance(CONTEXT_USER, $USER->id);
-$context = get_context_instance(CONTEXT_SYSTEM);
-$PAGE->set_context($context);
-$content = new stdClass();
-$renderer = $PAGE->get_renderer('block_ejsapp_file_browser'); 
-$content->text = $renderer->ejsapp_file_browser_tree($htmlid);
+$tree = new ejsapp_file_browser_tree();
+$PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+$PAGE->set_url('/blocks/ejsapp_file_browser/refresh_tree.php');
 
-//Delete the repeated <div id=> and last </div>
-$content->text = str_replace('<div id="'.$htmlid.'">', '', $content->text);
-$content->text = substr_replace($content->text, '', -6);
+if (empty($tree->dir['subdirs']) && empty($tree->dir['files'])) {
+    $html = $OUTPUT->box(get_string('nofilesavailable', 'repository'));
+} else {
+    $html = htmllize_tree($tree, $tree->dir);
+}
 
-include('process_state_files.php');
-$content->text = process_state_files($content->text);
-
-echo $content->text; 
+$html = process_state_files($html);
+echo $html;
 
 ?>

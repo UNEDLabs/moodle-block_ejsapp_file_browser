@@ -58,48 +58,17 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
         if (empty($tree->dir['subdirs']) && empty($tree->dir['files'])) {
             $html = $this->output->box(get_string('nofilesavailable', 'repository'));
         } else {
-            $htmlid = 'ejsapp_file_browser_tree_';//.uniqid();
-            $url = $CFG->wwwroot . '/blocks/ejsapp_file_browser/refresh_tree.php?htmlid=' . $htmlid;
+            $htmlid = 'ejsapp_file_browser_tree'.uniqid();
+            $url = $CFG->wwwroot . '/blocks/ejsapp_file_browser/refresh_tree.php';
             $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_reload', array($url, $CFG->version, $htmlid));
-            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $CFG->version, $htmlid));  
+            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $CFG->version, $htmlid));
             $html = '<div id="'.$htmlid.'">';
-            $html .= $this->htmllize_tree($tree, $tree->dir);
+            $html .= htmllize_tree($tree, $tree->dir);
             $html .= '</div>';                                                           
-            //$html .= var_dump($tree->context);
         }
-
         return $html;
     }
-
-    /**
-     * Internal function - creates htmls structure suitable for YUI tree
-     *
-     * @param $tree
-     * @param $dir
-     */
-    protected function htmllize_tree($tree, $dir) {
-        global $CFG;
-        $yuiconfig = array();
-        $yuiconfig['type'] = 'html'; 
-
-        if (empty($dir['subdirs']) and empty($dir['files'])) {
-            return '';
-        }
-        $result = '<ul>';
-        foreach ($dir['subdirs'] as $subdir) {
-            $image = $this->output->pix_icon(file_folder_icon(), $subdir['dirname'], 'moodle', array('class'=>'icon'));
-            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.s($subdir['dirname']).'</div> '.$this->htmllize_tree($tree, $subdir).'</li>';
-        }
-        foreach ($dir['files'] as $file) {
-            $url = file_encode_url("$CFG->wwwroot/pluginfile.php", '/'.$tree->context->id.'/user/private'.$file->get_filepath().$file->get_filename(), true);
-            $filename = $file->get_filename();
-            $image = $this->output->pix_icon(file_file_icon($file), $filename, 'moodle', array('class'=>'icon'));
-            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.html_writer::link($url, $image.$filename).'</div></li>';
-        }
-        $result .= '</ul>';
-
-        return $result;
-    }
+    
 }
 
 /**
@@ -123,4 +92,34 @@ class ejsapp_file_browser_tree implements renderable {
         $fs = get_file_storage();
         $this->dir = $fs->get_area_tree($this->context->id, 'user', 'private', 0);
     }   
-}    
+}
+
+/**
+ * Public function - creates htmls structure suitable for YUI tree
+ *
+ * @param $tree
+ * @param $dir
+ */
+function htmllize_tree($tree, $dir) {
+    global $CFG, $OUTPUT;
+    $yuiconfig = array();
+    $yuiconfig['type'] = 'html';
+
+    if (empty($dir['subdirs']) and empty($dir['files'])) {
+        return '';
+    }
+    $result = '<ul>';
+
+    foreach ($dir['subdirs'] as $subdir) {
+        $image = $OUTPUT->pix_icon(file_folder_icon(), $subdir['dirname'], 'moodle', array('class'=>'icon'));
+        $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.s($subdir['dirname']).'</div> '.htmllize_tree($tree, $subdir).'</li>';
+    }
+    foreach ($dir['files'] as $file) {
+        $url = file_encode_url("$CFG->wwwroot/pluginfile.php", '/'.$tree->context->id.'/user/private'.$file->get_filepath().$file->get_filename(), true);
+        $filename = $file->get_filename();
+        $image = $OUTPUT->pix_icon(file_file_icon($file), $filename, 'moodle', array('class'=>'icon'));
+        $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.html_writer::link($url, $image.$filename).'</div></li>';
+    }
+    $result .= '</ul>';
+    return $result;
+}// htmllize_tree
