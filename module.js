@@ -2,8 +2,8 @@
 //
 // EJSApp File Browser is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// the Free Software Foundation, either moodle_version 3 of the License, or
+// (at your option) any later moodle_version.
 //
 // EJSApp File Browser is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -30,12 +30,12 @@
 
 M.block_ejsapp_file_browser = {};
 
-M.block_ejsapp_file_browser.init_tree = function(Y, expand_all, version, htmlid) {
+M.block_ejsapp_file_browser.init_tree = function(Y, expand_all, moodle_version, htmlid) {
     Y.use('yui2-treeview', function(Y) {
-        if (version >= 2012120300) { //Moodle 2.4 or higher
-            var YAHOO = Y.YUI2;
-        }
-        var tree = new YAHOO.widget.TreeView(htmlid);   
+        if (moodle_version >= 2012120300) { //Moodle 2.4 or higher
+            YAHOO = Y.YUI2;
+        } 
+        var tree = new YAHOO.widget.TreeView(htmlid);
 
         tree.subscribe("clickEvent", function(node, event) {
             // we want normal clicking which redirects to url
@@ -54,10 +54,10 @@ M.block_ejsapp_file_browser.init_tree = function(Y, expand_all, version, htmlid)
 * Defines the javascript code for refreshing the EJSApp File Browser block.    .
 *
 */
-M.block_ejsapp_file_browser.init_reload = function(Y, url, version, htmlid){
+M.block_ejsapp_file_browser.init_reload = function(Y, url, moodle_version, htmlid){
     var handleSuccess = function(o) {
         div.innerHTML = o.responseText;
-        M.block_ejsapp_file_browser.init_tree(Y, false, version, htmlid);
+        M.block_ejsapp_file_browser.init_tree(Y, false, moodle_version, htmlid);
     };
     var handleFailure = function(o) {
         /*failure handler code*/
@@ -68,9 +68,9 @@ M.block_ejsapp_file_browser.init_reload = function(Y, url, version, htmlid){
     };
     var refreshBut = Y.one("#refreshEJSAppFBBut");
     refreshBut.on("click", function (e) { 
-        if (version >= 2012120300) { //Moodle 2.4 or higher
-            var YAHOO = Y.YUI2;
-        }
+        if (moodle_version >= 2012120300) { //Moodle 2.4 or higher
+            YAHOO = Y.YUI2;
+        } 
         div = YAHOO.util.Dom.get(htmlid);
         Y.use('yui2-connection', function(Y) {
             YAHOO.util.Connect.asyncRequest('GET', url, callback);

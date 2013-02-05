@@ -24,13 +24,13 @@
 
 /**
  * Prints the private files tree
- *     
+ *
  * @package    block
  * @subpackage ejsapp_file_browser
  * @copyright  2012 Luis de la Torre and Ruben Heradio
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
- 
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -54,21 +54,20 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
      */
     public function render_ejsapp_file_browser_tree(ejsapp_file_browser_tree $tree) {
         global $CFG;
-        $module = array('name'=>'block_ejsapp_file_browser', 'fullpath'=>'/blocks/ejsapp_file_browser/module.js', 'requires'=>array('yui2-treeview'));
         if (empty($tree->dir['subdirs']) && empty($tree->dir['files'])) {
             $html = $this->output->box(get_string('nofilesavailable', 'repository'));
         } else {
-            $htmlid = 'ejsapp_file_browser_tree'.uniqid();
+            $htmlid = 'ejsapp_file_browser_tree';
             $url = $CFG->wwwroot . '/blocks/ejsapp_file_browser/refresh_tree.php';
             $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_reload', array($url, $CFG->version, $htmlid));
             $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $CFG->version, $htmlid));
             $html = '<div id="'.$htmlid.'">';
             $html .= htmllize_tree($tree, $tree->dir);
-            $html .= '</div>';                                                           
+            $html .= '</div>';
         }
         return $html;
     }
-    
+
 }
 
 /**
@@ -91,7 +90,7 @@ class ejsapp_file_browser_tree implements renderable {
         $this->context = context_user::instance($USER->id);
         $fs = get_file_storage();
         $this->dir = $fs->get_area_tree($this->context->id, 'user', 'private', 0);
-    }   
+    }
 }
 
 /**
@@ -101,7 +100,7 @@ class ejsapp_file_browser_tree implements renderable {
  * @param $dir
  */
 function htmllize_tree($tree, $dir) {
-    global $CFG, $OUTPUT;
+    global $CFG, $OUTPUT, $DB, $USER;
     $yuiconfig = array();
     $yuiconfig['type'] = 'html';
 
@@ -115,11 +114,34 @@ function htmllize_tree($tree, $dir) {
         $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.s($subdir['dirname']).'</div> '.htmllize_tree($tree, $subdir).'</li>';
     }
     foreach ($dir['files'] as $file) {
-        $url = file_encode_url("$CFG->wwwroot/pluginfile.php", '/'.$tree->context->id.'/user/private'.$file->get_filepath().$file->get_filename(), true);
         $filename = $file->get_filename();
-        $image = $OUTPUT->pix_icon(file_file_icon($file), $filename, 'moodle', array('class'=>'icon'));
+
+        //get $ejsapp_id
+        $file_record = $DB->get_record('files', array('filename' => $filename, 'component' => 'mod_ejsapp', 'filearea' => 'private', 'userid' => ($USER->id)));
+        if (!$file_record) {
+            $source = array();
+        } else {
+            preg_match('/ejsappid=(\d+)/', $file_record->source, $source);
+        }
+
+        if (!empty($source)) { // an ejs state file
+            $ejsapp_id = $source[1];
+            $ejsapp_record = $DB->get_record('ejsapp', array('id' => $ejsapp_id));
+            if ($ejsapp_record) {
+                $image = '<img class="icon" src="' .
+                    $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/ejsapp_icon.gif' .
+                    '"/>';
+                $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&state_file=" . $file_record->contextid . "/"
+                    . $file_record->component . "/" . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
+            }
+        } else { // an non-state file
+            $image = $OUTPUT->pix_icon(file_file_icon($file), $filename, 'moodle', array('class'=>'icon'));
+            $url = file_encode_url("$CFG->wwwroot/pluginfile.php", '/'.$tree->context->id.'/user/private'.$file->get_filepath().$file->get_filename(), true);
+        }
+
         $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.html_writer::link($url, $image.$filename).'</div></li>';
     }
     $result .= '</ul>';
     return $result;
 }// htmllize_tree
+

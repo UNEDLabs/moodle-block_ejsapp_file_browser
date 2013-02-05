@@ -30,8 +30,8 @@
  * @copyright  2012 Luis de la Torre and Ruben Heradio
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
- 
-require('../../config.php');
+
+require_once(dirname(__FILE__) . '/../../config.php');
 require_once("$CFG->dirroot/blocks/ejsapp_file_browser/edit_form.php");
 require_once("$CFG->dirroot/repository/lib.php");
 

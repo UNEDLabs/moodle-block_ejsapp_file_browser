@@ -106,12 +106,9 @@ class block_ejsapp_file_browser extends block_base {
             } else {
                 $this->content->text .= $refresh_button;
             }
-            include('process_state_files.php');
-            $this->content->text = process_state_files($this->content->text);
         }
-        
+
         return $this->content;
     }
 }
 
-?>

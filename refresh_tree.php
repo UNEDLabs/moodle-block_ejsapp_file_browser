@@ -30,9 +30,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later 
  */
 
-require_once('/../../config.php');
+require_once(dirname(__FILE__) . '/../../config.php');
 require_once('renderer.php');
-require_once('process_state_files.php');
 
 require_login(0, false);
 
@@ -48,7 +47,6 @@ if (empty($tree->dir['subdirs']) && empty($tree->dir['files'])) {
     $html = htmllize_tree($tree, $tree->dir);
 }
 
-$html = process_state_files($html);
 echo $html;
 
-?>
+
