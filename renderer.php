@@ -138,8 +138,9 @@ function htmllize_tree($tree, $dir) {
             $image = $OUTPUT->pix_icon(file_file_icon($file), $filename, 'moodle', array('class'=>'icon'));
             $url = file_encode_url("$CFG->wwwroot/pluginfile.php", '/'.$tree->context->id.'/user/private'.$file->get_filepath().$file->get_filename(), true);
         }
-
-        $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.html_writer::link($url, $image.$filename).'</div></li>';
+        if (isset($url) && isset($image)) {
+            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.html_writer::link($url, $image.$filename).'</div></li>';
+        }
     }
     $result .= '</ul>';
     return $result;
