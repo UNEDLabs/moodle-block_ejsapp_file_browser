@@ -54,17 +54,15 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
      */
     public function render_ejsapp_file_browser_tree(ejsapp_file_browser_tree $tree) {
         global $CFG;
-        if (empty($tree->dir['subdirs']) && empty($tree->dir['files'])) {
-            $html = $this->output->box(get_string('nofilesavailable', 'repository'));
-        } else {
-            $htmlid = 'ejsapp_file_browser_tree';
-            $url = $CFG->wwwroot . '/blocks/ejsapp_file_browser/refresh_tree.php';
-            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_reload', array($url, $CFG->version, $htmlid));
-            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $CFG->version, $htmlid));
-            $html = '<div id="'.$htmlid.'">';
-            $html .= htmllize_tree($tree, $tree->dir);
-            $html .= '</div>';
-        }
+
+        $htmlid = 'ejsapp_file_browser_tree';
+        $url = $CFG->wwwroot . '/blocks/ejsapp_file_browser/refresh_tree.php';
+        $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_reload', array($url, $CFG->version, $htmlid));
+        $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $CFG->version, $htmlid));
+        $html = '<div id="'.$htmlid.'">';
+        $html .= htmllize_tree($tree, $tree->dir);
+        $html .= '</div>';
+
         return $html;
     }
 
