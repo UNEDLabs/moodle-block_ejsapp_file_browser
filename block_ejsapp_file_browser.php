@@ -91,7 +91,7 @@ class block_ejsapp_file_browser extends block_base {
         $this->content->footer = '';
         
         if (isloggedin() && !isguestuser()) { // Show the block
-            $refresh_button = '<input type="image" id="refreshEJSAppFBBut" align="left" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/refresh.png" name="image" width="25" height="25")";>';
+            $refresh_button = '<input type="image" id="refreshEJSAppFBBut" align="left" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/refresh.png" name="image" width="25" height="25">';
             $this->content = new stdClass();
             $renderer = $this->page->get_renderer('block_ejsapp_file_browser');
             $this->content->text = $renderer->ejsapp_file_browser_tree(); 
