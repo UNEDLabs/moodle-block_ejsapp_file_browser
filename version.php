@@ -31,10 +31,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$plugin->version = 2013042703;
+$plugin->version = 2013060300;
 $plugin->requires = 2010112400;
 $plugin->cron = 0;
 $plugin->component = 'block_ejsapp_file_browser'; // To check on upgrade, that module sits in correct place
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.1 (Build: 2013042700)';
+$plugin->release = '1.1 (Build: 2013060300)';
 $plugin->dependencies = array('mod_ejsapp' => 2012121803);
