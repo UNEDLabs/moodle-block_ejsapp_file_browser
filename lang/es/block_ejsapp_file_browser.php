@@ -35,3 +35,8 @@ $string['title_of_the_block'] = 'Navegador EJSApp de archivos';
 $string['managemyfiles'] = 'Gestionar archivos';
 $string['pluginname'] = 'Navegador EJSApp de "archivos privados"';
 $string['privatefiles'] = 'Archivos privados';
+
+// settings.php:
+$string['auto_refresh_header_config'] = 'Configurar la propiedad de auto-refresco del bloque';
+$string['auto_refresh'] = 'Frecuencia de auto-refresco';
+$string['auto_refresh_description'] = 'Tiempo en milisegundos. Escriba "0" para deshabilitar el auto-refresco.';

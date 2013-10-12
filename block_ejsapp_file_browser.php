@@ -110,5 +110,10 @@ class block_ejsapp_file_browser extends block_base {
 
         return $this->content;
     }
+
+    /**
+     * enabling global configuration
+     */
+    function has_config() {return true;}
 }
 
