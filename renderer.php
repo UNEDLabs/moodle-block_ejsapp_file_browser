@@ -124,7 +124,10 @@ function htmllize_tree($tree, $dir) {
             preg_match('/ejsappid=(\d+)/', $file_record->source, $source);
         }
 
-        if (!empty($source)) { // an ejs state file
+        preg_match('/[.](\w+)$/', $filename, $match);
+        $file_extension = $match[1];
+
+        if (!empty($source) && strcmp($file_extension, 'xml')==0) { // an ejs state file
             $ejsapp_id = $source[1];
             $ejsapp_record = $DB->get_record('ejsapp', array('id' => $ejsapp_id));
             if ($ejsapp_record) {
