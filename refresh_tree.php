@@ -35,10 +35,10 @@ require_once('renderer.php');
 
 require_login(0, false);
 
-global $OUTPUT;
+global $OUTPUT, $PAGE;
 
 $tree = new ejsapp_file_browser_tree();
-$PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+$PAGE->set_context(context_system::instance());
 $PAGE->set_url('/blocks/ejsapp_file_browser/refresh_tree.php');
 
 if (empty($tree->dir['subdirs']) && empty($tree->dir['files'])) {

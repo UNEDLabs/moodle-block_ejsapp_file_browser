@@ -35,12 +35,14 @@ require_once(dirname(__FILE__) . '/../../config.php');
 require_once("$CFG->dirroot/blocks/ejsapp_file_browser/edit_form.php");
 require_once("$CFG->dirroot/repository/lib.php");
 
+global $USER, $PAGE, $OUTPUT;
+
 require_login();
 if (isguestuser()) {
     die();
 }
 
-$context = get_context_instance(CONTEXT_USER, $USER->id);
+$context = context_user::instance($USER->id);
 $title = get_string('privatefiles', 'block_ejsapp_file_browser');
 $struser = get_string('user');
 

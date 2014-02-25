@@ -77,7 +77,7 @@ class block_ejsapp_file_browser extends block_base {
     */
     function get_content()
     {
-        global $CFG, $USER, $PAGE, $OUTPUT, $DB;
+        global $CFG, $PAGE, $OUTPUT;
 
         if ($this->content !== null) {
             return $this->content;
@@ -96,10 +96,10 @@ class block_ejsapp_file_browser extends block_base {
             $renderer = $this->page->get_renderer('block_ejsapp_file_browser');
             $this->content->text = $renderer->ejsapp_file_browser_tree(); 
             if (has_capability('moodle/user:manageownfiles', $this->context)) {
-            	if ($CFG->version > 2012062500) {  //Moodle 2.3 or higher
-                $filespath = '/user/files.php';
-              } else {                           //Moodle 2.2 or lower
-                $filespath = '/user/filesedit.php';
+            	if ($CFG->version > 2012062500) {   //Moodle 2.3 or higher
+                    $filespath = '/user/files.php';
+              } else {                              //Moodle 2.2 or lower
+                    $filespath = '/user/filesedit.php';
               }
               $manage_files_button = $OUTPUT->single_button(new moodle_url($filespath, array('returnurl'=>$PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');              
            	  $this->content->text .= '<table><tr><td>' . $refresh_button . '</td><td>' . $manage_files_button . '</td></tr></table>';
