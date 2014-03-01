@@ -98,6 +98,7 @@ class ejsapp_file_browser_tree implements renderable {
  *
  * @param $tree
  * @param $dir
+ * @return string result
  */
 function htmllize_tree($tree, $dir) {
     global $CFG, $OUTPUT, $DB, $USER;
@@ -159,4 +160,3 @@ function htmllize_tree($tree, $dir) {
     $result .= '</ul>';
     return $result;
 }// htmllize_tree
-
