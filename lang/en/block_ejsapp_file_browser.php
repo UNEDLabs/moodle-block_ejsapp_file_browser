@@ -39,3 +39,7 @@ $string['privatefiles'] = 'Private files';
 $string['auto_refresh_header_config'] = 'Configure the block\'s auto-refresh property';
 $string['auto_refresh'] = 'Auto-refresh frequency';
 $string['auto_refresh_description'] = 'Time in miliseconds. Write "0" to disable auto-refresh.';
+
+//Capabilities
+$string['ejsapp_file_browser:addinstance'] = 'Add a new private files block for EJSApp';
+$string['ejsapp_file_browser:myaddinstance'] = 'Add a new private files block for EJSApp to My home';

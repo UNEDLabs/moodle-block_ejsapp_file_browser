@@ -48,5 +48,3 @@ if (empty($tree->dir['subdirs']) && empty($tree->dir['files'])) {
 }
 
 echo $html;
-
-
