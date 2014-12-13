@@ -118,7 +118,7 @@ function htmllize_tree($tree, $dir) {
         $filename = $file->get_filename();
 
         //get $ejsapp_id
-        $file_record = $DB->get_record('files', array('filename' => $filename, 'component' => 'mod_ejsapp', 'filearea' => 'private', 'userid' => ($USER->id)));
+        $file_record = $DB->get_record('files', array('filename' => $filename, 'component' => 'user', 'filearea' => 'private', 'userid' => ($USER->id)));
         if (!$file_record) {
             $source = array();
         } else {
@@ -137,16 +137,16 @@ function htmllize_tree($tree, $dir) {
                     } else {
                         $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_state.gif' . '"/>';
                     }
-                    $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&state_file=" . $file_record->contextid . "/"
-                        . $file_record->component . "/" . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
+                    $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&state_file=" . $file_record->contextid . "/mod_ejsapp/"
+                        . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
                 } else {
                     if ($CFG->version >= 2012120300) { //Moodle 2.4 or higher
                         $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_experiment.svg' . '"/>';
                     } else {
                         $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_experiment.gif' . '"/>';
                     }
-                    $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&exp_file=" . $file_record->contextid . "/"
-                        . $file_record->component . "/" . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
+                    $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&exp_file=" . $file_record->contextid . "/mod_ejsapp/"
+                        . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
                 }
             }
         } else { // an non-state and non-experiment file
