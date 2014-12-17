@@ -91,21 +91,20 @@ class block_ejsapp_file_browser extends block_base {
         $this->content->footer = '';
         
         if (isloggedin() && !isguestuser()) { // Show the block
-            $refresh_button = '<input type="image" id="refreshEJSAppFBBut" align="left" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/refresh.png" name="image" width="25" height="25">';
             $this->content = new stdClass();
             $renderer = $this->page->get_renderer('block_ejsapp_file_browser');
             $this->content->text = $renderer->ejsapp_file_browser_tree(); 
             if (has_capability('moodle/user:manageownfiles', $this->context)) {
             	if ($CFG->version > 2012062500) {   //Moodle 2.3 or higher
                     $filespath = '/user/files.php';
-              } else {                              //Moodle 2.2 or lower
+                } else {                              //Moodle 2.2 or lower
                     $filespath = '/user/filesedit.php';
-              }
-              $manage_files_button = $OUTPUT->single_button(new moodle_url($filespath, array('returnurl'=>$PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');              
-           	  $this->content->text .= '<table><tr><td>' . $refresh_button . '</td><td>' . $manage_files_button . '</td></tr></table>';
-            } else {
-                $this->content->text .= $refresh_button;
+                }
+                $refresh_button = '<input type="image" id="refreshEJSAppFBBut" align="left" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/refresh.png" name="image" width="25" height="25">';
+                $manage_files_button = $OUTPUT->single_button(new moodle_url($filespath, array('returnurl'=>$PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
+                $this->content->text .= $refresh_button . ' ' . $manage_files_button;
             }
+            $this->content->footer = '';
         }
 
         return $this->content;
