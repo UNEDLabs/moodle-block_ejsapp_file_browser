@@ -1,5 +1,5 @@
 ###########################
-# EJSApp File Browser 1.1 #
+# EJSApp File Browser 1.2 #
 ###########################
 
 1. Content
