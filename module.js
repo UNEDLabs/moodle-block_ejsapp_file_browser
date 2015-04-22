@@ -56,6 +56,7 @@ M.block_ejsapp_file_browser.init_tree = function(Y, expand_all, moodle_version, 
 */
 M.block_ejsapp_file_browser.init_reload = function(Y, url, moodle_version, htmlid){
     var handleSuccess = function(o) {
+        var div = YAHOO.util.Dom.get(htmlid);
         div.innerHTML = o.responseText;
         M.block_ejsapp_file_browser.init_tree(Y, false, moodle_version, htmlid);
     };
@@ -72,7 +73,6 @@ M.block_ejsapp_file_browser.init_reload = function(Y, url, moodle_version, htmli
             if (moodle_version >= 2012120300) { //Moodle 2.4 or higher
                 YAHOO = Y.YUI2;
             }
-            div = YAHOO.util.Dom.get(htmlid);
             YAHOO.util.Connect.asyncRequest('GET', url, callback);
         });       
     });
@@ -85,6 +85,7 @@ M.block_ejsapp_file_browser.init_reload = function(Y, url, moodle_version, htmli
 M.block_ejsapp_file_browser.init_auto_refresh = function(Y, url, moodle_version, htmlid, frequency){
     if (frequency > 0) {
         var handleSuccess = function(o) {
+            var div = YAHOO.util.Dom.get(htmlid);
             div.innerHTML = o.responseText;
             M.block_ejsapp_file_browser.init_tree(Y, false, moodle_version, htmlid);
         };
@@ -101,7 +102,6 @@ M.block_ejsapp_file_browser.init_auto_refresh = function(Y, url, moodle_version,
                 if (moodle_version >= 2012120300) { //Moodle 2.4 or higher
                     YAHOO = Y.YUI2;
                 }
-                div = YAHOO.util.Dom.get(htmlid);
                 YAHOO.util.Connect.asyncRequest('GET', url, callback);
             });
         }
