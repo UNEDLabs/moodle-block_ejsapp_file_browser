@@ -98,7 +98,7 @@ M.block_ejsapp_file_browser.init_auto_refresh = function(Y, url, moodle_version,
         };
         setInterval(function() {autoRefresh()},frequency);
         function autoRefresh() {
-            Y.use('yui2-connection', function(Y) {
+            Y.use('yui2-connection', 'yui2-dom', function(Y) {
                 if (moodle_version >= 2012120300) { //Moodle 2.4 or higher
                     YAHOO = Y.YUI2;
                 }
