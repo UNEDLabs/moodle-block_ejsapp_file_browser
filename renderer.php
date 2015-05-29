@@ -126,11 +126,11 @@ function htmllize_tree($tree, $dir) {
             if ($file_extension != 'cnt') preg_match('/ejsappid=(\d+)/', $file_record->source, $source);
         }
 
-        if (!empty($source) && ($file_extension == 'xml' || $file_extension == 'exp' || $file_extension == 'rec')) { // an ejs state or experiment file
+        if (!empty($source) && ($file_extension == 'xml' || $file_extension == 'json' || $file_extension == 'exp' || $file_extension == 'rec')) { // an ejs state or experiment file
             $ejsapp_id = $source[1];
             $ejsapp_record = $DB->get_record('ejsapp', array('id' => $ejsapp_id));
             if ($ejsapp_record) {
-                if ($file_extension == 'xml') {
+                if ($file_extension == 'xml' || $file_extension == 'json') {
                     if ($CFG->version >= 2012120300) { //Moodle 2.4 or higher
                         $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_state.svg' . '"/>';
                     } else {

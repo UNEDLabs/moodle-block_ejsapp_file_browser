@@ -39,7 +39,7 @@ $settings->add(new admin_setting_configtext(
     'ejsapp_file_browser/Auto_refresh',
     get_string('auto_refresh', 'block_ejsapp_file_browser'),
     get_string('auto_refresh_description', 'block_ejsapp_file_browser'),
-    '4000',
+    '0',
     PARAM_INT,
     '5'
 ));
