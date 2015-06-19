@@ -41,10 +41,8 @@ This block has been tested in Moodle 2.7, 2.8 and 2.9.
 ===============
 
 This block needs the ejsapp module to be of any use. It works with version 1.3 (or later) of EJSApp. You can find and
-download it at https://moodle.org/plugins/view.php?plugin=block_ejsapp_file_browser, in the plugins section in the
+download it at https://moodle.org/plugins/view.php?plugin=mod_ejsapp, in the plugins section in the
 Moodle.org webpage or at https://github.com/UNEDLabs.
-
-An explanation of EJSApp is included in the folder "doc". There, you will also find a txt file with relevant links.
 
 5. Authors
 ==========
