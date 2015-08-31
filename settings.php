@@ -28,18 +28,21 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die;
 
-$settings->add(new admin_setting_heading(
-    'auto_refresh_header_config',
-    get_string('auto_refresh_header_config', 'block_ejsapp_file_browser'),
-    ''
-));
+if ($ADMIN->fulltree) {
+    $settings->add(new admin_setting_heading(
+        'auto_refresh_header_config',
+        get_string('auto_refresh_header_config', 'block_ejsapp_file_browser'),
+        ''
+    ));
 
-$settings->add(new admin_setting_configtext(
-    'ejsapp_file_browser/Auto_refresh',
-    get_string('auto_refresh', 'block_ejsapp_file_browser'),
-    get_string('auto_refresh_description', 'block_ejsapp_file_browser'),
-    '0',
-    PARAM_INT,
-    '5'
-));
+    $settings->add(new admin_setting_configtext(
+        'ejsapp_file_browser/Auto_refresh',
+        get_string('auto_refresh', 'block_ejsapp_file_browser'),
+        get_string('auto_refresh_description', 'block_ejsapp_file_browser'),
+        '0',
+        PARAM_INT,
+        '5'
+    ));
+}

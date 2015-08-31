@@ -31,10 +31,10 @@ $capabilities = array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array(
-            'user' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW
         ),
-
-        'clonepermissionsfrom' => 'moodle/my:manageblocks'
     ),
 
     'block/ejsapp_file_browser:addinstance' => array(
@@ -46,7 +46,6 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         ),
-
-        'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
+
 );
