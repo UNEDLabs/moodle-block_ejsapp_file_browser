@@ -21,20 +21,30 @@
 //  at the Computer Science and Automatic Control, Spanish Open University
 //  (UNED), Madrid, Spain
 
-
 /**
- * Defines the version of ejsapp_file_browser
- *
+ * Ajax update of the ejsapp files browser html structure, suitable for YUI tree
+ *  
  * @package    block
  * @subpackage ejsapp_file_browser
- * @copyright  2012 Luis de la Torre and Ruben Heradio
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2013 Luis de la Torre and Ruben Heradio
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later 
  */
 
-$plugin->version = 2015062600;
-$plugin->requires = 2013111800;
-$plugin->cron = 0;
-$plugin->component = 'block_ejsapp_file_browser'; // To check on upgrade, that module sits in correct place
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.3 (Build: 2015062600)';
-$plugin->dependencies = array('mod_ejsapp' => 2014121300);
+require_once(dirname(__FILE__) . '/../../config.php');
+require_once('renderer.php');
+
+require_login(0, false);
+
+global $OUTPUT, $PAGE;
+
+$tree = new ejsapp_file_browser_tree();
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url('/blocks/ejsapp_file_browser/refresh_tree.php');
+
+if (empty($tree->dir['subdirs']) && empty($tree->dir['files'])) {
+    $html = $OUTPUT->box(get_string('nofilesavailable', 'repository'));
+} else {
+    $html = htmllize_tree($tree, $tree->dir);
+}
+
+echo $html;
