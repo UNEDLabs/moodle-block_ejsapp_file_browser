@@ -2,6 +2,9 @@
 # EJSApp File Browser 1.3 #
 ###########################
 
+http://dx.doi.org/10.5281/zenodo.32774
+DOI: 10.5281/zenodo.32774
+
 1. Content
 ==========
 
