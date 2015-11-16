@@ -2,8 +2,8 @@
 # EJSApp File Browser 1.3 #
 ###########################
 
-http://dx.doi.org/10.5281/zenodo.32774
-DOI: 10.5281/zenodo.32774
+https://zenodo.org/badge/latestdoi/18948/UNEDLabs/moodle-block_ejsapp_file_browser
+DOI: 10.5281/zenodo.33842
 
 1. Content
 ==========
