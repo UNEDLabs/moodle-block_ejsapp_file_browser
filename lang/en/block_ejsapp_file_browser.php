@@ -35,6 +35,15 @@ $string['managemyfiles'] = 'Manage my files';
 $string['pluginname'] = 'EJSApp "private files" browser';
 $string['privatefiles'] = 'Private files';
 
+$string['capture_legend'] = 'Recording';
+$string['show_capture_options'] = 'Show options';
+$string['hide_capture_options'] = 'Hide options';
+$string['start_capture'] = 'Start';
+$string['stop_capture'] = 'Stop';
+$string['reset_capture'] = 'Reset';
+$string['play_capture'] = 'Load';
+$string['change_speed'] = 'Velocity:';
+
 // settings.php:
 $string['auto_refresh_header_config'] = 'Configure the block\'s auto-refresh property';
 $string['auto_refresh'] = 'Auto-refresh frequency';

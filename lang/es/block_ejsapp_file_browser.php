@@ -36,6 +36,13 @@ $string['managemyfiles'] = 'Gestionar archivos';
 $string['pluginname'] = 'Navegador EJSApp de "archivos privados"';
 $string['privatefiles'] = 'Archivos privados';
 
+$string['capture_legend'] = 'Grabaci&oacute;n';
+$string['start_capture'] = 'Comenzar';
+$string['stop_capture'] = 'Parar';
+$string['reset_capture'] = 'Resetear';
+$string['play_capture'] = 'Cargar';
+$string['change_speed'] = 'Velocidad:';
+
 // settings.php:
 $string['auto_refresh_header_config'] = 'Configurar la propiedad de auto-refresco del bloque';
 $string['auto_refresh'] = 'Frecuencia de auto-refresco';
