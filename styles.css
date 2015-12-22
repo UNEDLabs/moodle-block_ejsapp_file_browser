@@ -4,20 +4,16 @@
     width: 100%;
 }
 
-.block_ejsapp_file_browser .singlebutton{
+.block_ejsapp_file_browser .singlebutton, .captureInteraction, .optionsBut{
     text-align: center;
 }
 
-.block_ejsapp_file_browser .captureInteraction{
-    text-align: center;
-}
-
-.block_ejsapp_file_browser .optionsBut{
-    text-align: center;
-}
-
-.block_ejsapp_file_browser .playCapture .recordCapture{
+.block_ejsapp_file_browser .recordCapture{
     margin-top:5px;
+}
+
+.block_ejsapp_file_browser .playCapture{
+    margin-top:3px;
 }
 
 .block_ejsapp_file_browser .velocity{
