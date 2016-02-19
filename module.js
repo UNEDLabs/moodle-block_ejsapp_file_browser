@@ -30,12 +30,9 @@
 
 M.block_ejsapp_file_browser = {};
 
-M.block_ejsapp_file_browser.init_tree = function(Y, expand_all, moodle_version, htmlid) {
+M.block_ejsapp_file_browser.init_tree = function(Y, expand_all, htmlid) {
     Y.use('yui2-treeview', function(Y) {
-        if (moodle_version >= 2012120300) { //Moodle 2.4 or higher
-            YAHOO = Y.YUI2;
-        } 
-        var tree = new YAHOO.widget.TreeView(htmlid);
+        var tree = new Y.YUI2.widget.TreeView(htmlid);
 
         tree.subscribe("clickEvent", function(node, event) {
             // we want normal clicking which redirects to url
@@ -54,11 +51,11 @@ M.block_ejsapp_file_browser.init_tree = function(Y, expand_all, moodle_version, 
 * Defines the javascript code for manually refreshing the EJSApp File Browser block.    .
 *
 */
-M.block_ejsapp_file_browser.init_reload = function(Y, url, moodle_version, htmlid){
+M.block_ejsapp_file_browser.init_reload = function(Y, url, htmlid){
     var handleSuccess = function(o) {
-        var div = YAHOO.util.Dom.get(htmlid);
+        var div = Y.YUI2.util.Dom.get(htmlid);
         div.innerHTML = o.responseText;
-        M.block_ejsapp_file_browser.init_tree(Y, false, moodle_version, htmlid);
+        M.block_ejsapp_file_browser.init_tree(Y, false, htmlid);
     };
     var handleFailure = function(o) {
         /*failure handler code*/
@@ -70,10 +67,7 @@ M.block_ejsapp_file_browser.init_reload = function(Y, url, moodle_version, htmli
     var refreshBut = Y.one("#refreshEJSAppFBBut");
     refreshBut.on("click", function (e) {
         Y.use('yui2-connection', function(Y) {
-            if (moodle_version >= 2012120300) { //Moodle 2.4 or higher
-                YAHOO = Y.YUI2;
-            }
-            YAHOO.util.Connect.asyncRequest('GET', url, callback);
+            Y.YUI2.util.Connect.asyncRequest('GET', url, callback);
         });       
     });
 };
@@ -82,12 +76,12 @@ M.block_ejsapp_file_browser.init_reload = function(Y, url, moodle_version, htmli
  * Defines the javascript code for automatically refreshing the EJSApp File Browser block.    .
  *
  */
-M.block_ejsapp_file_browser.init_auto_refresh = function(Y, url, moodle_version, htmlid, frequency){
+M.block_ejsapp_file_browser.init_auto_refresh = function(Y, url, htmlid, frequency){
     if (frequency > 0) {
         var handleSuccess = function(o) {
-            var div = YAHOO.util.Dom.get(htmlid);
+            var div = Y.YUI2.util.Dom.get(htmlid);
             div.innerHTML = o.responseText;
-            M.block_ejsapp_file_browser.init_tree(Y, false, moodle_version, htmlid);
+            M.block_ejsapp_file_browser.init_tree(Y, false, htmlid);
         };
         var handleFailure = function(o) {
             /*failure handler code*/
@@ -99,10 +93,7 @@ M.block_ejsapp_file_browser.init_auto_refresh = function(Y, url, moodle_version,
         setInterval(function() {autoRefresh()},frequency);
         function autoRefresh() {
             Y.use('yui2-connection', 'yui2-dom', function(Y) {
-                if (moodle_version >= 2012120300) { //Moodle 2.4 or higher
-                    YAHOO = Y.YUI2;
-                }
-                YAHOO.util.Connect.asyncRequest('GET', url, callback);
+                Y.YUI2.util.Connect.asyncRequest('GET', url, callback);
             });
         }
     }

@@ -56,11 +56,11 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
         global $CFG, $PAGE;
         $htmlid = 'ejsapp_file_browser_tree';
         $url = $CFG->wwwroot . '/blocks/ejsapp_file_browser/refresh_tree.php';
-        $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_reload', array($url, $CFG->version, $htmlid));
+        $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_reload', array($url, $htmlid));
         if (substr_count($PAGE->url,'/mod/ejsapp/view.php')>0) {
-            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_auto_refresh', array($url, $CFG->version, $htmlid, get_config('ejsapp_file_browser', 'Auto_refresh')));
+            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_auto_refresh', array($url, $htmlid, get_config('ejsapp_file_browser', 'Auto_refresh')));
         }
-        $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $CFG->version, $htmlid));
+        $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $htmlid));
         $html = '<div id="'.$htmlid.'">';
         $html .= htmllize_tree($tree, $tree->dir);
         $html .= '</div>';
@@ -131,37 +131,21 @@ function htmllize_tree($tree, $dir) {
             $ejsapp_record = $DB->get_record('ejsapp', array('id' => $ejsapp_id));
             if ($ejsapp_record) {
                 if ($file_extension == 'xml' || $file_extension == 'json') {
-                    if ($CFG->version >= 2012120300) { //Moodle 2.4 or higher
-                        $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_state.svg' . '"/>';
-                    } else {
-                        $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_state.gif' . '"/>';
-                    }
+                    $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_state.svg' . '"/>';
                     $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&state_file=" . $file_record->contextid . "/mod_ejsapp/"
                         . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
                 } else if ($file_extension == 'exp') {
-                    if ($CFG->version >= 2012120300) { //Moodle 2.4 or higher
-                        $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_experiment.svg' . '"/>';
-                    } else {
-                        $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_experiment.gif' . '"/>';
-                    }
+                    $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_experiment.svg' . '"/>';
                     $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&exp_file=" . $file_record->contextid . "/mod_ejsapp/"
                         . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
                 } else if ($file_extension == 'rec') {
-                    if ($CFG->version >= 2012120300) { //Moodle 2.4 or higher
-                        $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_recording.svg' . '"/>';
-                    } else {
-                        $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_recording.gif' . '"/>';
-                    }
+                    $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_recording.svg' . '"/>';
                     $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&rec_file=" . $file_record->contextid . "/mod_ejsapp/"
                         . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
                 }
             }
         } else if ($file_extension == 'cnt') {
-            if ($CFG->version >= 2012120300) { //Moodle 2.4 or higher
-                $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_controller.svg' . '"/>';
-            } else {
-                $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_controller.gif' . '"/>';
-            }
+            $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_controller.svg' . '"/>';
             $url = new moodle_url('/pluginfile.php/'.$tree->context->id.'/user/private'.$file->get_filepath().$file->get_filename());
         } else { // an non-state, non-recording, non-controller file
             $image = $OUTPUT->pix_icon(file_file_icon($file), $filename, 'moodle', array('class'=>'icon'));
