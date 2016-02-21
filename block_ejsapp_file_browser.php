@@ -102,13 +102,13 @@ class block_ejsapp_file_browser extends block_base {
                     $this->content->text .= html_writer::start_tag('fieldset') . html_writer::tag('legend', get_string('capture_legend', 'block_ejsapp_file_browser'), array('class' => 'recording')) .
                         html_writer::div(html_writer::tag('button', get_string('show_capture_options', 'block_ejsapp_file_browser'), array('id' => 'show')) . html_writer::tag('button', get_string('hide_capture_options', 'block_ejsapp_file_browser'), array('id' => 'hide')), 'optionsBut') .
                         html_writer::end_tag('fieldset');
-                    $content1 = html_writer::start_tag('input', array('type' => 'submit', 'name' => 'startCapture', 'value' => get_string('start_capture', 'block_ejsapp_file_browser'))) .
-                        html_writer::start_tag('input', array('type' => 'submit', 'name' => 'stopCapture', 'value' => get_string('stop_capture', 'block_ejsapp_file_browser'))) .
-                        html_writer::start_tag('input', array('type' => 'submit', 'name' => 'resetCapture', 'value' => get_string('reset_capture', 'block_ejsapp_file_browser')));
+                    $content1 = html_writer::start_tag('input', array('type' => 'submit', 'name' => 'startCapture', 'id' => 'startCaptureBut', 'value' => get_string('start_capture', 'block_ejsapp_file_browser'))) .
+                        html_writer::start_tag('input', array('type' => 'submit', 'name' => 'stopCapture', 'id' => 'stopCaptureBut', 'value' => get_string('stop_capture', 'block_ejsapp_file_browser'))) .
+                        html_writer::start_tag('input', array('type' => 'submit', 'name' => 'resetCapture', 'id' => 'resetCaptureBut', 'value' => get_string('reset_capture', 'block_ejsapp_file_browser')));
                     $content = html_writer::div($content1, 'recordCapture');
-                    $content2 = html_writer::start_tag('input', array('type' => 'submit', 'name' => 'playCapture', 'value' => get_string('play_capture', 'block_ejsapp_file_browser'))) .
+                    $content2 = html_writer::start_tag('input', array('type' => 'submit', 'name' => 'playCapture', 'id' => 'playCaptureBut', 'value' => get_string('play_capture', 'block_ejsapp_file_browser'))) .
                         html_writer::label(get_string('change_speed', 'block_ejsapp_file_browser'), 'stepCapture', true, array('class' => 'velocity')) .
-                        html_writer::start_tag('input', array('type' => 'range', 'class' => 'stepCapture', 'name' => 'stepCapture', 'value' => '0', 'step' => '0.5', 'min' => '-5', 'max' => '5'));
+                        html_writer::start_tag('input', array('type' => 'range', 'class' => 'stepCapture', 'name' => 'stepCapture', 'id' => 'stepCaptureBut', 'value' => '0', 'step' => '0.5', 'min' => '-5', 'max' => '5'));
                     $content .= html_writer::div($content2, 'playCapture');
                     $content = html_writer::div($content, 'captureInteraction', array('id' => 'captureInteraction', 'style' => 'display:none'));
                     $this->content->text .= $content;
