@@ -108,7 +108,7 @@ class block_ejsapp_file_browser extends block_base {
                     $content = html_writer::div($content1, 'recordCapture');
                     $content2 = html_writer::start_tag('input', array('type' => 'submit', 'name' => 'playCapture', 'id' => 'playCaptureBut', 'value' => get_string('play_capture', 'block_ejsapp_file_browser'))) .
                         html_writer::label(get_string('change_speed', 'block_ejsapp_file_browser'), 'stepCapture', true, array('class' => 'velocity')) .
-                        html_writer::start_tag('input', array('type' => 'range', 'class' => 'stepCapture', 'name' => 'stepCapture', 'id' => 'stepCaptureBut', 'value' => '0', 'step' => '0.5', 'min' => '-5', 'max' => '5'));
+                        html_writer::start_tag('input', array('type' => 'range', 'class' => 'stepCapture', 'name' => 'stepCapture', 'id' => 'stepCaptureBut', 'value' => '0', 'step' => '0.5', 'min' => '-4', 'max' => '4'));
                     $content .= html_writer::div($content2, 'playCapture');
                     $content = html_writer::div($content, 'captureInteraction', array('id' => 'captureInteraction', 'style' => 'display:none'));
                     $this->content->text .= $content;

@@ -65,7 +65,7 @@ define(['jquery', 'jqueryui'], function($) {
             });
 
             $("#playCaptureBut").click(function(){
-                $("#startCaptureBut").prop('disabled', false);
+                $("#startCaptureBut").prop('disabled', true);
                 $("#stopCaptureBut").prop('disabled', true);
                 $("#resetCaptureBut").prop('disabled', true);
                 $("#playCaptureBut").prop('disabled', true);
