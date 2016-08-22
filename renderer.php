@@ -58,7 +58,7 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
         $url = $CFG->wwwroot . '/blocks/ejsapp_file_browser/refresh_tree.php';
         $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_reload', array($url, $htmlid));
         if (substr_count($PAGE->url,'/mod/ejsapp/view.php')>0) {
-            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_auto_refresh', array($url, $htmlid, get_config('ejsapp_file_browser', 'Auto_refresh')));
+            $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_auto_refresh', array($url, $htmlid, get_config('block_ejsapp_file_browser', 'Auto_refresh')));
         }
         $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $htmlid));
         $html = '<div id="'.$htmlid.'">';
