@@ -30,7 +30,7 @@
 
 define(['jquery', 'jqueryui'], function($) {
     var t = {
-        init : function() {
+        init : function(reproducing) {
             $("#hide").click(function(){
                 $("#captureInteraction").hide();
             });
@@ -40,8 +40,13 @@ define(['jquery', 'jqueryui'], function($) {
             });
 
             $("#stopCaptureBut").prop('disabled', true);
-            $("#resetCaptureBut").prop('disabled', true);
-            $("#stepCaptureBut").prop('disabled', true);
+            if (!reproducing) {
+                $("#resetCaptureBut").prop('disabled', true);
+                $("#stepCaptureBut").prop('disabled', true);
+            } else {
+                $("#startCaptureBut").prop('disabled', true);
+                $("#playCaptureBut").prop('disabled', true);
+            }
 
             $("#startCaptureBut").click(function(){
                 $("#startCaptureBut").prop('disabled', true);

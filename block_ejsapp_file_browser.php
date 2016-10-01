@@ -98,7 +98,11 @@ class block_ejsapp_file_browser extends block_base {
                 $manage_files_button = $OUTPUT->single_button(new moodle_url('/user/files.php', array('returnurl'=>$PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
                 $this->content->text .= $manage_files_button;
                 if (strpos($PAGE->url, 'mod/ejsapp/view.php') !== false) { //inside an ejsapp activity
-                    $this->page->requires->js_call_amd('block_ejsapp_file_browser/buttons_states', 'init', array());
+                    $param_init_buttons_states = array(false);
+                    if (isset($_GET['rec_file'])) {
+                        $param_init_buttons_states = array(true);
+                    }
+                    $this->page->requires->js_call_amd('block_ejsapp_file_browser/buttons_states', 'init', $param_init_buttons_states);
                     $this->content->text .= html_writer::start_tag('fieldset') . html_writer::tag('legend', get_string('capture_legend', 'block_ejsapp_file_browser'), array('class' => 'recording')) .
                         html_writer::div(html_writer::tag('button', get_string('show_capture_options', 'block_ejsapp_file_browser'), array('id' => 'show')) . html_writer::tag('button', get_string('hide_capture_options', 'block_ejsapp_file_browser'), array('id' => 'hide')), 'optionsBut') .
                         html_writer::end_tag('fieldset');
