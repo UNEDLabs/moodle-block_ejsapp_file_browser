@@ -37,6 +37,8 @@ $string['pluginname'] = 'Navegador EJSApp de "archivos privados"';
 $string['privatefiles'] = 'Archivos privados';
 
 $string['capture_legend'] = 'Grabaci&oacute;n';
+$string['show_capture_options'] = 'Mostrar';
+$string['hide_capture_options'] = 'Ocultar';
 $string['start_capture'] = 'Comenzar';
 $string['stop_capture'] = 'Parar';
 $string['reset_capture'] = 'Resetear';

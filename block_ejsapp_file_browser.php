@@ -109,7 +109,8 @@ class block_ejsapp_file_browser extends block_list {
             $renderer = $this->page->get_renderer('block_ejsapp_file_browser');
             $this->content->items[1] = $renderer->ejsapp_file_browser_tree();
             if (has_capability('moodle/user:manageownfiles', $this->context)) {
-                $this->content->items[2] = $OUTPUT->single_button(new moodle_url('/user/files.php', array('returnurl'=>$PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
+                $content = $OUTPUT->single_button(new moodle_url('/user/files.php', array('returnurl'=>$PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
+                $this->content->items[2] =  html_writer::div($content, 'managefiles');
                 if (strpos($PAGE->url, 'mod/ejsapp/view.php') !== false) { //inside an ejsapp activity
                     $param_init_buttons_states = array(false);
                     if (isset($_GET['rec_file'])) {
@@ -117,13 +118,13 @@ class block_ejsapp_file_browser extends block_list {
                     }
                     $this->page->requires->js_call_amd('block_ejsapp_file_browser/buttons_states', 'init', $param_init_buttons_states);
                     $this->content->footer = html_writer::start_tag('fieldset') . html_writer::tag('legend', get_string('capture_legend', 'block_ejsapp_file_browser'), array('class' => 'recording')) .
-                        html_writer::div(html_writer::tag('button', get_string('show_capture_options', 'block_ejsapp_file_browser'), array('id' => 'show')) . html_writer::tag('button', get_string('hide_capture_options', 'block_ejsapp_file_browser'), array('id' => 'hide')), 'optionsBut') .
+                        html_writer::div(html_writer::tag('button', get_string('show_capture_options', 'block_ejsapp_file_browser'), array('class' =>'recording_button', 'id' => 'show')) . html_writer::tag('button', get_string('hide_capture_options', 'block_ejsapp_file_browser'), array('class' =>'recording_button', 'id' => 'hide')), 'optionsBut') .
                         html_writer::end_tag('fieldset');
-                    $content1 = html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'startCapture', 'id' => 'startCaptureBut', 'value' => get_string('start_capture', 'block_ejsapp_file_browser'))) .
-                        html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'stopCapture', 'id' => 'stopCaptureBut', 'value' => get_string('stop_capture', 'block_ejsapp_file_browser'))) .
-                        html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'resetCapture', 'id' => 'resetCaptureBut', 'value' => get_string('reset_capture', 'block_ejsapp_file_browser')));
+                    $content1 = html_writer::empty_tag('input', array('class' =>'recording_button', 'type' => 'submit', 'name' => 'startCapture', 'id' => 'startCaptureBut', 'value' => get_string('start_capture', 'block_ejsapp_file_browser'))) .
+                        html_writer::empty_tag('input', array('class' =>'recording_button', 'type' => 'submit', 'name' => 'stopCapture', 'id' => 'stopCaptureBut', 'value' => get_string('stop_capture', 'block_ejsapp_file_browser'))) .
+                        html_writer::empty_tag('input', array('class' =>'recording_button', 'type' => 'submit', 'name' => 'resetCapture', 'id' => 'resetCaptureBut', 'value' => get_string('reset_capture', 'block_ejsapp_file_browser')));
                     $content = html_writer::div($content1, 'recordCapture');
-                    $content2 = html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'playCapture', 'id' => 'playCaptureBut', 'value' => get_string('play_capture', 'block_ejsapp_file_browser'))) .
+                    $content2 = html_writer::empty_tag('input', array('class' =>'recording_button', 'type' => 'submit', 'name' => 'playCapture', 'id' => 'playCaptureBut', 'value' => get_string('play_capture', 'block_ejsapp_file_browser'))) .
                         html_writer::label(get_string('change_speed', 'block_ejsapp_file_browser'), 'stepCapture', true, array('class' => 'velocity')) .
                         html_writer::empty_tag('input', array('type' => 'range', 'class' => 'stepCapture', 'name' => 'stepCapture', 'id' => 'stepCaptureBut', 'value' => '0', 'step' => '0.5', 'min' => '-4', 'max' => '4'));
                     $content .= html_writer::div($content2, 'playCapture');

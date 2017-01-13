@@ -4,33 +4,51 @@
     width: 100%;
 }
 
-.block_ejsapp_file_browser .singlebutton, .captureInteraction, .optionsBut{
+.block_ejsapp_file_browser .recording_button {
+    border-radius: 5px;
+    background-color: transparent;
+    padding: 5px;
+    box-shadow: none;
+    border: 1px solid lightgrey;
+    margin-right: 2px;
+}
+
+.block_ejsapp_file_browser .recording_button:hover {
+    background-color: rgba(24, 24, 24, 0.1);
+}
+
+.block_ejsapp_file_browser .managefiles, .captureInteraction, .optionsBut {
     text-align: center;
+    margin: auto;
 }
 
-.block_ejsapp_file_browser .recordCapture{
-    margin-top:5px;
+.block_ejsapp_file_browser .managefiles {
+    margin-top: 2px;
 }
 
-.block_ejsapp_file_browser .playCapture{
-    margin-top:3px;
+.block_ejsapp_file_browser .recordCapture {
+    margin-top: 5px;
 }
 
-.block_ejsapp_file_browser .velocity{
-    margin-left:5px;
+.block_ejsapp_file_browser .playCapture {
+    margin-top: 3px;
+}
+
+.block_ejsapp_file_browser .velocity {
+    margin-left: 5px;
 }
 
 .block_ejsapp_file_browser .stepCapture {
     -webkit-appearance: none !important;
-    background:dodgerblue;
-    margin-left:2px;
-    height:7px;
-    width:45%;
+    background: dodgerblue;
+    margin-left: 2px;
+    height: 7px;
+    width: 45%;
 }
 
 .block_ejsapp_file_browser .stepCapture::-webkit-slider-thumb {
     -webkit-appearance: none !important;
-    background:black;
-    height:10px;
-    width:10px;
+    background: black;
+    height: 10px;
+    width: 10px;
 }
