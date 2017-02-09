@@ -4,26 +4,25 @@
     width: 100%;
 }
 
-.block_ejsapp_file_browser .recording_button {
+.block_ejsapp_file_browser .show_button, .hide_button {
     border-radius: 5px;
     background-color: transparent;
     padding: 5px;
     box-shadow: none;
     border: 1px solid lightgrey;
-    margin-right: 2px;
 }
 
-.block_ejsapp_file_browser .recording_button:hover {
+.block_ejsapp_file_browser .show_button:hover, .hide_button:hover {
     background-color: rgba(24, 24, 24, 0.1);
-}
-
-.block_ejsapp_file_browser .managefiles, .captureInteraction, .optionsBut {
-    text-align: center;
-    margin: auto;
 }
 
 .block_ejsapp_file_browser .managefiles {
     margin-top: 2px;
+}
+
+.block_ejsapp_file_browser .managefiles, .captureInteraction, .optionsBut, .blocklyControl {
+    text-align: center;
+    margin: auto;
 }
 
 .block_ejsapp_file_browser .recordCapture {

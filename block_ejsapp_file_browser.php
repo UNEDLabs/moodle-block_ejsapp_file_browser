@@ -88,7 +88,7 @@ class block_ejsapp_file_browser extends block_list {
     */
     function get_content()
     {
-        global $CFG, $PAGE, $OUTPUT;
+        global $CFG, $PAGE, $OUTPUT, $DB;
 
         if ($this->content !== NULL) {
             return $this->content;
@@ -104,7 +104,6 @@ class block_ejsapp_file_browser extends block_list {
         $this->content->footer = '';
         
         if (isloggedin() && !isguestuser()) { // Show the block
-            $this->content = new stdClass();
             $this->content->items[0] = html_writer::tag('input', '', array('type'=>'image', 'id'=>'refreshEJSAppFBBut', 'src'=>$CFG->wwwroot.'/blocks/ejsapp_file_browser/pix/refresh.png', 'width'=>'25', 'height'=>'25'));
             $renderer = $this->page->get_renderer('block_ejsapp_file_browser');
             $this->content->items[1] = $renderer->ejsapp_file_browser_tree();
@@ -117,8 +116,38 @@ class block_ejsapp_file_browser extends block_list {
                         $param_init_buttons_states = array(true);
                     }
                     $this->page->requires->js_call_amd('block_ejsapp_file_browser/buttons_states', 'init', $param_init_buttons_states);
-                    $this->content->footer = html_writer::start_tag('fieldset') . html_writer::tag('legend', get_string('capture_legend', 'block_ejsapp_file_browser'), array('class' => 'recording')) .
-                        html_writer::div(html_writer::tag('button', get_string('show_capture_options', 'block_ejsapp_file_browser'), array('class' =>'recording_button', 'id' => 'show')) . html_writer::tag('button', get_string('hide_capture_options', 'block_ejsapp_file_browser'), array('class' =>'recording_button', 'id' => 'hide')), 'optionsBut') .
+                    // <Blockly buttons>
+                    $id = optional_param('id', null, PARAM_TEXT);
+                    $n = optional_param('n', null, PARAM_INT);
+                    $applet = 1;
+                    $blockly_conf = false;
+                    if ($id) {
+                        $cm = get_coursemodule_from_id('ejsapp', $id, 0, false, MUST_EXIST);
+                        $applet = $DB->get_field('ejsapp', 'applet', array('id' => $cm->instance));
+                        $blockly_conf = $DB->get_field('ejsapp', 'blockly_conf', array('id' => $cm->instance));
+                    } elseif (isset($n)) {
+                        $applet = $DB->get_field('ejsapp', 'applet', array('id' => $n));
+                        $blockly_conf = $DB->get_field('ejsapp', 'blockly_conf', array('id' => $n));
+                    }
+                    if ($blockly_conf != false && $applet == 0) {
+                        $blockly_conf = json_decode($blockly_conf);
+                        if ($blockly_conf[0] == 1) {
+                            // Show buttons
+                            $this->content->footer = html_writer::start_tag('fieldset') . html_writer::tag('legend', get_string('blockly_legend', 'block_ejsapp_file_browser'), array('class' => 'legend')) .
+                                html_writer::div(html_writer::tag('button', get_string('show_blockly_options', 'block_ejsapp_file_browser'), array('class' =>'show_button', 'id' => 'show_blockly')) . html_writer::tag('button', get_string('hide_blockly_options', 'block_ejsapp_file_browser'), array('class' =>'hide_button', 'id' => 'hide_blockly')), 'optionsBut') .
+                                html_writer::end_tag('fieldset');
+                            $content1 = html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'runCode', 'id' => 'runCodeBut', 'value' => get_string('run_code', 'block_ejsapp_file_browser'), 'onclick'=> 'playCode()'));
+                            $content = html_writer::div($content1, 'runCode');
+                            $content2 = html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'saveCode', 'id' => 'saveCodeBut', 'value' => get_string('save_code', 'block_ejsapp_file_browser'), 'onclick'=> 'saveCode()')) .
+                                html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'loadCode', 'id' => 'loadCodeBut', 'value' => get_string('load_code', 'block_ejsapp_file_browser'), 'onclick'=> 'loadCode()'));
+                            $content .= html_writer::div($content2, 'saveLoadCode');
+                            $this->content->footer .= html_writer::div($content, 'blocklyControl', array('id' => 'blocklyControl', 'style' => 'display:none'));
+                        }
+                    }
+                    // </Blockly buttons>
+                    // <Recording interaction buttons>
+                    $this->content->footer .= html_writer::start_tag('fieldset') . html_writer::tag('legend', get_string('capture_legend', 'block_ejsapp_file_browser'), array('class' => 'legend')) .
+                        html_writer::div(html_writer::tag('button', get_string('show_capture_options', 'block_ejsapp_file_browser'), array('class' =>'show_button', 'id' => 'show_interaction')) . html_writer::tag('button', get_string('hide_capture_options', 'block_ejsapp_file_browser'), array('class' =>'hide_button', 'id' => 'hide_interaction')), 'optionsBut') .
                         html_writer::end_tag('fieldset');
                     $content1 = html_writer::empty_tag('input', array('class' =>'recording_button', 'type' => 'submit', 'name' => 'startCapture', 'id' => 'startCaptureBut', 'value' => get_string('start_capture', 'block_ejsapp_file_browser'))) .
                         html_writer::empty_tag('input', array('class' =>'recording_button', 'type' => 'submit', 'name' => 'stopCapture', 'id' => 'stopCaptureBut', 'value' => get_string('stop_capture', 'block_ejsapp_file_browser'))) .
@@ -128,8 +157,8 @@ class block_ejsapp_file_browser extends block_list {
                         html_writer::label(get_string('change_speed', 'block_ejsapp_file_browser'), 'stepCapture', true, array('class' => 'velocity')) .
                         html_writer::empty_tag('input', array('type' => 'range', 'class' => 'stepCapture', 'name' => 'stepCapture', 'id' => 'stepCaptureBut', 'value' => '0', 'step' => '0.5', 'min' => '-4', 'max' => '4'));
                     $content .= html_writer::div($content2, 'playCapture');
-                    $content = html_writer::div($content, 'captureInteraction', array('id' => 'captureInteraction', 'style' => 'display:none'));
-                    $this->content->footer .= $content;
+                    $this->content->footer .=  html_writer::div($content, 'captureInteraction', array('id' => 'captureInteraction', 'style' => 'display:none'));
+                    // </Recording interaction buttons>
                 }
             }
         }

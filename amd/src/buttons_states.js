@@ -31,11 +31,19 @@
 define(['jquery', 'jqueryui'], function($) {
     var t = {
         init : function(reproducing) {
-            $("#hide").click(function(){
+            $("#hide_blockly").click(function(){
+                $("#blocklyControl").hide();
+            });
+
+            $("#show_blockly").click(function(){
+                $("#blocklyControl").show();
+            });
+
+            $("#hide_interaction").click(function(){
                 $("#captureInteraction").hide();
             });
 
-            $("#show").click(function(){
+            $("#show_interaction").click(function(){
                 $("#captureInteraction").show();
             });
 

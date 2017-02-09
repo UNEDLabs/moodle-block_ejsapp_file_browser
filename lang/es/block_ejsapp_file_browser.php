@@ -36,6 +36,13 @@ $string['managemyfiles'] = 'Gestionar archivos';
 $string['pluginname'] = 'Navegador EJSApp de "archivos privados"';
 $string['privatefiles'] = 'Archivos privados';
 
+$string['blockly_legend'] = 'Blockly';
+$string['show_blockly_options'] = 'Mostrar';
+$string['hide_blockly_options'] = 'Ocultar';
+$string['run_code'] = 'Ejecutar código';
+$string['save_code'] = 'Grabar código';
+$string['load_code'] = 'Cargar código';
+
 $string['capture_legend'] = 'Grabaci&oacute;n';
 $string['show_capture_options'] = 'Mostrar';
 $string['hide_capture_options'] = 'Ocultar';

@@ -35,6 +35,13 @@ $string['managemyfiles'] = 'Manage my files';
 $string['pluginname'] = 'EJSApp "private files" browser';
 $string['privatefiles'] = 'Private files';
 
+$string['blockly_legend'] = 'Blockly';
+$string['show_blockly_options'] = 'Show options';
+$string['hide_blockly_options'] = 'Hide options';
+$string['run_code'] = 'Run code';
+$string['save_code'] = 'Save code';
+$string['load_code'] = 'Load code';
+
 $string['capture_legend'] = 'Recording';
 $string['show_capture_options'] = 'Show options';
 $string['hide_capture_options'] = 'Hide options';
