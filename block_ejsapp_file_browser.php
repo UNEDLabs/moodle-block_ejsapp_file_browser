@@ -88,7 +88,7 @@ class block_ejsapp_file_browser extends block_list {
     */
     function get_content()
     {
-        global $CFG, $PAGE, $OUTPUT, $DB;
+        global $CFG, $PAGE, $OUTPUT, $DB, $USER;
 
         if ($this->content !== NULL) {
             return $this->content;
@@ -123,11 +123,13 @@ class block_ejsapp_file_browser extends block_list {
                     $blockly_conf = false;
                     if ($id) {
                         $cm = get_coursemodule_from_id('ejsapp', $id, 0, false, MUST_EXIST);
-                        $applet = $DB->get_field('ejsapp', 'applet', array('id' => $cm->instance));
-                        $blockly_conf = $DB->get_field('ejsapp', 'blockly_conf', array('id' => $cm->instance));
+                        $ejsapp_id = $cm->instance;
+                        $applet = $DB->get_field('ejsapp', 'applet', array('id' => $ejsapp_id));
+                        $blockly_conf = $DB->get_field('ejsapp', 'blockly_conf', array('id' => $ejsapp_id));
                     } elseif (isset($n)) {
-                        $applet = $DB->get_field('ejsapp', 'applet', array('id' => $n));
-                        $blockly_conf = $DB->get_field('ejsapp', 'blockly_conf', array('id' => $n));
+                        $ejsapp_id = $n;
+                        $applet = $DB->get_field('ejsapp', 'applet', array('id' => $ejsapp_id));
+                        $blockly_conf = $DB->get_field('ejsapp', 'blockly_conf', array('id' => $ejsapp_id));
                     }
                     if ($blockly_conf != false && $applet == 0) {
                         $blockly_conf = json_decode($blockly_conf);
@@ -138,7 +140,9 @@ class block_ejsapp_file_browser extends block_list {
                                 html_writer::end_tag('fieldset');
                             $content1 = html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'runCode', 'id' => 'runCodeBut', 'value' => get_string('run_code', 'block_ejsapp_file_browser'), 'onclick'=> 'playCode()'));
                             $content = html_writer::div($content1, 'runCode');
-                            $content2 = html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'saveCode', 'id' => 'saveCodeBut', 'value' => get_string('save_code', 'block_ejsapp_file_browser'), 'onclick'=> 'saveCode()')) .
+                            $context = context_user::instance($USER->id);
+                            $saveCodeParams =  $context->id . ',' . $USER->id . ',' . $ejsapp_id;
+                            $content2 = html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'saveCode', 'id' => 'saveCodeBut', 'value' => get_string('save_code', 'block_ejsapp_file_browser'), 'onclick'=> 'saveCode(' . $saveCodeParams . ')')) .
                                 html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'loadCode', 'id' => 'loadCodeBut', 'value' => get_string('load_code', 'block_ejsapp_file_browser'), 'onclick'=> 'loadCode()'));
                             $content .= html_writer::div($content2, 'saveLoadCode');
                             $this->content->footer .= html_writer::div($content, 'blocklyControl', array('id' => 'blocklyControl', 'style' => 'display:none'));

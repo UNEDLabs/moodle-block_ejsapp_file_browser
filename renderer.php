@@ -126,7 +126,7 @@ function htmllize_tree($tree, $dir) {
             if ($file_extension != 'cnt') preg_match('/ejsappid=(\d+)/', $file_record->source, $source);
         }
 
-        if (!empty($source) && ($file_extension == 'xml' || $file_extension == 'json' || $file_extension == 'exp' || $file_extension == 'rec')) { // an ejs state or experiment file
+        if (!empty($source) && ($file_extension == 'xml' || $file_extension == 'json' || $file_extension == 'exp' || $file_extension == 'rec' || $file_extension == 'blk')) { // an ejs state , experiment, recording or blockly file
             $ejsapp_id = $source[1];
             $ejsapp_record = $DB->get_record('ejsapp', array('id' => $ejsapp_id));
             if ($ejsapp_record) {
@@ -134,13 +134,17 @@ function htmllize_tree($tree, $dir) {
                     $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_state.svg' . '"/>';
                     $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&state_file=" . $file_record->contextid . "/mod_ejsapp/"
                         . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
-                } else if ($file_extension == 'exp') {
-                    $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_experiment.svg' . '"/>';
-                    $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&exp_file=" . $file_record->contextid . "/mod_ejsapp/"
-                        . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
                 } else if ($file_extension == 'rec') {
                     $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_recording.svg' . '"/>';
                     $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&rec_file=" . $file_record->contextid . "/mod_ejsapp/"
+                        . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
+                } else if ($file_extension == 'blk') {
+                    $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_blockly.svg' . '"/>';
+                    $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&blk_file=" . $file_record->contextid . "/mod_ejsapp/"
+                        . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
+                } else if ($file_extension == 'exp') {
+                    $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_experiment.svg' . '"/>';
+                    $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsapp_id . "&exp_file=" . $file_record->contextid . "/mod_ejsapp/"
                         . $file_record->filearea . "/" . $file_record->itemid . "/" . $file_record->filename;
                 }
             }
