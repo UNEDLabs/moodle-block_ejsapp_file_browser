@@ -124,14 +124,12 @@ class block_ejsapp_file_browser extends block_list {
                     if ($id) {
                         $cm = get_coursemodule_from_id('ejsapp', $id, 0, false, MUST_EXIST);
                         $ejsapp_id = $cm->instance;
-                        $applet = $DB->get_field('ejsapp', 'applet', array('id' => $ejsapp_id));
                         $blockly_conf = $DB->get_field('ejsapp', 'blockly_conf', array('id' => $ejsapp_id));
                     } elseif (isset($n)) {
                         $ejsapp_id = $n;
-                        $applet = $DB->get_field('ejsapp', 'applet', array('id' => $ejsapp_id));
                         $blockly_conf = $DB->get_field('ejsapp', 'blockly_conf', array('id' => $ejsapp_id));
                     }
-                    if ($blockly_conf != false && $applet == 0) {
+                    if ($blockly_conf != false) {
                         $blockly_conf = json_decode($blockly_conf);
                         if ($blockly_conf[0] == 1) {
                             // Show buttons
