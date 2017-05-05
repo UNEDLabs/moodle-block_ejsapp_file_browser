@@ -119,7 +119,6 @@ class block_ejsapp_file_browser extends block_list {
                     // <Blockly buttons>
                     $id = optional_param('id', null, PARAM_TEXT);
                     $n = optional_param('n', null, PARAM_INT);
-                    $applet = 1;
                     $blockly_conf = false;
                     if ($id) {
                         $cm = get_coursemodule_from_id('ejsapp', $id, 0, false, MUST_EXIST);
@@ -139,8 +138,7 @@ class block_ejsapp_file_browser extends block_list {
                             $content1 = html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'runCode', 'id' => 'runCodeBut', 'value' => get_string('run_code', 'block_ejsapp_file_browser'), 'onclick'=> 'playCode()'));
                             $content = html_writer::div($content1, 'runCode');
                             $context = context_user::instance($USER->id);
-                            $saveCodeParams =  $context->id . ',' . $USER->id . ',' . $ejsapp_id;
-                            $content2 = html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'saveCode', 'id' => 'saveCodeBut', 'value' => get_string('save_code', 'block_ejsapp_file_browser'), 'onclick'=> 'saveCode(' . $saveCodeParams . ')')) .
+                            $content2 = html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'saveCode', 'id' => 'saveCodeBut', 'value' => get_string('save_code', 'block_ejsapp_file_browser'), 'onclick'=> 'saveCode()')) .
                                 html_writer::empty_tag('input', array('class' =>'blockly_button', 'type' => 'submit', 'name' => 'loadCode', 'id' => 'loadCodeBut', 'value' => get_string('load_code', 'block_ejsapp_file_browser'), 'onclick'=> 'loadCode()'));
                             $content .= html_writer::div($content2, 'saveLoadCode');
                             $this->content->footer .= html_writer::div($content, 'blocklyControl', array('id' => 'blocklyControl', 'style' => 'display:none'));

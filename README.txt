@@ -1,6 +1,6 @@
-###########################
-# EJSApp File Browser 1.3 #
-###########################
+#######################
+# EJSApp File Browser #
+#######################
 
 https://zenodo.org/badge/latestdoi/18948/UNEDLabs/moodle-block_ejsapp_file_browser
 DOI: 10.5281/zenodo.33842
@@ -37,8 +37,6 @@ downloaded it from Moodle.org, then you are fine.
 
 This is a block plugin for Moodle so you should place the ejsapp_file_browser folder in your /blocks folder, inside your
 Moodle installation directory.
-
-This block has been tested in Moodle 2.7, 2.8 and 2.9.
 
 4. Dependencies
 ===============
