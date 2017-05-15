@@ -11,25 +11,24 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// The GNU General Public License is available on <http://www.gnu.org/licenses/>
+// You should have received a copy of the GNU General Public License
+// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 //
 // EJSApp File Browser has been developed by:
-//  - Luis de la Torre: ldelatorre@dia.uned.es
-//	- Ruben Heradio: rheradio@issi.uned.es
+// - Luis de la Torre: ldelatorre@dia.uned.es
+// - Ruben Heradio: rheradio@issi.uned.es
 //
-//  at the Computer Science and Automatic Control, Spanish Open University
-//  (UNED), Madrid, Spain
-
+// at the Computer Science and Automatic Control, Spanish Open University
+// (UNED), Madrid, Spain.
 
 /**
  * English labels for the ejsapp_file_browser block
- *    
- * @package    block
- * @subpackage ejsapp_file_browser
+ *
+ * @package    block_ejsapp_file_browser
  * @copyright  2012 Luis de la Torre and Ruben Heradio
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
- 
+
 $string['title_of_the_block'] = 'EJSApp File Browser';
 $string['managemyfiles'] = 'Manage my files';
 $string['pluginname'] = 'EJSApp "private files" browser';
@@ -51,11 +50,11 @@ $string['reset_capture'] = 'Reset';
 $string['play_capture'] = 'Load';
 $string['change_speed'] = 'Velocity:';
 
-// settings.php:
+// Strings in settings.php.
 $string['auto_refresh_header_config'] = 'Configure the block\'s auto-refresh property';
 $string['auto_refresh'] = 'Auto-refresh frequency';
 $string['auto_refresh_description'] = 'Time in miliseconds. Write "0" to disable auto-refresh.';
 
-//Capabilities
+// Strings for capabilities.
 $string['ejsapp_file_browser:addinstance'] = 'Add a new private files block for EJSApp';
 $string['ejsapp_file_browser:myaddinstance'] = 'Add a new private files block for EJSApp to My home';
