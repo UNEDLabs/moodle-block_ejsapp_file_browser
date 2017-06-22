@@ -125,7 +125,7 @@ class block_ejsapp_file_browser extends block_list {
                     $n = optional_param('n', null, PARAM_INT);
                     $blocklyconf = false;
                     if ($id) {
-                        $cm = get_coursemodule_from_id('ejsapp', $id, 0, false, MUST_EXIST);
+                        $cm = get_coursemodule_from_id('ejsapp', $id, 0, false, IGNORE_MISSING);
                         $ejsappid = $cm->instance;
                         $blocklyconf = $DB->get_field('ejsapp', 'blockly_conf', array('id' => $ejsappid));
                     } else if (isset($n)) {
