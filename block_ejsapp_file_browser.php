@@ -113,6 +113,11 @@ class block_ejsapp_file_browser extends block_list {
                 $content = $OUTPUT->single_button(new moodle_url('/user/files.php',
                     array('returnurl' => $PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
                 $this->content->items[2] = html_writer::div($content, 'managefiles');
+                //COLOCAR BOTON COMPARTIR FICHEROS
+                $content = $OUTPUT->single_button(new moodle_url('/blocks/ejsapp_file_browser/share_files.php',
+                    array('courseid' => $PAGE->course->id, 'contextid' => $PAGE->context->id)), get_string('sharefiles', 'block_ejsapp_file_browser'), 'get');
+                $this->content->items[3] = html_writer::div($content, 'managefiles');
+                // Fin Boton Compartir
                 if (strpos($PAGE->url, 'mod/ejsapp/view.php') !== false) { // Inside an ejsapp activity.
                     $butstates = array(false);
                     if (isset($_GET['rec_file'])) {
@@ -203,6 +208,7 @@ class block_ejsapp_file_browser extends block_list {
                             array('type' => 'range', 'class' => 'stepCapture', 'name' => 'stepCapture', 'id' => 'stepCaptureBut',
                                 'value' => '0', 'step' => '0.5', 'min' => '-4', 'max' => '4'));
                     $content .= html_writer::div($content2, 'playCapture');
+                    $content3 = html_writer::div($content3, 'recordCapture');
                     $this->content->footer .= html_writer::div($content, 'captureInteraction',
                         array('id' => 'captureInteraction', 'style' => 'display:none'));
                     // End of buttons for recording the user interaction.
