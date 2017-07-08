@@ -1,7 +1,7 @@
 ## Contributing
 We always welcome any type of code contribution. If you are interested in helping with the development, here you can find some brief indications about how to do it.
 
-[Fork] (https://help.github.com/articles/fork-a-repo/), then clone the repo:
+[Fork](https://help.github.com/articles/fork-a-repo/), then clone the repo:
 
 ```
 git clone git@github.com:your-username/moodle-block_ejsapp_file_browser.git
