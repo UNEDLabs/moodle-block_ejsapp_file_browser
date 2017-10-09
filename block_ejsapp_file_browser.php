@@ -88,7 +88,7 @@ class block_ejsapp_file_browser extends block_list {
      * @return null|stdClass|stdObject The content of the block
      */
     public function get_content() {
-        global $CFG, $PAGE, $OUTPUT, $DB;
+        global $CFG, $PAGE, $OUTPUT, $DB,$USER;
 
         if ($this->content !== null) {
             return $this->content;
@@ -113,11 +113,40 @@ class block_ejsapp_file_browser extends block_list {
                 $content = $OUTPUT->single_button(new moodle_url('/user/files.php',
                     array('returnurl' => $PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
                 $this->content->items[2] = html_writer::div($content, 'managefiles');
-                //COLOCAR BOTON COMPARTIR FICHEROS
-                $content = $OUTPUT->single_button(new moodle_url('/blocks/ejsapp_file_browser/share_files.php',
-                    array('courseid' => $PAGE->course->id, 'contextid' => $PAGE->context->id)), get_string('sharefiles', 'block_ejsapp_file_browser'), 'get');
-                $this->content->items[3] = html_writer::div($content, 'managefiles');
-                // Fin Boton Compartir
+
+                //Colocar enlace compartir Ficheros
+                $contexto=context_course::instance($PAGE->course->id);
+                $urlnew = new moodle_url('/blocks/ejsapp_file_browser/share_files.php',
+                    array('blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contexto->id, 'sesskey' => sesskey()));
+                $this->content->items[6] = html_writer::link($urlnew,
+                    '<img src="http://localhost/blocks/ejsapp_file_browser/pix/files.gif" alt="files">'.'&nbsp;'.get_string('sharefiles', 'block_ejsapp_file_browser'));
+                //Fin enlace compartir ficheros
+
+                //Colocar enlace mis archivos compartidos
+				 //consulta si el ultimo acceso del usuario es anterior a la fecha en que le compartieron el archivo
+
+				$rec_user= $DB->get_record('user', array('id'=>$USER->id)); //obtiene el registro del usuario para conocer el ultimo acceso
+
+				$sql='Select COUNT(id) from {block_ejsapp_shared_files} where sharedwithuserid= ? and timemodified >= ?';
+
+				$lastfileshared= $DB->count_records_sql($sql, array($USER->id,$rec_user->lastlogin));
+
+
+				//$contexto=context_course::instance($PAGE->course->id);
+                $urlnew = new moodle_url('/blocks/ejsapp_file_browser/myshare_files.php',
+                    array('blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contexto->id, 'sesskey' => sesskey()));
+
+
+				if ($lastfileshared > 0){
+
+				//if ($nuevo){
+				  $this->content->items[7] = html_writer::link($urlnew,
+                    '<img src="http://localhost/blocks/ejsapp_file_browser/pix/files.gif" alt="files">'.'&nbsp;'.get_string('mysharefiles','block_ejsapp_file_browser').'&nbsp;'.'<img src="http://localhost/blocks/ejsapp_file_browser/pix/new.gif" alt="Nuevo">');
+
+				}else
+					$this->content->items[7] = html_writer::link($urlnew, '<img src="http://localhost/blocks/ejsapp_file_browser/pix/files.gif" alt="files">'.'&nbsp;'.get_string('mysharefiles', 'block_ejsapp_file_browser'));
+                //        enlace mis archivos
+
                 if (strpos($PAGE->url, 'mod/ejsapp/view.php') !== false) { // Inside an ejsapp activity.
                     $butstates = array(false);
                     if (isset($_GET['rec_file'])) {

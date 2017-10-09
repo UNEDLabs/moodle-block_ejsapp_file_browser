@@ -25,8 +25,8 @@
 /**
  * Page for setting the users' booking permissions for the different remote labs
  *
- * @package    mod_ejsappbooking
- * @copyright  2012 Francisco José Calvillo Muñoz, Luis de la Torre and Ruben Heradio
+ * @package    block_ejsapp_file_browser
+ * @copyright  2017 Arnoldo Fernandez y María Masanet
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -37,16 +37,19 @@ global $CFG, $PAGE, $DB, $OUTPUT, $USER;
 require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->libdir.'/filelib.php');
 require_once($CFG->dirroot . '/filter/multilang/filter.php');
+require_once($CFG->dirroot.'/blocks/ejsapp_file_browser/renderer.php');
 
+/*
 define('USER_SMALL_CLASS', 20);   // Below this is considered small.
 define('USER_LARGE_CLASS', 200);  // Above this is considered large.
-define('DEFAULT_PAGE_SIZE', 20);
+
 define('SHOW_ALL_PAGE_SIZE', 5000);
+*/
 
+define('DEFAULT_PAGE_SIZE', 20);
 $courseid = required_param('courseid', PARAM_INT);
-$contextmodid = required_param('contextid', PARAM_INT);
+$contextid = required_param('contextid', PARAM_INT);
 
-$labid = optional_param('labid', 0, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);                       // Which page to show.
 $perpage = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT); // How many per page.
 $accesssince = optional_param('accesssince', 0, PARAM_INT);         // Filter by last access. -1 = never.
@@ -58,51 +61,56 @@ $PAGE->set_context(context_course::instance($courseid));
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
 require_login();
-$contextmod = context::instance_by_id($contextmodid);
+//$contextmod = context::instance_by_id($contextmodid);
 $context = context_course::instance($courseid);
 
-$title = get_string('share_files_pageTitle', 'block_ejsapp_file_browser');
-$PAGE->set_context($contextmod);
+$title = get_string('share_files', 'block_ejsapp_file_browser');
+//$PAGE->set_context($contextmod);
+//cambiado
+$PAGE->set_context($context);
+$courseurl=new moodle_url("$CFG->wwwroot/course/view.php?id=$courseid");
+$PAGE->navbar->add('<a href="'.$courseurl.'">'. $course->shortname.'</a>');
+
+$PAGE->navbar->add($title);
+
+
+
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
-
-// Check whether there is at least one remote laboratory in the course.
-$remlabs = $DB->get_records('ejsapp', array('course' => $courseid, 'is_rem_lab' => '1'));
-$i = 1;
-$multilang = new filter_multilang($context, array('filter_multilang_force_old' => 0));
-foreach ($remlabs as $remlab) {
-    $labname[$remlab->id] = $multilang->filter($remlab->name);
-    if ($i == 1 && $labid == 0) {
-        $labid = $remlab->id;
-    }
-    $i++;
-}
-
 $PAGE->set_url('/block/block_ejsapp_file_browser/share_files.php', array('courseid' => $courseid, 'contextid' => $context->id));
 
-$systemcontext = context_system::instance();
-$isfrontpage = ($course->id == SITEID);
+//$systemcontext = context_system::instance();
+//$isfrontpage = ($course->id == SITEID);
 
-$frontpagectx = context_course::instance(SITEID);
-
+//$frontpagectx = context_course::instance(SITEID);
+/*
 if ($isfrontpage) {
     $PAGE->set_pagelayout('admin');
 } else {
     $PAGE->set_pagelayout('incourse');
 }
-
+*/
+$PAGE->set_pagelayout('incourse');
+/*
 $rolenamesurl = new moodle_url("$CFG->wwwroot/blocks/ejsapp_file_browser/share_files.php?courseid=$courseid
 &contextid=$contextmodid&labid=$labid&sifirst=&silast=");
+*/
+
+$rolenamesurl = new moodle_url("$CFG->wwwroot/blocks/ejsapp_file_browser/share_files.php?courseid=$courseid
+&contextid=$contextid&sifirst=&silast=");
 
 $allroles = get_all_roles();
 $roles = get_profile_roles($context);
 $allrolenames = array();
+/*
 if ($isfrontpage) {
     $rolenames = array(0 => get_string('allsiteusers', 'role'));
 } else {
     $rolenames = array(0 => get_string('allparticipants'));
 }
+*/
 
+$rolenames = array(0 => get_string('allparticipants'));
 foreach ($allroles as $role) {
     $allrolenames[$role->id] = strip_tags(role_get_name($role, $context));   // Used in menus etc later on.
     if (isset($roles[$role->id])) {
@@ -117,7 +125,9 @@ if (empty($rolenames[$roleid])) {
 
 // No roles to display yet?
 // ...frontpage course is an exception, on the front page course we should display all users.
-if (empty($rolenames) && !$isfrontpage) {
+//if (empty($rolenames) && !$isfrontpage) {
+
+if (empty($rolenames))  {
     if (has_capability('moodle/role:assign', $context)) {
         redirect($CFG->wwwroot.'/'.$CFG->admin.'/roles/assign.php?contextid='.$context->id);
     } else {
@@ -160,9 +170,6 @@ if ($course->id === SITEID) {
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('users_selection', 'block_ejsapp_file_browser'));
 
-//Pruebas ficheros
-
-//$this->content->items[1] = $renderer->ejsapp_file_browser_tree();
 
 /**
  *
@@ -171,6 +178,7 @@ echo $OUTPUT->heading(get_string('users_selection', 'block_ejsapp_file_browser')
  * @param int $accesssince
  * @return string
  */
+
 function get_course_lastaccess_sql($accesssince='') {
     if (empty($accesssince)) {
         return '';
@@ -190,6 +198,7 @@ function get_course_lastaccess_sql($accesssince='') {
  * @return string
  *
  */
+
 function get_user_lastaccess_sql($accesssince='') {
     if (empty($accesssince)) {
         return '';
@@ -201,7 +210,6 @@ function get_user_lastaccess_sql($accesssince='') {
     }
 }
 
-if ($i > 1) { // If there is at least one remote lab.
     echo '<div class="userlist">';
 
     if ($isseparategroups and (!$currentgroup) ) {
@@ -214,7 +222,8 @@ if ($i > 1) { // If there is at least one remote lab.
     // Should use this variable so that we don't break stuff every time a variable is added or changed.
     $baseurl = new moodle_url('/blocks/ejsapp_file_browser/share_files.php', array(
           'courseid' => $courseid,
-          'contextid' => $contextmodid,
+//          'contextid' => $contextmodid,
+			'contextid' => $contextid,
           'roleid' => $roleid,
           'perpage' => $perpage,
           'accesssince' => $accesssince,
@@ -255,6 +264,7 @@ if ($i > 1) { // If there is at least one remote lab.
     if (!isset($hiddenfields['lastaccess'])) {
         // Get minimum lastaccess for this course and display a dropbox to filter by lastaccess going back this far.
         // We need to make it diferently for normal courses and site course.
+		/*
         if (!$isfrontpage) {
             $minlastaccess = $DB->get_field_sql('SELECT min(timeaccess)
                                              FROM {user_lastaccess}
@@ -262,53 +272,16 @@ if ($i > 1) { // If there is at least one remote lab.
                                              AND timeaccess != 0', array($course->id));
             $lastaccess0exists = $DB->record_exists('user_lastaccess', array('courseid' => $course->id, 'timeaccess' => 0));
         } else {
+			*/
             $minlastaccess = $DB->get_field_sql('SELECT min(lastaccess)
                                              FROM {user}
                                              WHERE lastaccess != 0');
             $lastaccess0exists = $DB->record_exists('user', array('lastaccess' => 0));
-        }
+     //   }
 
         $now = usergetmidnight(time());
         $timeaccess = array();
         $baseurl->remove_params('accesssince');
-        $baseurl->remove_params('labid');
-        $baseurl->param('labid', $labid);
-
-        $timeoptions[0] = get_string('selectperiod');
-
-        // Days.
-        for ($i = 1; $i < 7; $i++) {
-            if (strtotime('-'.$i.' days', $now) >= $minlastaccess) {
-                $timeoptions[strtotime('-' . $i . ' days', $now)] = get_string('numdays', 'moodle', $i);
-            }
-        }
-        // Weeks.
-        for ($i = 1; $i < 10; $i++) {
-            if (strtotime('-'.$i.' weeks', $now) >= $minlastaccess) {
-                $timeoptions[strtotime('-' . $i . ' weeks', $now)] = get_string('numweeks', 'moodle', $i);
-            }
-        }
-        // Months.
-        for ($i = 2; $i < 12; $i++) {
-            if (strtotime('-'.$i.' months', $now) >= $minlastaccess) {
-                $timeoptions[strtotime('-' . $i . ' months', $now)] = get_string('nummonths', 'moodle', $i);
-            }
-        }
-
-        // Try a year.
-        if (strtotime('-1 year', $now) >= $minlastaccess) {
-            $timeoptions[strtotime('-1 year', $now)] = get_string('lastyear');
-        }
-
-        if (!empty($lastaccess0exists)) {
-            $timeoptions[-1] = get_string('never');
-        }
-
-        if (count($timeoptions) > 1) {
-            $select = new single_select($baseurl, 'accesssince', $timeoptions, $accesssince, null, 'timeoptions');
-            $select->set_label(get_string('usersnoaccesssince'));
-            $controlstable->data[0]->cells[] = $OUTPUT->render($select);
-        }
     } // End of: if (!isset($hiddenfields['lastaccess'])).
 
     if ($currentgroup and (!$isseparategroups or has_capability('moodle/site:accessallgroups', $context))) {
@@ -373,6 +346,7 @@ if ($i > 1) { // If there is at least one remote lab.
     if (!isset($hiddenfields['lastaccess'])) {
         $table->sortable(true, 'lastaccess', SORT_DESC);
     }
+    //$table->sortable(true, 'fullname', SORT_DESC);
 
     $table->no_sorting('roles');
     $table->no_sorting('groups');
@@ -402,7 +376,7 @@ if ($i > 1) { // If there is at least one remote lab.
     $joins = array("FROM {user} u");
     $wheres = array();
 
-    if ($isfrontpage) {
+   /* if ($isfrontpage) {
         $select = "SELECT u.id, u.username, u.firstname, u.lastname,
                         u.email, u.city, u.country, u.picture,
                         u.lang, u.timezone, u.maildisplay, u.imagealt,
@@ -411,7 +385,7 @@ if ($i > 1) { // If there is at least one remote lab.
         if ($accesssince) {
             $wheres[] = get_user_lastaccess_sql($accesssince);
         }
-    } else {
+    } else {*/
         $select = "SELECT u.id, u.username, u.firstname, u.lastname,
                         u.email, u.city, u.country, u.picture,
                         u.lang, u.timezone, u.maildisplay, u.imagealt,
@@ -423,7 +397,7 @@ if ($i > 1) { // If there is at least one remote lab.
         if ($accesssince) {
             $wheres[] = get_course_lastaccess_sql($accesssince);
         }
-    }
+   // }
 
     $joinon = 'u.id';
     $contextlevel = CONTEXT_USER;
@@ -513,67 +487,28 @@ if ($i > 1) { // If there is at least one remote lab.
 //);
 
 
-    // Select files pulldown menu
-    $files = array('value1' => 'Option 1', 'value2' => 'Option 2', 'value3' => 'Option 3', 'value4' => 'Option 4');
-    echo html_writer::select($files, 'choice', '', array('' => 'choosedots'), array('multiple' => true));
-
-    if ($roleid > 0) {
-        $a = new stdClass();
-        $a->number = $totalcount;
-        $a->role = $rolenames[$roleid];
-        $heading = format_string(get_string('xuserswiththerole', 'role', $a));
-
-        if ($currentgroup and $group) {
-            $a->group = $group->name;
-            $heading .= ' ' . format_string(get_string('ingroup', 'role', $a));
-        }
-
-        if ($accesssince) {
-            $a->timeperiod = $timeoptions[$accesssince];
-            $heading .= ' ' . format_string(get_string('inactiveformorethan', 'role', $a));
-        }
-
-        $heading .= ": $a->number";
-        if (user_can_assign($context, $roleid)) {
-            $heading .= ' <a href="' . $CFG->wwwroot . '/'.$CFG->admin . '/roles/assign.php?roleid=' . $roleid .
-                '&amp;contextid=' . $context->id . '">';
-            $heading .= '<img src="' . $OUTPUT->pix_url('i/edit') . '" class="icon" alt="" /></a>';
-        }
-        echo $OUTPUT->heading($heading, 3);
-    } else {
-        if ($course->id != SITEID && has_capability('moodle/course:enrolreview', $context)) {
-            $editlink = $OUTPUT->action_icon(new moodle_url('/enrol/users.php', array('id' => $course->id)),
-                new pix_icon('i/edit', get_string('edit')));
-        } else {
-            $editlink = '';
-        }
-        if ($course->id == SITEID and $roleid < 0) {
-            $strallparticipants = get_string('allsiteusers', 'role');
-        } else {
-            $strallparticipants = get_string('allparticipants');
-        }
-        if ($matchcount < $totalcount) {
-            echo $OUTPUT->heading($strallparticipants . get_string('labelsep', 'langconfig') .
-                $matchcount . '/' . $totalcount . $editlink, 3);
-        } else {
-            echo $OUTPUT->heading($strallparticipants . get_string('labelsep', 'langconfig') .
-                $matchcount . $editlink, 3);
-        }
-    }
-
-    $ejsappbooking = $DB->get_record('ejsappbooking', array('course' => $courseid));
-    echo "<form action=\"send_messages.php?courseid=$courseid&labid=$labid&bookingid=$ejsappbooking->id\" 
+    echo "<form action=\"shared_files_usr.php?courseid=$courseid&contextid=$context->id\"
 method=\"post\" id=\"participantsform\">" . '<div>';
     echo '<input type="hidden" name="sesskey" value="' . sesskey() . '" />
     <input type="hidden" name="returnto" value="' . s(me()) . '" />';
 
+// Select files pulldown menu - Seleccionar archivo
+    echo 'Seleccione los archivos para compartir&nbsp;&nbsp;&nbsp;';
+    $tree=new ejsapp_file_browser_tree();
+	$files = array();
+    foreach ($tree->dir['files'] as $file){
+		$files[$file->get_filename()]=$file->get_filename();
+
+    }
+    echo html_writer::select($files, 'files_selected[]', '', array('' => 'choosedots'), array('multiple' => true));
+echo '<br/>';
     $countrysort = (strpos($sort, 'country') !== false);
     $timeformat = get_string('strftimedate');
 
     if ($userlist) {
         $usersprinted = array();
         foreach ($userlist as $user) {
-            if (in_array($user->id, $usersprinted)) { // Prevent duplicates by r.hidden - MDL-13935.
+            if (in_array($user->id, $usersprinted) or ($user->id==$USER->id)) { // Prevent duplicates by r.hidden - MDL-13935.
                 continue;
             }
             $usersprinted[] = $user->id; // Add new user to the array of users printed.
@@ -653,6 +588,7 @@ method=\"post\" id=\"participantsform\">" . '<div>';
                 }
             }
 
+			/*
             $userpermission = $DB->get_field('ejsappbooking_usersaccess', 'allowremaccess',
                 array('ejsappid' => $labid, 'userid' => $user->id));
             if ($userpermission == 1) {
@@ -660,19 +596,23 @@ method=\"post\" id=\"participantsform\">" . '<div>';
             } else {
                 $data[] = '<input type="checkbox" class="usercheckbox" name="user' . $user->id . '" />';
             }
+			*/
+
+			$data[] = '<input type="checkbox" class="usercheckbox" name="user' . $user->id . '" />';
             $table->add_data($data);
             $usersids[] = $user->id;
         } // End of: foreach ($userlist as $user).
-        $_SESSION['encoded_listed_users'] = serialize($usersids);
+
     } // End if: if ($userlist).
 
     $table->finish_html();
 
+
     echo '<br /><div class="buttons">
     <input type="button" id="checkall" value="' . get_string('selectall') . '" />
     <input type="button" id="checknone" value="'. get_string('deselectall'). '" />
-    <input type="submit" id="set_permissions" value="' . get_string('save_changes', 'ejsappbooking') . '" /> </div></div> </form>';
-
+    <input type="submit" id="set_permissions" value="' . get_string('shared_file', 'block_ejsapp_file_browser') . '" /> </div></div> </form>';
+/*
     $module = array('name' => 'core_user', 'fullpath' => '/user/module.js');
     $PAGE->requires->js_init_call('M.core_user.init_participation', null, false, $module);
 
@@ -703,8 +643,5 @@ method=\"post\" id=\"participantsform\">" . '<div>';
     if ($userlist) {
         $userlist->close();
     }
-
+*/
     echo $OUTPUT->footer();
-} else { // If there are no remote labs.
-    echo  get_string('no_rem_labs', 'ejsappbooking');
-}
