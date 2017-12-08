@@ -60,13 +60,19 @@ $string['ejsapp_file_browser:addinstance'] = 'Añadir un nuevo bloque de fichero
 $string['ejsapp_file_browser:myaddinstance'] = 'Añadir un nuevo bloque de ficheros privados para EJSApp al &Aacute;rea personal';
 
 // Strings page title & title h2
-$string['share_files_pageTitle'] = 'Compartir Archivos:';
+$string['share_files_pageTitle'] = 'Compartir archivos:';
 $string['users_selection'] = 'Seleccione los usuarios con el que compartirá sus archivos:';
+$string['files_selection'] = 'Seleccione los archivos a compartir   ';
 $string['users_shared_files'] = 'Compartir con:';
 $string['shared_file'] = 'Compartir';
 $string['sharefiles'] = 'Compartir archivos';
-$string['mysharefiles'] = 'Mis Archivos Compartidos';
+$string['mysharefiles'] = 'Mis archivos compartidos';
 $string['share_files'] = 'Compartir';
-$string['shared_files'] = 'Archivos Compartidos';
-$string['users_shared'] = 'Usuarios y Archivos Compartidos';
+$string['shared_files'] = 'Archivos compartidos';
+$string['users_shared'] = 'Usuarios y archivos compartidos';
 $string['continue'] = 'Continuar';
+$string['you_share_file'] = 'Usted ha compartido el archivo';
+$string['you_share_files'] = 'Usted ha compartido los archivos';
+$string['with_participants'] = 'Con los participantes';
+//error
+$string['nonselectfiles'] = 'No hay archivos seleccionados  ';

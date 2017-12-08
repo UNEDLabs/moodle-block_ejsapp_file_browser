@@ -1,12 +1,12 @@
 <?php
-// This file is part of the Moodle module "EJSApp booking system"
+// This file is part of the Moodle block "EJSApp file browser system"
 //
-// EJSApp booking system is free software: you can redistribute it and/or modify
+// EJSApp file browser system is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// EJSApp booking system is distributed in the hope that it will be useful,
+// file browser system is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
@@ -14,16 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 //
-// EJSApp booking system has been developed by:
-// - Francisco José Calvillo Muñoz: ji92camuf@gmail.com
-// - Luis de la Torre: ldelatorre@dia.uned.es
-// - Ruben Heradio: rheradio@issi.uned.es
+// The function for shared files in the EJSApp  file browser system has been developed by:
+// - Arnoldo Fernandez: arnoldofernandez@gmail.com
+// - María Masanet: mimasanet@gmail.com
 //
-// at the Computer Science and Automatic Control, Spanish Open University
-// (UNED), Madrid, Spain.
+// at the University National of San Juan
+// (UNSJ), San Juan, Argentina.
 
 /**
- * Page for setting the users' booking permissions for the different remote labs
+ * Page for setting the users shared files with other users
  *
  * @package    block_ejsapp_file_browser
  * @copyright  2017 Arnoldo Fernandez y María Masanet
@@ -38,13 +37,6 @@ require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->libdir.'/filelib.php');
 require_once($CFG->dirroot . '/filter/multilang/filter.php');
 require_once($CFG->dirroot.'/blocks/ejsapp_file_browser/renderer.php');
-
-/*
-define('USER_SMALL_CLASS', 20);   // Below this is considered small.
-define('USER_LARGE_CLASS', 200);  // Above this is considered large.
-
-define('SHOW_ALL_PAGE_SIZE', 5000);
-*/
 
 define('DEFAULT_PAGE_SIZE', 20);
 $courseid = required_param('courseid', PARAM_INT);
@@ -61,14 +53,12 @@ $PAGE->set_context(context_course::instance($courseid));
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
 require_login();
-//$contextmod = context::instance_by_id($contextmodid);
+
 $context = context_course::instance($courseid);
 
 $title = get_string('mysharefiles', 'block_ejsapp_file_browser');
-//$PAGE->set_context($contextmod);
-//cambiado
-$PAGE->set_context($context);
 
+$PAGE->set_context($context);
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_url('/block/block_ejsapp_file_browser/share_files.php', array('courseid' => $courseid, 'contextid' => $context->id));
@@ -81,7 +71,6 @@ $PAGE->set_pagelayout('incourse');
 $rolenamesurl = new moodle_url("$CFG->wwwroot/blocks/ejsapp_file_browser/share_files.php?courseid=$courseid
 &contextid=$contextid&sifirst=&silast=");
 
-  //print_error('noparticipants');
 $countries = get_string_manager()->get_list_of_countries();
 
 $strnever = get_string('never');
@@ -117,67 +106,26 @@ if ($course->id === SITEID) {
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('users_shared', 'block_ejsapp_file_browser'));
 
+echo '<div class="userlist">';
 
-/**
- *
- * Returns the course last access
- *
- * @param int $accesssince
- * @return string
- */
-
-function get_course_lastaccess_sql($accesssince='') {
-    if (empty($accesssince)) {
-        return '';
-    }
-    if ($accesssince == -1) { // Never.
-        return 'ul.timeaccess = 0';
-    } else {
-        return 'ul.timeaccess != 0 AND ul.timeaccess < '.$accesssince;
-    }
-}
-
-/**
- *
- * Returns the user last access
- *
- * @param int $accesssince
- * @return string
- *
- */
-
-function get_user_lastaccess_sql($accesssince='') {
-    if (empty($accesssince)) {
-        return '';
-    }
-    if ($accesssince == -1) { // Never.
-        return 'u.lastaccess = 0';
-    } else {
-        return 'u.lastaccess != 0 AND u.lastaccess < '.$accesssince;
-    }
-}
-
-    echo '<div class="userlist">';
-
-    if ($isseparategroups and (!$currentgroup) ) {
+if ($isseparategroups and (!$currentgroup) ) {
         // The user is not in the group so show message and exit.
         echo $OUTPUT->heading(get_string("notingroup"));
         echo $OUTPUT->footer();
         exit;
-    }
+}
 
     // Should use this variable so that we don't break stuff every time a variable is added or changed.
-    $baseurl = new moodle_url('/blocks/ejsapp_file_browser/myshare_files.php', array(
+$baseurl = new moodle_url('/blocks/ejsapp_file_browser/myshare_files.php', array(
           'courseid' => $courseid,
-//          'contextid' => $contextmodid,
-			'contextid' => $contextid,
+ 		  'contextid' => $contextid,
           'roleid' => $roleid,
           'perpage' => $perpage,
           'accesssince' => $accesssince,
           'search' => s($search)));
 
     // Setting up tags.
-    if ($course->id == SITEID) {
+if ($course->id == SITEID) {
         $filtertype = 'site';
     } else if ($course->id && !$currentgroup) {
         $filtertype = 'course';
@@ -185,31 +133,28 @@ function get_user_lastaccess_sql($accesssince='') {
     } else {
         $filtertype = 'group';
         $filterselect = $currentgroup;
-    }
-
+}
 
     // Print settings and things in a table across the top.
-    $controlstable = new html_table();
-    $controlstable->attributes['class'] = 'controls';
-    $controlstable->data[] = new html_table_row();
+$controlstable = new html_table();
+$controlstable->attributes['class'] = 'controls';
+$controlstable->data[] = new html_table_row();
 
-  //  $controlstable->data[0]->cells[] = groups_print_course_menu($course, $baseurl->out(), true);
+if (!isset($hiddenfields['lastaccess'])) {
 
-    if (!isset($hiddenfields['lastaccess'])) {
-
-            $minlastaccess = $DB->get_field_sql('SELECT min(lastaccess)
+    $minlastaccess = $DB->get_field_sql('SELECT min(lastaccess)
                                              FROM {user}
                                              WHERE lastaccess != 0');
-            $lastaccess0exists = $DB->record_exists('user', array('lastaccess' => 0));
+    $lastaccess0exists = $DB->record_exists('user', array('lastaccess' => 0));
 
-        $now = usergetmidnight(time());
-        $timeaccess = array();
-        $baseurl->remove_params('accesssince');
-    } // End of: if (!isset($hiddenfields['lastaccess'])).
-
+    $now = usergetmidnight(time());
+    $timeaccess = array();
+    $baseurl->remove_params('accesssince');
+} // End of: if (!isset($hiddenfields['lastaccess'])).
+ 
     // Define a table showing a list of users in the current role selection.
     $tablecolumns = array( 'picture','user', 'file','date');
-    $tableheaders = array('',get_string('fullnameuser'),get_string('file'),  get_string('date'));
+    $tableheaders = array('',get_string('fullname'),get_string('file'),  get_string('date'));
 
     $table = new flexible_table('user-index-participants-' . $course->id);
 
@@ -220,8 +165,7 @@ function get_user_lastaccess_sql($accesssince='') {
     if (!isset($hiddenfields['lastaccess'])) {
         $table->sortable(true, 'date', SORT_DESC);
     }
-
-
+   
     $table->set_attribute('cellspacing', '0');
     $table->set_attribute('align', 'center');
     $table->set_attribute('id', 'participants');
@@ -238,10 +182,7 @@ function get_user_lastaccess_sql($accesssince='') {
     $table->setup();
 
     // We are looking for all users with this role assigned in this context or higher.
-    //$contextlist = $context->get_parent_context_ids(true);
-
-
-
+    
    $dbtable = 'block_ejsapp_shared_files'; ///name of table
    $conditions = array('sharedwithuserid'=>$USER->id); ///the name of the field (key) and the desired value
    $sort = 'timemodified'; //field or fields you want to sort the result by
@@ -259,23 +200,17 @@ function get_user_lastaccess_sql($accesssince='') {
     $table->initialbars(true);
     $table->pagesize($perpage, $matchcount);
 
-    // List of users at the current visible page - paging makes it relatively short.
-	$sqljoin= 'SELECT * FROM mdl_block_ejsapp_shared_files as sf inner join moodle.mdl_files as f on sf.fileid= f.id where sharedwithuserid=?';
-    //$datos = $DB->get_records_sql($sqljoin, array($USER->id), $table->get_page_start(), $table->get_page_size());
-      $datos = $DB->get_records_sql($sqljoin, array($USER->id));
-
+    $sqljoin= 'SELECT * FROM mdl_block_ejsapp_shared_files as sf inner join moodle.mdl_files as f on sf.fileid= f.id where f.userid=?';
+	
+    $records = $DB->get_records_sql($sqljoin, array($USER->id));
 
     echo "<form action=\"$courseurl\" method=\"post\" id=\"participantsform\">" . '<div>';
-
-
+   
     $timeformat = get_string('strftimedate');
-
-    if ($datos) {
-
-        foreach ($datos as $file) {
-
-			$user= $DB->get_record('user', array('id'=>$file->userid));
-
+	
+    if ($records) {
+        foreach ($records as $file) {
+			$user= $DB->get_record('user', array('id'=>$file->sharedwithuserid));
             $usercontext = context_user::instance($user->id);
 			if (!empty($user)){
 
@@ -285,7 +220,6 @@ function get_user_lastaccess_sql($accesssince='') {
             if (!isset($user->lastnamephonetic)) {
                 $user->lastnamephonetic = $user->lastname;
             }
-
 
             if ($piclink = ($USER->id == $user->id || has_capability('moodle/user:viewdetails', $context) ||
                 has_capability('moodle/user:viewdetails', $usercontext))) {
@@ -298,17 +232,18 @@ function get_user_lastaccess_sql($accesssince='') {
             $data = array ($OUTPUT->user_picture($user, array('size' => 35, 'courseid' => $course->id)), $profilelink);
 
 			}
-			//para que el nombre del archivo sea un link
-			$usercontext2 = context_user::instance($USER->id);
-			$url = new moodle_url('/pluginfile.php/' . $file->contextid . '/user/private'.$file->filepath . $file->filename);
+			//create link with file name
+			$usercontext2 = context_user::instance($file->userid);
+			$url = new moodle_url('/pluginfile.php/' . $usercontext2->id . '/user/private'.$file->filepath . $file->filename);	
+				
 			$data[]= '<a href="'.$url.'">'.$file->filename.'</a>';
-
+	
 			$data[] = date('d-m-Y',$file->timemodified);
             $table->add_data($data);
 
         } // End of: foreach ($userlist as $user).
 
-    } // End if: if ($datos).
+    } // End if: if ($records).
 
     $table->finish_html();
 

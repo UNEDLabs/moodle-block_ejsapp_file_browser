@@ -21,6 +21,11 @@
 // at the Computer Science and Automatic Control, Spanish Open University
 // (UNED), Madrid, Spain.
 
+// Modified by Arnoldo Fernandez y María Masanet at the University National of San Juan
+// (UNSJ), San Juan, Argentina, 2017.
+// Add functionality for setting the users shared files with other users
+
+
 /**
  * Manage user private area files with support for files generated in the EJSApp activity.
  *
@@ -114,38 +119,45 @@ class block_ejsapp_file_browser extends block_list {
                     array('returnurl' => $PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
                 $this->content->items[2] = html_writer::div($content, 'managefiles');
 
-                //Colocar enlace compartir Ficheros
-                $contexto=context_course::instance($PAGE->course->id);
+                // insert link share files
+                $contextcourse=context_course::instance($PAGE->course->id);
                 $urlnew = new moodle_url('/blocks/ejsapp_file_browser/share_files.php',
-                    array('blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contexto->id, 'sesskey' => sesskey()));
-                $this->content->items[6] = html_writer::link($urlnew,
-                    '<img src="http://localhost/blocks/ejsapp_file_browser/pix/files.gif" alt="files">'.'&nbsp;'.get_string('sharefiles', 'block_ejsapp_file_browser'));
-                //Fin enlace compartir ficheros
+                    array('blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contextcourse->id, 'sesskey' => sesskey()));
+                $this->content->items[6] = html_writer::link($urlnew,get_string('sharefiles', 'block_ejsapp_file_browser').' <img src="'.$CFG->wwwroot.'/blocks/ejsapp_file_browser/pix/to_share.png" alt="to_share" width="15" height="15">');
+                //End link share files
 
-                //Colocar enlace mis archivos compartidos
-				 //consulta si el ultimo acceso del usuario es anterior a la fecha en que le compartieron el archivo
+                // Insert link my shared files
 
-				$rec_user= $DB->get_record('user', array('id'=>$USER->id)); //obtiene el registro del usuario para conocer el ultimo acceso
+				//Check if the user's last access is prior to the date they shared the file
+				$rec_user= $DB->get_record('user', array('id'=>$USER->id)); //get the user´s record for view last access
 
-				$sql='Select COUNT(id) from {block_ejsapp_shared_files} where sharedwithuserid= ? and timemodified >= ?';
+				$sql='Select * from {files} f join {block_ejsapp_shared_files} sf on f.id = sf.fileid where f.userid= ? ';
+				$files= $DB->get_records_sql($sql, array($USER->id));
 
-				$lastfileshared= $DB->count_records_sql($sql, array($USER->id,$rec_user->lastlogin));
+				$strlink= get_string('mysharefiles', 'block_ejsapp_file_browser');
+				$urlnew = new moodle_url('/blocks/ejsapp_file_browser/myshare_files.php',
+                    array('blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contextcourse->id, 'sesskey' => sesskey()));
 
+				if (count($files)>0) {
 
-				//$contexto=context_course::instance($PAGE->course->id);
-                $urlnew = new moodle_url('/blocks/ejsapp_file_browser/myshare_files.php',
-                    array('blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contexto->id, 'sesskey' => sesskey()));
+					$sqlnew='Select * from {files} f join {block_ejsapp_shared_files} sf on f.id = sf.fileid where f.userid= ? and f.timecreated >= ?';
+				   $filesnew= $DB->get_records_sql($sqlnew, array($USER->id,$rec_user->lastlogin));
 
+				   if (count($filesnew)>0) {
 
-				if ($lastfileshared > 0){
+				   $strlink= $strlink.' <img src="'.$CFG->wwwroot.'/blocks/ejsapp_file_browser/pix/new_share_files.png" alt=" New" width="25" height="25">';
+					}else{
 
-				//if ($nuevo){
-				  $this->content->items[7] = html_writer::link($urlnew,
-                    '<img src="http://localhost/blocks/ejsapp_file_browser/pix/files.gif" alt="files">'.'&nbsp;'.get_string('mysharefiles','block_ejsapp_file_browser').'&nbsp;'.'<img src="http://localhost/blocks/ejsapp_file_browser/pix/new.gif" alt="Nuevo">');
+					$strlink= get_string('mysharefiles', 'block_ejsapp_file_browser').' <img src="'.$CFG->wwwroot.'/blocks/ejsapp_file_browser/pix/share_files.png" alt=" share_files" width="25" height="25">';
+									$urlnew = new moodle_url('/blocks/ejsapp_file_browser/myshare_files.php',
+                    array('blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contextcourse->id, 'sesskey' => sesskey()));
 
-				}else
-					$this->content->items[7] = html_writer::link($urlnew, '<img src="http://localhost/blocks/ejsapp_file_browser/pix/files.gif" alt="files">'.'&nbsp;'.get_string('mysharefiles', 'block_ejsapp_file_browser'));
-                //        enlace mis archivos
+					}
+
+					$this->content->items[7] = html_writer::link($urlnew,$strlink);
+
+				}
+                //  link my files
 
                 if (strpos($PAGE->url, 'mod/ejsapp/view.php') !== false) { // Inside an ejsapp activity.
                     $butstates = array(false);
@@ -244,7 +256,6 @@ class block_ejsapp_file_browser extends block_list {
                 }
             }
         }
-
         return $this->content;
     }
 
@@ -256,5 +267,4 @@ class block_ejsapp_file_browser extends block_list {
     public function has_config() {
         return true;
     }
-
 }

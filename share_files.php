@@ -1,33 +1,17 @@
 <?php
-// This file is part of the Moodle module "EJSApp booking system"
+// This file is part of the Moodle block "EJSApp file browser system"
+// The function for shared files in the EJSApp  file browser system has been developed by:
+// - Arnoldo Fernandez: arnoldofernandez@gmail.com
+// - María Masanet: mimasanet@gmail.com
 //
-// EJSApp booking system is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EJSApp booking system is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
-//
-// EJSApp booking system has been developed by:
-// - Francisco José Calvillo Muñoz: ji92camuf@gmail.com
-// - Luis de la Torre: ldelatorre@dia.uned.es
-// - Ruben Heradio: rheradio@issi.uned.es
-//
-// at the Computer Science and Automatic Control, Spanish Open University
-// (UNED), Madrid, Spain.
+// at the University National of San Juan
+// (UNSJ), San Juan, Argentina.
 
 /**
- * Page for setting the users' booking permissions for the different remote labs
+ * Page for setting the users shared files with other users
  *
  * @package    block_ejsapp_file_browser
  * @copyright  2017 Arnoldo Fernandez y María Masanet
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once('../../config.php');
@@ -38,13 +22,6 @@ require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->libdir.'/filelib.php');
 require_once($CFG->dirroot . '/filter/multilang/filter.php');
 require_once($CFG->dirroot.'/blocks/ejsapp_file_browser/renderer.php');
-
-/*
-define('USER_SMALL_CLASS', 20);   // Below this is considered small.
-define('USER_LARGE_CLASS', 200);  // Above this is considered large.
-
-define('SHOW_ALL_PAGE_SIZE', 5000);
-*/
 
 define('DEFAULT_PAGE_SIZE', 20);
 $courseid = required_param('courseid', PARAM_INT);
@@ -61,40 +38,21 @@ $PAGE->set_context(context_course::instance($courseid));
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
 require_login();
-//$contextmod = context::instance_by_id($contextmodid);
+
 $context = context_course::instance($courseid);
 
 $title = get_string('share_files', 'block_ejsapp_file_browser');
-//$PAGE->set_context($contextmod);
-//cambiado
+
 $PAGE->set_context($context);
-$courseurl=new moodle_url("$CFG->wwwroot/course/view.php?id=$courseid");
-$PAGE->navbar->add('<a href="'.$courseurl.'">'. $course->shortname.'</a>');
-
-$PAGE->navbar->add($title);
-
-
-
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_url('/block/block_ejsapp_file_browser/share_files.php', array('courseid' => $courseid, 'contextid' => $context->id));
 
-//$systemcontext = context_system::instance();
-//$isfrontpage = ($course->id == SITEID);
+$courseurl = new moodle_url("$CFG->wwwroot/course/view.php?id=$courseid");
 
-//$frontpagectx = context_course::instance(SITEID);
-/*
-if ($isfrontpage) {
-    $PAGE->set_pagelayout('admin');
-} else {
-    $PAGE->set_pagelayout('incourse');
-}
-*/
+$PAGE->navbar->add('<a href="'.$courseurl.'">'.$course->shortname.'</a>');
+$PAGE->navbar->add($title);
 $PAGE->set_pagelayout('incourse');
-/*
-$rolenamesurl = new moodle_url("$CFG->wwwroot/blocks/ejsapp_file_browser/share_files.php?courseid=$courseid
-&contextid=$contextmodid&labid=$labid&sifirst=&silast=");
-*/
 
 $rolenamesurl = new moodle_url("$CFG->wwwroot/blocks/ejsapp_file_browser/share_files.php?courseid=$courseid
 &contextid=$contextid&sifirst=&silast=");
@@ -102,15 +60,8 @@ $rolenamesurl = new moodle_url("$CFG->wwwroot/blocks/ejsapp_file_browser/share_f
 $allroles = get_all_roles();
 $roles = get_profile_roles($context);
 $allrolenames = array();
-/*
-if ($isfrontpage) {
-    $rolenames = array(0 => get_string('allsiteusers', 'role'));
-} else {
-    $rolenames = array(0 => get_string('allparticipants'));
-}
-*/
-
 $rolenames = array(0 => get_string('allparticipants'));
+
 foreach ($allroles as $role) {
     $allrolenames[$role->id] = strip_tags(role_get_name($role, $context));   // Used in menus etc later on.
     if (isset($roles[$role->id])) {
@@ -124,9 +75,6 @@ if (empty($rolenames[$roleid])) {
 }
 
 // No roles to display yet?
-// ...frontpage course is an exception, on the front page course we should display all users.
-//if (empty($rolenames) && !$isfrontpage) {
-
 if (empty($rolenames))  {
     if (has_capability('moodle/role:assign', $context)) {
         redirect($CFG->wwwroot.'/'.$CFG->admin.'/roles/assign.php?contextid='.$context->id);
@@ -190,40 +138,19 @@ function get_course_lastaccess_sql($accesssince='') {
     }
 }
 
-/**
- *
- * Returns the user last access
- *
- * @param int $accesssince
- * @return string
- *
- */
+ echo '<div class="userlist">';
 
-function get_user_lastaccess_sql($accesssince='') {
-    if (empty($accesssince)) {
-        return '';
-    }
-    if ($accesssince == -1) { // Never.
-        return 'u.lastaccess = 0';
-    } else {
-        return 'u.lastaccess != 0 AND u.lastaccess < '.$accesssince;
-    }
-}
-
-    echo '<div class="userlist">';
-
-    if ($isseparategroups and (!$currentgroup) ) {
+ if ($isseparategroups and (!$currentgroup) ) {
         // The user is not in the group so show message and exit.
-        echo $OUTPUT->heading(get_string("notingroup"));
-        echo $OUTPUT->footer();
-        exit;
-    }
+    echo $OUTPUT->heading(get_string("notingroup"));
+    echo $OUTPUT->footer();
+    exit;
+ }
 
     // Should use this variable so that we don't break stuff every time a variable is added or changed.
-    $baseurl = new moodle_url('/blocks/ejsapp_file_browser/share_files.php', array(
+  $baseurl = new moodle_url('/blocks/ejsapp_file_browser/share_files.php', array(
           'courseid' => $courseid,
-//          'contextid' => $contextmodid,
-			'contextid' => $contextid,
+   		  'contextid' => $contextid,
           'roleid' => $roleid,
           'perpage' => $perpage,
           'accesssince' => $accesssince,
@@ -256,28 +183,15 @@ function get_user_lastaccess_sql($accesssince='') {
     $controlstable = new html_table();
     $controlstable->attributes['class'] = 'controls';
     $controlstable->data[] = new html_table_row();
-
-
-
     $controlstable->data[0]->cells[] = groups_print_course_menu($course, $baseurl->out(), true);
 
     if (!isset($hiddenfields['lastaccess'])) {
         // Get minimum lastaccess for this course and display a dropbox to filter by lastaccess going back this far.
         // We need to make it diferently for normal courses and site course.
-		/*
-        if (!$isfrontpage) {
-            $minlastaccess = $DB->get_field_sql('SELECT min(timeaccess)
-                                             FROM {user_lastaccess}
-                                             WHERE courseid = ?
-                                             AND timeaccess != 0', array($course->id));
-            $lastaccess0exists = $DB->record_exists('user_lastaccess', array('courseid' => $course->id, 'timeaccess' => 0));
-        } else {
-			*/
-            $minlastaccess = $DB->get_field_sql('SELECT min(lastaccess)
+        $minlastaccess = $DB->get_field_sql('SELECT min(lastaccess)
                                              FROM {user}
                                              WHERE lastaccess != 0');
-            $lastaccess0exists = $DB->record_exists('user', array('lastaccess' => 0));
-     //   }
+        $lastaccess0exists = $DB->record_exists('user', array('lastaccess' => 0));
 
         $now = usergetmidnight(time());
         $timeaccess = array();
@@ -346,7 +260,6 @@ function get_user_lastaccess_sql($accesssince='') {
     if (!isset($hiddenfields['lastaccess'])) {
         $table->sortable(true, 'lastaccess', SORT_DESC);
     }
-    //$table->sortable(true, 'fullname', SORT_DESC);
 
     $table->no_sorting('roles');
     $table->no_sorting('groups');
@@ -376,29 +289,18 @@ function get_user_lastaccess_sql($accesssince='') {
     $joins = array("FROM {user} u");
     $wheres = array();
 
-   /* if ($isfrontpage) {
-        $select = "SELECT u.id, u.username, u.firstname, u.lastname,
-                        u.email, u.city, u.country, u.picture,
-                        u.lang, u.timezone, u.maildisplay, u.imagealt,
-                        u.lastaccess";
-        $joins[] = "JOIN ($esql) e ON e.id = u.id"; // Everybody on the frontpage usually.
-        if ($accesssince) {
-            $wheres[] = get_user_lastaccess_sql($accesssince);
-        }
-    } else {*/
-        $select = "SELECT u.id, u.username, u.firstname, u.lastname,
+    $select = "SELECT u.id, u.username, u.firstname, u.lastname,
                         u.email, u.city, u.country, u.picture,
                         u.lang, u.timezone, u.maildisplay, u.imagealt,
                         COALESCE(ul.timeaccess, 0) AS lastaccess";
-        $joins[] = "JOIN ($esql) e ON e.id = u.id"; // Course enrolled users only.
+    $joins[] = "JOIN ($esql) e ON e.id = u.id"; // Course enrolled users only.
         // Not everybody accessed course yet.
-        $joins[] = "LEFT JOIN {user_lastaccess} ul ON (ul.userid = u.id AND ul.courseid = :courseid)";
-        $params['courseid'] = $course->id;
-        if ($accesssince) {
+    $joins[] = "LEFT JOIN {user_lastaccess} ul ON (ul.userid = u.id AND ul.courseid = :courseid)";
+    $params['courseid'] = $course->id;
+    if ($accesssince) {
             $wheres[] = get_course_lastaccess_sql($accesssince);
         }
-   // }
-
+ 
     $joinon = 'u.id';
     $contextlevel = CONTEXT_USER;
     $tablealias = 'ctx';
@@ -474,34 +376,21 @@ function get_user_lastaccess_sql($accesssince='') {
         echo $rolename . '</div>';
     }
 
-    // Get user private files
-    //$files = $DB->get_records('mdl_files'); //userid
-
-
-    //$files = array(
-       // 'path' => array(array('name'=>'root', 'path=>'/'), array('name'=>'subdir', 'path=>'/sub/')),
-  //'files' => array(
-    //    array('filename'=>'readme', 'filepath'=>'/', 'filearea'=>'forum', 'itemid'=>110, 'contextid'=>1, 'isdir'=>true),
-      //  array('filename'=>'changes', 'filepath'=>'/', 'filearea'=>'forum', 'itemid'=>112, 'contextid'=>1, 'isdir'=>false),
-    //)
-//);
-
-
     echo "<form action=\"shared_files_usr.php?courseid=$courseid&contextid=$context->id\"
 method=\"post\" id=\"participantsform\">" . '<div>';
     echo '<input type="hidden" name="sesskey" value="' . sesskey() . '" />
     <input type="hidden" name="returnto" value="' . s(me()) . '" />';
 
-// Select files pulldown menu - Seleccionar archivo
-    echo 'Seleccione los archivos para compartir&nbsp;&nbsp;&nbsp;';
+// Select files pulldown menu
+    echo get_string('files_selection','block_ejsapp_file_browser');
     $tree=new ejsapp_file_browser_tree();
 	$files = array();
     foreach ($tree->dir['files'] as $file){
-		$files[$file->get_filename()]=$file->get_filename();
+		$files[$file->get_id()]=$file->get_filename();
 
     }
     echo html_writer::select($files, 'files_selected[]', '', array('' => 'choosedots'), array('multiple' => true));
-echo '<br/>';
+    echo '<br/><br/>';
     $countrysort = (strpos($sort, 'country') !== false);
     $timeformat = get_string('strftimedate');
 
@@ -565,39 +454,7 @@ echo '<br/>';
             if (!isset($hiddenfields['lastaccess'])) {
                 $data[] = $lastaccess;
             }
-
-            if (isset($userlistextra) && isset($userlistextra[$user->id])) {
-                $ras = $userlistextra[$user->id]['ra'];
-                $rastring = '';
-                foreach ($ras as $key => $ra) {
-                    $rolename = $allrolenames[$ra['roleid']];
-                    if ($ra['ctxlevel'] == CONTEXT_COURSECAT) {
-                        $rastring .= $rolename . ' @ ' . '<a href="' . $CFG->wwwroot . '/course/category.php?id=' .
-                            $ra['ctxinstanceid'] . '">' . s($ra['ccname']) . '</a>';
-                    } else if ($ra['ctxlevel'] == CONTEXT_SYSTEM) {
-                        $rastring .= $rolename . ' - ' . get_string('globalrole', 'role');
-                    } else {
-                        $rastring .= $rolename;
-                    }
-                }
-                $data[] = $rastring;
-                if ($groupmode != 0) {
-                    // Use htmlescape with s() and implode the array.
-                    $data[] = implode(', ', array_map('s', $userlistextra[$user->id]['group']));
-                    $data[] = implode(', ', array_map('s', $userlistextra[$user->id]['gping']));
-                }
-            }
-
-			/*
-            $userpermission = $DB->get_field('ejsappbooking_usersaccess', 'allowremaccess',
-                array('ejsappid' => $labid, 'userid' => $user->id));
-            if ($userpermission == 1) {
-                $data[] = '<input type="checkbox" checked="yes" class="usercheckbox" name="user' . $user->id . '" />';
-            } else {
-                $data[] = '<input type="checkbox" class="usercheckbox" name="user' . $user->id . '" />';
-            }
-			*/
-
+			
 			$data[] = '<input type="checkbox" class="usercheckbox" name="user' . $user->id . '" />';
             $table->add_data($data);
             $usersids[] = $user->id;
@@ -612,36 +469,5 @@ echo '<br/>';
     <input type="button" id="checkall" value="' . get_string('selectall') . '" />
     <input type="button" id="checknone" value="'. get_string('deselectall'). '" />
     <input type="submit" id="set_permissions" value="' . get_string('shared_file', 'block_ejsapp_file_browser') . '" /> </div></div> </form>';
-/*
-    $module = array('name' => 'core_user', 'fullpath' => '/user/module.js');
-    $PAGE->requires->js_init_call('M.core_user.init_participation', null, false, $module);
 
-    if (has_capability('moodle/site:viewparticipants', $context) && $totalcount > ($perpage * 3)) {
-        echo '<form action="set_permissions.php" class="searchform"><div><input type="hidden" ' .
-            '" /><input type="hidden" name="courseid" value="' . $courseid . '" /><input type="hidden" name="contextid" value="' .
-            $contextmodid . '" />'.get_string('search').':&nbsp;'."\n";
-        echo '<input type="text" name="search" value="' . s($search) . '" />&nbsp;<input type="submit" value="' .
-            get_string('search') . '" /></div></form>'."\n";
-    }
-
-    $perpageurl = clone($baseurl);
-    $perpageurl->remove_params('labid');
-    $perpageurl->param('labid', $labid);
-    $perpageurl->remove_params('perpage');
-    if ($perpage == SHOW_ALL_PAGE_SIZE) {
-        $perpageurl->param('perpage', DEFAULT_PAGE_SIZE);
-        echo $OUTPUT->container(html_writer::link($perpageurl, get_string('showperpage', '',
-            DEFAULT_PAGE_SIZE)), array(), 'showall');
-    } else if ($matchcount > 0 && $perpage < $matchcount) {
-        $perpageurl->param('perpage', SHOW_ALL_PAGE_SIZE);
-        echo $OUTPUT->container(html_writer::link($perpageurl, get_string('showall', '', $matchcount)),
-            array(), 'showall');
-    }
-
-    echo '</div>';
-
-    if ($userlist) {
-        $userlist->close();
-    }
-*/
     echo $OUTPUT->footer();
