@@ -64,14 +64,14 @@ function xmldb_block_ejsapp_file_browser_upgrade($oldversion) {
         // Adding keys to table block_ejsapp_shared_files.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->add_key('sharedwithuserid', XMLDB_KEY_FOREIGN, array('sharedwithuserid'), 'user', array('id'));
-        
+
         // Conditionally launch create table for block_ejsapp_shared_files.
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
 
         // Forum savepoint reached.
-      //  upgrade_mod_savepoint(true, 2017090400, 'ejsapp');
+        upgrade_block_savepoint(true, 2017090400, 'ejsapp_file_browser');
     }
 
     return true;
