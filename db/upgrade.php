@@ -50,7 +50,7 @@ function xmldb_block_ejsapp_file_browser_upgrade($oldversion) {
 
     $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
-      if ($oldversion < 2017090400) {
+      if ($oldversion < 2018022700) {
 
         // Define table block_ejsapp_shared_files to be created.
         $table = new xmldb_table('block_ejsapp_shared_files');
@@ -71,7 +71,7 @@ function xmldb_block_ejsapp_file_browser_upgrade($oldversion) {
         }
 
         // Forum savepoint reached.
-        upgrade_block_savepoint(true, 2017090400, 'ejsapp_file_browser');
+        upgrade_block_savepoint(true, 2018022700, 'ejsapp_file_browser');
     }
 
     return true;
