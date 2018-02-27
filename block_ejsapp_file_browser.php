@@ -24,7 +24,7 @@
 // Modified by Arnoldo Fernandez y María Masanet at the University National of San Juan
 // (UNSJ), San Juan, Argentina, 2017.
 // Add functionality for setting the users shared files with other users
- 
+
 
 /**
  * Manage user private area files with support for files generated in the EJSApp activity.
@@ -123,28 +123,29 @@ class block_ejsapp_file_browser extends block_list {
                 $contextcourse=context_course::instance($PAGE->course->id);
                 $urlnew = new moodle_url('/blocks/ejsapp_file_browser/share_files.php',
                     array('blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contextcourse->id, 'sesskey' => sesskey()));
-                $this->content->items[6] = html_writer::link($urlnew,get_string('sharefiles', 'block_ejsapp_file_browser'));
+                $this->content->items[6] = html_writer::link($urlnew,'<img src="'.$CFG->wwwroot.'/blocks/ejsapp_file_browser/pix/to_share.png" width="7%" height="7%" alt=" To Share">'.'&nbsp;'.get_string('sharefiles', 'block_ejsapp_file_browser'));
                 //End link share files
 
-                // Insert link my shared files				
-				
+                // Insert link my shared files
+
 				//Check if the user's last access is prior to the date they shared the file
 				$rec_user= $DB->get_record('user', array('id'=>$USER->id)); //get the user´s record for view last access
-				
+
 				$sql='Select * from {files} f join {block_ejsapp_shared_files} sf on f.id = sf.fileid where f.userid= ? ';
 				$files= $DB->get_records_sql($sql, array($USER->id));
-				
-				$strlink= get_string('mysharefiles', 'block_ejsapp_file_browser');
+
+				$strlink= '<img src="'.$CFG->wwwroot.'/blocks/ejsapp_file_browser/pix/share_files.png" width="10%" height="10%" alt=" Sharefiles">'.'&nbsp;'.get_string('mysharefiles', 'block_ejsapp_file_browser');
+
 				$urlnew = new moodle_url('/blocks/ejsapp_file_browser/myshare_files.php',
                     array('blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contextcourse->id, 'sesskey' => sesskey()));
-				
+
 				if (count($files)>0) {
-					
+
 					$sqlnew='Select * from {files} f join {block_ejsapp_shared_files} sf on f.id = sf.fileid where f.userid= ? and f.timecreated >= ?';
-				   $filesnew= $DB->get_records_sql($sqlnew, array($USER->id,$rec_user->lastlogin));				  
-				   
-				   if (count($filesnew)>0) $strlink= $strlink.' <img src="'.$CFG->wwwroot.'/blocks/ejsapp_file_browser/pix/new.gif" alt=" New">';	
-					$this->content->items[7] = html_writer::link($urlnew,$strlink);	
+				   $filesnew= $DB->get_records_sql($sqlnew, array($USER->id,$rec_user->lastlogin));
+
+				   if (count($filesnew)>0) $strlink= $strlink.' <img src="'.$CFG->wwwroot.'/blocks/ejsapp_file_browser/pix/new.gif" alt=" New">';
+					$this->content->items[7] = html_writer::link($urlnew,$strlink);
 				}
                 //  link my files
 
