@@ -239,7 +239,7 @@ class block_ejsapp_file_browser extends block_list {
                             array('type' => 'range', 'class' => 'stepCapture', 'name' => 'stepCapture', 'id' => 'stepCaptureBut',
                                 'value' => '0', 'step' => '0.5', 'min' => '-4', 'max' => '4'));
                     $content .= html_writer::div($content2, 'playCapture');
-                    $content3 = html_writer::div($content3, 'recordCapture');
+                   // $content3 = html_writer::div($content3, 'recordCapture');
                     $this->content->footer .= html_writer::div($content, 'captureInteraction',
                         array('id' => 'captureInteraction', 'style' => 'display:none'));
                     // End of buttons for recording the user interaction.

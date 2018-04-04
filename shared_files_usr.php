@@ -23,7 +23,7 @@ require_login();
 
 $courseid = required_param('courseid', PARAM_RAW);
 $contextid = required_param('contextid', PARAM_INT);
-$files_selected = optional_param('files_selected', '', PARAM_RAW);
+$files_selected = optional_param_array('files_selected',null, PARAM_RAW);
 
 $context = context_course::instance($courseid);
 
@@ -173,11 +173,9 @@ list($esql, $params) = get_enrolled_sql($context, null, $currentgroup, true);
 
 $joins = array("FROM {user} u");
 $wheres = array();
-$select = "SELECT u.id, u.username, u.firstname, u.lastname,
-                        u.email, u.city, u.country, u.picture,
-                        u.lang, u.timezone, u.maildisplay, u.imagealt";
+$select = "SELECT u.id,u.picture,u.firstname,u.lastname,u.firstnamephonetic,u.lastnamephonetic,u.middlename,u.alternatename,u.imagealt,		u.email, u.city, u.country, u.picture, u.lang, u.timezone, u.maildisplay";
 $joins[] = "JOIN ($esql) e ON e.id = u.id"; // Course enrolled users only.
-    
+
 $params['courseid'] = $courseid;
 
 $joinon = 'u.id';
@@ -202,40 +200,40 @@ $userlist = $DB->get_recordset_sql("$select $from $where", $params, $table->get_
 
 echo "<form action=\"$courseurl\" method=\"post\" id=\"sharedfiles\">" . '<div>';
 echo '<input type="hidden" name="sesskey" value="' . sesskey() . '" />     <input type="hidden" name="returnto" value="' . s(me()) . '" />';
-   
+
 	$countfiles=0;
 	$recordfiles= array();
 	$strlist ="";
 	//echo get_string('shared_files','block_ejsapp_file_browser').'<br/>';
-	
-    foreach ( $files_selected as  $file) {			
-		if (!empty($file)) {				
-			
+
+    foreach ( $files_selected as  $file) {
+		if (!empty($file)) {
+
 			$recordfile = $DB->get_record('files', array('id'=>$file));
 			$recordfiles[]= $recordfile;
-			
+
 			$strlist = $strlist. '<li>'.$recordfile->filename.'</li>';
 			$countfiles++;
-		}		
+		}
     }
 
-	if ($countfiles == 0) {		
-		echo '<h2>'.get_string('nonselectfiles','block_ejsapp_file_browser').' </h2>';		
+	if ($countfiles == 0) {
+		echo '<h2>'.get_string('nonselectfiles','block_ejsapp_file_browser').' </h2>';
 	}
 	else {
 		if ($countfiles == 1)
-			echo '<h2>'.get_string('you_share_file','block_ejsapp_file_browser').' </h2>';		
+			echo '<h2>'.get_string('you_share_file','block_ejsapp_file_browser').' </h2>';
 		else {
-			echo '<h2>'.get_string('you_share_files','block_ejsapp_file_browser').' </h2>';	
+			echo '<h2>'.get_string('you_share_files','block_ejsapp_file_browser').' </h2>';
       	}
 		echo '<ul>'.$strlist.'</ul>';
 	}
 
 // validate users of course and selected files
-    if (($userlist) and ($countfiles > 0) ) {	
-		
+    if (($userlist) and ($countfiles > 0) ) {
+
 		echo'<br/>';
-	    echo '<h2>'.get_string('with_participants','block_ejsapp_file_browser').' </h2>';	
+	    echo '<h2>'.get_string('with_participants','block_ejsapp_file_browser').' </h2>';
 
         $usersprinted = array();
         foreach ($userlist as $user) {
@@ -257,23 +255,23 @@ echo '<input type="hidden" name="sesskey" value="' . sesskey() . '" />     <inpu
             $data = array ($OUTPUT->user_picture($user, array('size' => 35, 'courseid' => $course->id)), $profilelink);
 
             $table->add_data($data);
-			
-			// save record in database 
+
+			// save record in database
 			foreach ($recordfiles as $file){
 
 				$fs = get_file_storage();
- 
+
 				// name of new file
 				$namefile= explode('.',$file->filename);
 				if ((!empty($namefile[0]) ) and (!empty($namefile[1])))
 					$newnamefile= $namefile[0].'_'.time().'.'.$namefile[1];
-				else 
+				else
 					$newnamefile= time().'_'.$file->filename;
-				
+
 				// Prepare file record object
 				$timecreation= time();
 				$fileinfo = array(
-					'contextid' => $usercontext->id, // ID of context					
+					'contextid' => $usercontext->id, // ID of context
 					'component' => $file->component,     // usually = table name
 					'filearea' => $file->filearea,     // usually = table name
 					'itemid' => $file->itemid,               // usually = ID of row in table
@@ -281,12 +279,12 @@ echo '<input type="hidden" name="sesskey" value="' . sesskey() . '" />     <inpu
 					'filename' => $newnamefile,// any filename
 					'timecreated'=>$timecreation,
 					'timemodified'=>$timecreation,
-					'userid' => $user->id);			
-					
- 
-				// Create file 
-				$resultado=$fs->create_file_from_storedfile($fileinfo, $file->id);	
-							
+					'userid' => $user->id);
+
+
+				// Create file
+				$resultado=$fs->create_file_from_storedfile($fileinfo, $file->id);
+
 				$record = new stdClass();
 				$record->fileid         = $resultado->get_id();
 				$record->sharedwithuserid = $USER->id;
