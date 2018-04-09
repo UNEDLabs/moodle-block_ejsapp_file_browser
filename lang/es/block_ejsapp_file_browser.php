@@ -31,6 +31,7 @@
 
 $string['title_of_the_block'] = 'Navegador EJSApp de archivos';
 $string['managemyfiles'] = 'Gestionar archivos';
+$string['sharefiles'] = 'Compartir archivos';
 $string['pluginname'] = 'Navegador EJSApp de "archivos privados"';
 $string['privatefiles'] = 'Archivos privados';
 
@@ -58,3 +59,15 @@ $string['auto_refresh_description'] = 'Tiempo en milisegundos. Escriba "0" para 
 // Strings for capabilities.
 $string['ejsapp_file_browser:addinstance'] = 'Añadir un nuevo bloque de ficheros privados para EJSApp';
 $string['ejsapp_file_browser:myaddinstance'] = 'Añadir un nuevo bloque de ficheros privados para EJSApp al &Aacute;rea personal';
+
+// Strings for shared_files_usr.php and share_files.php.
+$string['files_users_selection'] = 'Seleccione los ficheros y usuarios';
+$string['files_selection'] = 'Seleccione los archivos a compartir';
+$string['select_share_files'] = 'Compartir archivo/s';
+$string['share'] = 'Compartir';
+$string['shared_files'] = 'Archivos compartidos';
+$string['continue'] = 'Continuar';
+$string['you_share_file'] = 'Ha compartido el archivo';
+$string['you_share_files'] = 'Ha compartido los archivos';
+$string['with_participants'] = 'Con los participantes';
+$string['no_file_selected'] = 'No hay archivos seleccionados';

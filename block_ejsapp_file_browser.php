@@ -21,6 +21,7 @@
 // at the Computer Science and Automatic Control, Spanish Open University
 // (UNED), Madrid, Spain.
 
+
 /**
  * Manage user private area files with support for files generated in the EJSApp activity.
  *
@@ -40,6 +41,8 @@ class block_ejsapp_file_browser extends block_list {
 
     /**
      * Init function for the EJSApp File Browser block
+     *
+     * @throws coding_exception
      *
      */
     public function init() {
@@ -86,9 +89,11 @@ class block_ejsapp_file_browser extends block_list {
      * Defines the content of the block.
      *
      * @return null|stdClass|stdObject The content of the block
+     * @throws coding_exception
+     * @throws dml_exception
      */
     public function get_content() {
-        global $CFG, $PAGE, $OUTPUT, $DB;
+        global $PAGE, $OUTPUT, $DB;
 
         if ($this->content !== null) {
             return $this->content;
@@ -100,19 +105,27 @@ class block_ejsapp_file_browser extends block_list {
 
         $this->content = new stdClass();
         $this->content->items = array();
-        $this->content->icons = array();
         $this->content->footer = '';
 
         if (isloggedin() && !isguestuser()) { // Show the block.
-            $this->content->items[0] = html_writer::tag('input', '',
-                array('type' => 'image', 'id' => 'refreshEJSAppFBBut', 'src' => $CFG->wwwroot .
-                    '/blocks/ejsapp_file_browser/pix/refresh.png', 'width' => '25', 'height' => '25'));
+            $this->content->items[0] = html_writer::tag('i', '',
+                array('class' => 'fa fa-refresh', 'aria-hidden' => 'true', 'id' => 'refreshEJSAppFBBut'));
             $renderer = $this->page->get_renderer('block_ejsapp_file_browser');
             $this->content->items[1] = $renderer->ejsapp_file_browser_tree();
             if (has_capability('moodle/user:manageownfiles', $this->page->context)) {
                 $content = $OUTPUT->single_button(new moodle_url('/user/files.php',
                     array('returnurl' => $PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
                 $this->content->items[2] = html_writer::div($content, 'managefiles');
+
+                // Insert link for sharing files
+                $contextcourse=context_course::instance($PAGE->course->id);
+                $urlnew = new moodle_url('/blocks/ejsapp_file_browser/share_files.php', array(
+                    'blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contextcourse->id,
+                    'sesskey' => sesskey()));
+                $this->content->items[3] = html_writer::link($urlnew, html_writer::tag('i', '',
+                    array('class' => 'fa fa-share-alt', 'aria-hidden' => 'true')) . '&nbsp;' .
+                    get_string('sharefiles', 'block_ejsapp_file_browser'));
+
                 if (strpos($PAGE->url, 'mod/ejsapp/view.php') !== false) { // Inside an ejsapp activity.
                     $butstates = array(false);
                     if (isset($_GET['rec_file'])) {
@@ -136,7 +149,7 @@ class block_ejsapp_file_browser extends block_list {
                         $blocklyconf = json_decode($blocklyconf);
                         if ($blocklyconf[0] == 1) {
                             // Show buttons.
-                            $this->content->footer = html_writer::start_tag('fieldset') .
+                            $this->content->footer .= html_writer::start_tag('fieldset') .
                                 html_writer::tag('legend',
                                     get_string('blockly_legend', 'block_ejsapp_file_browser'),
                                     array('class' => 'legend')) .
@@ -202,7 +215,6 @@ class block_ejsapp_file_browser extends block_list {
                 }
             }
         }
-
         return $this->content;
     }
 
@@ -214,5 +226,4 @@ class block_ejsapp_file_browser extends block_list {
     public function has_config() {
         return true;
     }
-
 }

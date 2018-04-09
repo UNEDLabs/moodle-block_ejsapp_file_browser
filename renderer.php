@@ -51,6 +51,7 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
      * Prints ejsapp file browser tree view
      * @param ejsapp_file_browser_tree $tree
      * @return string Html code that prints the tree view
+     * @throws dml_exception
      */
     public function render_ejsapp_file_browser_tree(ejsapp_file_browser_tree $tree) {
         global $CFG, $PAGE;
@@ -62,9 +63,8 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
                 array($url, $htmlid, get_config('block_ejsapp_file_browser', 'Auto_refresh')));
         }
         $this->page->requires->js_init_call('M.block_ejsapp_file_browser.init_tree', array(false, $htmlid));
-        $html = '<div id="' . $htmlid . '">';
-        $html .= htmllize_tree($tree, $tree->dir);
-        $html .= '</div>';
+        $html = htmllize_tree($tree, $tree->dir);
+        $html = html_writer::div($html, '', array('id' => $htmlid));
 
         return $html;
     }
@@ -102,6 +102,7 @@ class ejsapp_file_browser_tree implements renderable {
  * @param ejsapp_file_browser_tree $tree
  * @param array $dir
  * @return string result
+ * @throws dml_exception
  */
 function htmllize_tree($tree, $dir) {
     global $CFG, $OUTPUT, $DB, $USER;
@@ -111,20 +112,21 @@ function htmllize_tree($tree, $dir) {
     if (empty($dir['subdirs']) and empty($dir['files'])) {
         return '';
     }
-    $result = '<ul>';
+    $result = '';
 
     foreach ($dir['subdirs'] as $subdir) {
         $image = $OUTPUT->pix_icon(file_folder_icon(), $subdir['dirname'], 'moodle', array('class' => 'icon'));
-        $result .= '<li yuiConfig=\'' . json_encode($yuiconfig) . '\'><div>' . $image.s($subdir['dirname']) .
-            '</div> ' . htmllize_tree($tree, $subdir) . '</li>';
+        $result .=  html_writer::tag('li', html_writer::div($image.s($subdir['dirname'])) .
+            htmllize_tree($tree, $subdir), array('yuiConfig' => json_encode($yuiconfig)));
     }
+
     foreach ($dir['files'] as $file) {
         $filename = $file->get_filename();
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
         // Get $ejsappid.
-        $frecord = $DB->get_record('files',
-            array('filename' => $filename, 'component' => 'user', 'filearea' => 'private', 'userid' => ($USER->id)));
+        $frecord = $DB->get_record('files', array('filename' => $filename, 'component' => 'user',
+            'filearea' => 'private', 'userid' => ($USER->id)));
         if (!$frecord) {
             $source = array();
         } else {
@@ -169,11 +171,16 @@ function htmllize_tree($tree, $dir) {
             $url = new moodle_url('/pluginfile.php/' . $tree->context->id . '/user/private' .
                 $file->get_filepath() . $file->get_filename());
         }
+
         if (isset($url) && isset($image)) {
-            $result .= '<li yuiConfig=\'' . json_encode($yuiconfig) . '\'><div>' .
-                html_writer::link($url, $image . $filename) . '</div></li>';
+            if ($DB->record_exists('block_ejsapp_shared_files', array('fileid' => $frecord->id))) {
+                $image .= html_writer::tag('i', '', array('class' => 'fa fa-share-alt', 'aria-hidden' => 'true')) . ' ';
+            }
+            $result .= html_writer::tag('li', html_writer::tag('div', html_writer::link($url, $image . $filename)),
+                array('yuiConfig' => json_encode($yuiconfig)));
         }
     }
-    $result .= '</ul>';
+
+    $result = html_writer::tag('ul', $result);
     return $result;
 }

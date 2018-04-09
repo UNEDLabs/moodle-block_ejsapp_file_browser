@@ -31,6 +31,7 @@
 
 $string['title_of_the_block'] = 'EJSApp File Browser';
 $string['managemyfiles'] = 'Manage my files';
+$string['sharefiles'] = 'Share files';
 $string['pluginname'] = 'EJSApp "private files" browser';
 $string['privatefiles'] = 'Private files';
 
@@ -58,3 +59,15 @@ $string['auto_refresh_description'] = 'Time in miliseconds. Write "0" to disable
 // Strings for capabilities.
 $string['ejsapp_file_browser:addinstance'] = 'Add a new private files block for EJSApp';
 $string['ejsapp_file_browser:myaddinstance'] = 'Add a new private files block for EJSApp to My home';
+
+// Strings for shared_files_usr.php and share_files.php.
+$string['files_users_selection'] = 'Select the files and users';
+$string['files_selection'] = 'Select files for sharing';
+$string['select_share_files'] = 'Share file/s';
+$string['share'] = 'Share';
+$string['shared_files'] = 'Shared files';
+$string['continue'] = 'Continue';
+$string['you_share_file'] = 'You shared the file';
+$string['you_share_files'] = 'You shared the files';
+$string['with_participants'] = 'With the participants';
+$string['no_file_selected'] = 'No files selected';
