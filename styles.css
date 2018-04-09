@@ -1,5 +1,5 @@
 .block_ejsapp_file_browser .content table {
-    table-layout: fixed;
+    table-layout: auto;
     width: 100%;
     margin-left: -8px;
 }
@@ -8,8 +8,11 @@
     margin-left: -7px;
 }
 
-.block_ejsapp_file_browser .show_button, .hide_button {
-    padding: 5px;
+.block_ejsapp_file_browser .show_button:hover,
+.block_ejsapp_file_browser .hide_button:hover,
+.block_ejsapp_file_browser .recording_button:hover,
+.block_ejsapp_file_browser .blockly_button:hover {
+    background-color: rgba(24, 24, 24, 0.1);
 }
 
 .block_ejsapp_file_browser .managefiles {
@@ -17,12 +20,29 @@
     text-align: center;
 }
 
-.block_ejsapp_file_browser .captureInteraction .optionsBut .blocklyControl {
+.block_ejsapp_file_browser .captureInteraction,
+.block_ejsapp_file_browser .optionsBut,
+.block_ejsapp_file_browser .blocklyControl {
     text-align: center;
     margin: auto;
 }
 
-.block_ejsapp_file_browser .recordCapture {
+.block_ejsapp_file_browser .show_button,
+.block_ejsapp_file_browser .hide_button,
+.block_ejsapp_file_browser .recording_button,
+.block_ejsapp_file_browser .blockly_button {
+    margin-left: 2px;
+    margin-right: 2px;
+    border-radius: 5px;
+    background-color: transparent;
+    padding: 5px;
+    box-shadow: none;
+    border: 1px solid lightgrey;
+}
+
+.block_ejsapp_file_browser .recordCapture,
+.block_ejsapp_file_browser .saveLoadCode,
+.block_ejsapp_file_browser .runCode {
     margin-top: 5px;
 }
 
