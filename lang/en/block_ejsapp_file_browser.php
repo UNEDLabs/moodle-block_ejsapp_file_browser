@@ -60,21 +60,14 @@ $string['auto_refresh_description'] = 'Time in miliseconds. Write "0" to disable
 $string['ejsapp_file_browser:addinstance'] = 'Add a new private files block for EJSApp';
 $string['ejsapp_file_browser:myaddinstance'] = 'Add a new private files block for EJSApp to My home';
 
-// Strings page title & title h2
-
-$string['share_files_pageTitle'] = 'Share Files:';
-$string['users_selection'] = 'Select users from files sharing:';
-$string['files_selection'] = 'Select files for share:';
-$string['users_shared_files'] = 'Shared with:';
-$string['shared_file'] = 'Share files';
-$string['sharefiles'] = 'Share files';
-$string['mysharefiles'] = 'My Shared Files';
-$string['share_files'] = 'Share';
-$string['shared_files'] = 'Shared Files';
-$string['users_shared'] = 'Users and Files Shared';
+// Strings for shared_files_usr.php and share_files.php.
+$string['files_users_selection'] = 'Select the files and users';
+$string['files_selection'] = 'Select files for sharing';
+$string['select_share_files'] = 'Share file/s';
+$string['share'] = 'Share';
+$string['shared_files'] = 'Shared files';
 $string['continue'] = 'Continue';
 $string['you_share_file'] = 'You shared the file';
 $string['you_share_files'] = 'You shared the files';
 $string['with_participants'] = 'With the participants';
-//error
-$string['nonselectfiles'] = 'No files selected';
+$string['no_file_selected'] = 'No files selected';

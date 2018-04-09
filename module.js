@@ -40,7 +40,7 @@ M.block_ejsapp_file_browser.init_tree = function(Y, expand, htmlid) {
     Y.use('yui2-treeview', function(Y) {
         var tree = new Y.YUI2.widget.TreeView(htmlid);
 
-        tree.subscribe("clickEvent", function(node, event) {
+        tree.subscribe("clickEvent", function() {
             // we want normal clicking which redirects to url
             return false;
         });
@@ -101,7 +101,7 @@ M.block_ejsapp_file_browser.init_auto_refresh = function(Y, url, htmlid, frequen
             success: handleSuccess,
             failure: handleFailure
         };
-        setInterval(function() {autoRefresh()}, frequency);
+        setInterval(function() {autoRefresh();}, frequency);
         /**
          * Refreshes the tree automatically
          */
