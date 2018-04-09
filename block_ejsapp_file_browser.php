@@ -113,18 +113,19 @@ class block_ejsapp_file_browser extends block_list {
             $renderer = $this->page->get_renderer('block_ejsapp_file_browser');
             $this->content->items[1] = $renderer->ejsapp_file_browser_tree();
             if (has_capability('moodle/user:manageownfiles', $this->page->context)) {
+                $this->content->items[2] = html_writer::div(' ', 'space_tree');
                 // Insert link for sharing files
-                $contextcourse=context_course::instance($PAGE->course->id);
+                $contextcourse = context_course::instance($PAGE->course->id);
                 $urlnew = new moodle_url('/blocks/ejsapp_file_browser/share_files.php', array(
                     'blockid' => $this->instance->id, 'courseid' => $PAGE->course->id, 'contextid' => $contextcourse->id,
                     'sesskey' => sesskey()));
-                $this->content->items[2] = html_writer::link($urlnew, html_writer::tag('i', '',
-                        array('class' => 'fa fa-share-alt', 'aria-hidden' => 'true')) . '&nbsp;' .
+                $this->content->items[3] = html_writer::link($urlnew, html_writer::tag('i', '',
+                    array('class' => 'fa fa-share-alt', 'aria-hidden' => 'true')) . '&nbsp;' .
                     get_string('sharefiles', 'block_ejsapp_file_browser'), array('id' => 'sharefiles'));
 
                 $content = $OUTPUT->single_button(new moodle_url('/user/files.php',
                     array('returnurl' => $PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
-                $this->content->items[3] = html_writer::div($content, 'managefiles');
+                $this->content->items[4] = html_writer::div($content, 'managefiles');
 
                 if (strpos($PAGE->url, 'mod/ejsapp/view.php') !== false) { // Inside an ejsapp activity.
                     $butstates = array(false);
