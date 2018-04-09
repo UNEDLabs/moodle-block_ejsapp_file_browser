@@ -47,42 +47,63 @@ define(['jquery'], function($) {
                 $("#captureInteraction").show();
             });
 
-            $("#stopCaptureBut").prop('disabled', true);
+            $("#stopCaptureButton").prop('disabled', true);
             if (!reproducing) {
-                $("#resetCaptureBut").prop('disabled', true);
-                $("#stepCaptureBut").prop('disabled', true);
+                $("#resetCaptureButton").prop('disabled', true);
+                $("#stepCaptureButton").prop('disabled', true);
             } else {
-                $("#startCaptureBut").prop('disabled', true);
-                $("#playCaptureBut").prop('disabled', true);
+                $("#startCaptureButton").prop('disabled', true);
+                $("#playCaptureButton").prop('disabled', true);
             }
 
-            $("#startCaptureBut").click(function() {
-                $("#startCaptureBut").prop('disabled', true);
-                $("#stopCaptureBut").prop('disabled', false);
-                $("#resetCaptureBut").prop('disabled', false);
-                $("#playCaptureBut").prop('disabled', true);
-                $("#stepCaptureBut").prop('disabled', true);
+            $("#startCaptureButton").click(function() {
+                _model.startCapture();
+                $("#startCaptureButton").prop('disabled', true);
+                $("#stopCaptureButton").prop('disabled', false);
+                $("#resetCaptureButton").prop('disabled', false);
+                $("#playCaptureButton").prop('disabled', true);
+                $("#stepCaptureButton").prop('disabled', true);
             });
 
-            $("#stopCaptureBut").click(function() {
-                $("#startCaptureBut").prop('disabled', false);
-                $("#stopCaptureBut").prop('disabled', true);
-                $("#resetCaptureBut").prop('disabled', false);
+            $("#stopCaptureButton").click(function() {
+                _model.saveText('recording','rec',JSON.stringify(_model.stopCapture()));
+                $("#startCaptureButton").prop('disabled', false);
+                $("#stopCaptureButton").prop('disabled', true);
+                $("#resetCaptureButton").prop('disabled', false);
             });
 
-            $("#resetCaptureBut").click(function() {
-                $("#startCaptureBut").prop('disabled', false);
-                $("#stopCaptureBut").prop('disabled', true);
-                $("#resetCaptureBut").prop('disabled', true);
-                $("#playCaptureBut").prop('disabled', false);
+            $("#resetCaptureButton").click(function() {
+                _model.resetCapture();
+                $("#startCaptureButton").prop('disabled', false);
+                $("#stopCaptureButton").prop('disabled', true);
+                $("#resetCaptureButton").prop('disabled', false);
+                $("#playCaptureButton").prop('disabled', false);
             });
 
-            $("#playCaptureBut").click(function() {
-                $("#startCaptureBut").prop('disabled', true);
-                $("#stopCaptureBut").prop('disabled', true);
-                $("#resetCaptureBut").prop('disabled', false);
-                $("#playCaptureBut").prop('disabled', true);
-                $("#stepCaptureBut").prop('disabled', false);
+            $("#playCaptureButton").click(function() {
+                _model.readText(null,'.rec',function(content) {
+                    _model.playCapture(JSON.parse(content),function() {
+                        $("#startCaptureButton").disabled=false;
+                        $("#playCaptureButton").disabled=false;
+                        $("#stepCaptureButton").disabled=false;
+                        window.alert("End of reproduction");
+                    });
+                });
+                $("#startCaptureButton").prop('disabled', true);
+                $("#stopCaptureButton").prop('disabled', true);
+                $("#resetCaptureButton").prop('disabled', false);
+                $("#playCaptureButton").prop('disabled', true);
+                $("#stepCaptureButton").prop('disabled', false);
+            });
+
+            $("#stepCaptureButton").change(function() {
+                var stepCapt;
+                if (stepCaptureButton.value >= 0) {
+                    stepCapt = stepCaptureButton.value + 1;
+                } else {
+                    stepCapt = 1 + 1.8 * stepCaptureButton.value / 8;
+                }
+                _model.changeCaptureStep(stepCapt);
             });
         }
     };
