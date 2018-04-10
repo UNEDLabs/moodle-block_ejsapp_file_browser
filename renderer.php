@@ -173,7 +173,7 @@ function htmllize_tree($tree, $dir) {
         }
 
         if (isset($url) && isset($image)) {
-            if ($DB->record_exists('block_ejsapp_shared_files', array('fileid' => $frecord->id))) {
+            if ($DB->record_exists('block_ejsapp_shared_files', array('sharedfileid' => $frecord->id))) {
                 $image .= html_writer::tag('i', '', array('class' => 'fa fa-share-alt', 'aria-hidden' => 'true')) . ' ';
             }
             $result .= html_writer::tag('li', html_writer::tag('div', html_writer::link($url, $image . $filename)),

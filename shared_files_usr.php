@@ -197,15 +197,14 @@ echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesske
 echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'returnto', 'value' => s(me())));
 
 $countfiles = 0;
-$recordfiles = array();
+$filenames = array();
 $strlist = "";
 
-foreach ($files_selected as  $file) {
+foreach ($files_selected as $file) {
     if (!empty($file)) {
-        $recordfile = $DB->get_record('files', array('id'=>$file));
-        $recordfiles[] = $recordfile;
-
-        $strlist .= html_writer::tag('li', $recordfile->filename);
+        $filename = $DB->get_field('files', 'filename', array('id'=>$file));
+        $filenames[] = $filename;
+        $strlist .= html_writer::tag('li', $filename);
         $countfiles++;
     }
 }
@@ -222,7 +221,7 @@ if ($countfiles == 0) {
 }
 
 // Validate users of course and selected files
-if (($userlist) and ($countfiles > 0) ) {
+if (($userlist) and ($countfiles > 0)) {
 
     echo html_writer::empty_tag('br');
     echo html_writer::tag('h2', get_string('with_participants','block_ejsapp_file_browser'));
@@ -234,8 +233,6 @@ if (($userlist) and ($countfiles > 0) ) {
             continue;
         }
         $usersprinted[] = $user->id; // Add new user to the array of users printed.
-
-        $usercontext = context_user::instance($user->id);
 
         if (has_capability('moodle/user:viewdetails', $context) ||  has_capability('moodle/user:viewdetails', $usercontext)) {
             $content = html_writer::tag('a', fullname($user), array('href' => $CFG->wwwroot . '/user/view.php?id=' .
@@ -249,37 +246,49 @@ if (($userlist) and ($countfiles > 0) ) {
 
         $table->add_data($data);
 
-        // Save record in database
-        foreach ($recordfiles as $file){
-            $fs = get_file_storage();
-            // Name of new file
-            $newnamefile= $USER->username . '_' . $file->filename;
-
-            // Prepare file record object
-            $timecreation= time();
-            $fileinfo = array(
-                'contextid' => $usercontext->id,    // ID of context
-                'component' => $file->component,    // usually = table name
-                'filearea' => $file->filearea,      // usually = table name
-                'itemid' => $file->itemid,          // usually = ID of row in table
-                'filepath' => $file->filepath,      // any path beginning and ending in /
-                'filename' => $newnamefile,         // any filename
-                'timecreated'=>$timecreation,
-                'timemodified'=>$timecreation,
-                'userid' => $user->id);
-
-            // Create file
-            $result = $fs->create_file_from_storedfile($fileinfo, $file->id);
-
+        // Insert record in block_ejsapp_shared_files table
+        foreach ($files_selected as $file) {
             $record = new stdClass();
-            $record->fileid = $result->get_id();
-            $record->sharedwithuserid = $USER->id;
-            $record->timemodified  =time();
+            $record->originalfileid = $file;
+            $record->originaluserid = $USER->id;
+            $record->sharedfileid = 0;
+            $record->shareduserid = $user->id;
+            $record->timemodified = time();
             $lastinsertid = $DB->insert_record('block_ejsapp_shared_files', $record, false);
         }
+
+        // Send info message
+        $user = $DB->get_record('user', array('id' => $user->id));
+        $message = new \core\message\message();
+        $message->component = 'moodle';
+        $message->name = 'instantmessage';
+        $message->userfrom = $USER;
+        $message->userto = $user;
+        $message->subject = 'File sharing request';
+        $urlaccept = new moodle_url('/blocks/ejsapp_file_browser/action.php', array('courseid' => $courseid, 'contextid' =>
+            $contextid, 'originaluserid' => $USER->id, 'action' => 'accept'));
+        $urlreject = new moodle_url('/blocks/ejsapp_file_browser/action.php', array('courseid' => $courseid, 'contextid' =>
+            $contextid, 'originaluserid' => $USER->id, 'action' => 'reject'));
+        $message->fullmessage = $USER->username . ' wants to share some files with you: ' . "\r\n" . "\n" .
+            implode(', ', $filenames) . "\r\n" . "\n" . 'You can either accept (https://www.w3schools.com), ' .
+            'reject (https://www.w3schools.com) or ignore this request.';
+        $message->fullmessageformat = FORMAT_MARKDOWN;
+        $message->fullmessagehtml = '<p>' . $USER->username .  ' wants to share some files with you: </p> <br>' .
+            "<p>PLACEHOLDER</p><br><p>You can either <a href=\"$urlaccept\">accept</a>," .
+            "<a href=\"$urlreject\">reject</a> or ignore this request.</p>";
+        $message->smallmessage = 'I want to share these files with you: ' . implode(', ', $filenames) . "\r\n" . "\n" .
+            "<a href=\"$urlaccept\">Accept</a>" .' - ' . "<a href=\"$urlreject\">Reject</a>";
+        $message->notification = '0';
+        $message->contexturl = $CFG->wwwroot;
+        $message->contexturlname = $COURSE->fullname;
+        $message->replyto = $USER->email;
+        $content = array('*' => array('header' => ' test ', 'footer' => ' test '));
+        $message->set_additional_content('email', $content);
+        $message->courseid = $course->id;
+        $messageid = message_send($message);
     } // End of: foreach ($userlist as $user)
 
-} // End of: if ($userlist)
+} // End of: if ($userlist and ($countfiles > 0))
 
 $table->finish_html();
 

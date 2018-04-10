@@ -462,16 +462,15 @@ if ($userlist) {
         $table->add_data($data);
         $usersids[] = $user->id;
     } // End of: foreach ($userlist as $user).
-
 } // End of: if ($userlist).
 
 $table->finish_html();
 
 echo html_writer::empty_tag('br');
 $content = html_writer::empty_tag('input', array('type' => 'button', 'id' => 'checkall', 'class' => 'btn btn-secondary',
-        'value' => get_string('selectall'))) .
+        'value' => get_string('selectall'))) . ' ' .
     html_writer::empty_tag('input', array('type' => 'button', 'id' => 'checknone', 'class' => 'btn btn-secondary',
-        'value' => get_string('deselectall'))) .
+        'value' => get_string('deselectall'))) . ' ' .
     html_writer::empty_tag('input', array('type' => 'submit', 'id' => 'share_files', 'class' => 'btn btn-secondary',
         'value' => get_string('share', 'block_ejsapp_file_browser')));
 echo html_writer::tag('div', $content, array('class' => 'buttons'));
