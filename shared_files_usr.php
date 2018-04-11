@@ -36,7 +36,7 @@ $PAGE->set_title($title);
 $PAGE->set_heading($title);
 
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
-$courseurl=new moodle_url("$CFG->wwwroot/course/view.php?id=$courseid");
+$courseurl = new moodle_url("$CFG->wwwroot/course/view.php?id=$courseid");
 $PAGE->navbar->add(html_writer::tag('a', $course->shortname, array('href' => $courseurl)));
 $PAGE->navbar->add($title);
 
@@ -254,6 +254,10 @@ if (($userlist) and ($countfiles > 0)) {
             $record->sharedfileid = 0;
             $record->shareduserid = $user->id;
             $record->timemodified = time();
+            $conditions = array('originalfileid' => $file, 'originaluserid' => $USER->id, 'shareduserid' => $user->id);
+            if ($DB->record_exists('block_ejsapp_shared_files', $conditions)) {
+                $DB->delete_records('block_ejsapp_shared_files', $conditions);
+            }
             $lastinsertid = $DB->insert_record('block_ejsapp_shared_files', $record, false);
         }
 

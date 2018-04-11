@@ -36,7 +36,7 @@ $PAGE->set_title($title);
 $PAGE->set_heading($title);
 
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
-$courseurl=new moodle_url("$CFG->wwwroot/course/view.php?id=$courseid");
+$courseurl = new moodle_url("$CFG->wwwroot/course/view.php?id=$courseid");
 $PAGE->navbar->add(html_writer::tag('a', $course->shortname, array('href' => $courseurl)));
 $PAGE->navbar->add($title);
 
@@ -72,26 +72,36 @@ if (count($sharedfiles) > 0) {
         echo html_writer::tag('p', 'The files from ' . $user->username .' have been received.');
         // Prepare files
         foreach ($sharedfiles as $sharedfile) {
-            $file = $DB->get_record('files', array('id' => $sharedfile->originalfileid));
-            $fs = get_file_storage();
-            // Prepare file record object
-            $timecreation = time();
-            $usercontext = context_user::instance($USER->id);
-            $fileinfo = array(
-                'contextid' => $usercontext->id,
-                'component' => $file->component,    // usually = table name
-                'filearea' => $file->filearea,      // usually = table name
-                'itemid' => $file->itemid,          // usually = ID of row in table
-                'filepath' => $file->filepath,      // any path beginning and ending in
-                'filename' => $user->username . '_' . $file->filename,
-                'timecreated' => $timecreation,
-                'timemodified' => $timecreation,
-                'userid' => $USER->id);
-            // Create file
-            $result = $fs->create_file_from_storedfile($fileinfo, $file->id);
-            // Update record in block_ejsapp_shared_files table with the file id
-            $sharedfile->sharedfileid = $result->get_id();
-            $DB->update_record('block_ejsapp_shared_files', $sharedfile);
+            if ($DB->record_exists('files', array('id' => $sharedfile->originalfileid))) {
+                $file = $DB->get_record('files', array('id' => $sharedfile->originalfileid));
+                $fs = get_file_storage();
+                // Prepare file record object
+                $timecreation = time();
+                $usercontext = context_user::instance($USER->id);
+                $fileinfo = array(
+                    'contextid' => $usercontext->id,
+                    'component' => $file->component,    // usually = table name
+                    'filearea' => $file->filearea,      // usually = table name
+                    'itemid' => $file->itemid,          // usually = ID of row in table
+                    'filepath' => $file->filepath,      // any path beginning and ending in
+                    'filename' => $user->username . '_' . $file->filename,
+                    'timecreated' => $timecreation,
+                    'timemodified' => $timecreation,
+                    'userid' => $USER->id);
+                // Check if shared user already has the file
+                if ($fs->file_exists($usercontext->id, $file->component, $file->filearea, $file->itemid, $file->filepath,
+                    $user->username . '_' . $file->filename)) {
+                    // Delete file
+                    $oldsharedfile = $fs->get_file($usercontext->id, $file->component, $file->filearea, $file->itemid,
+                        $file->filepath,$user->username . '_' . $file->filename);
+                    $oldsharedfile->delete();
+                }
+                // Create file
+                $result = $fs->create_file_from_storedfile($fileinfo, $file->id);
+                // Update record in block_ejsapp_shared_files table with the file id
+                $sharedfile->sharedfileid = $result->get_id();
+                $DB->update_record('block_ejsapp_shared_files', $sharedfile);
+            }
         }
         // Fill content of the 'accepted' message and send it
         $message->fullmessage = $USER->username . ' accepted your files.';
@@ -114,6 +124,7 @@ if (count($sharedfiles) > 0) {
 }
 
 echo html_writer::empty_tag('br');
+echo html_writer::start_tag('form', array('action' => $courseurl, 'method' => 'post', 'id' => 'sharedfiles'));
 $content = html_writer::empty_tag('input', array('type' => 'submit', 'id' => 'continue', 'class' => 'btn btn-secondary',
     'value' => get_string('continue', 'block_ejsapp_file_browser')));
 echo html_writer::tag('div', $content, array('class' => 'buttons'));
