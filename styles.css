@@ -3,7 +3,7 @@
     width: 100%;
 }
 
-.block_ejsapp_file_browser .fa .fa-share-alt {
+.block_ejsapp_file_browser #sharefiles {
     margin-bottom: 2px;
     margin-top: 2px;
 }

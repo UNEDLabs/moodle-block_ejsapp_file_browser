@@ -124,7 +124,7 @@ class block_ejsapp_file_browser extends block_list {
 
                 $content = $OUTPUT->single_button(new moodle_url('/user/files.php',
                     array('returnurl' => $PAGE->url->out())), get_string('managemyfiles', 'block_ejsapp_file_browser'), 'get');
-                $this->content->items[3] = html_writer::div($content, 'managefiles');
+                $this->content->footer .= html_writer::div($content, 'managefiles');
 
                 if (strpos($PAGE->url, 'mod/ejsapp/view.php') !== false) { // Inside an ejsapp activity.
                     $butstates = array(false);
