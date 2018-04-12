@@ -53,7 +53,7 @@ $message->component = 'moodle';
 $message->name = 'instantmessage';
 $message->userfrom = $USER;
 $message->userto = $user;
-$message->subject = 'Response to your file sharing request';
+$message->subject = get_string('message_subject_response','block_ejsapp_file_browser');
 $message->fullmessageformat = FORMAT_MARKDOWN;
 $message->notification = '0';
 $message->contexturl = $CFG->wwwroot;
@@ -69,7 +69,8 @@ $sharedfiles = $DB->get_records('block_ejsapp_shared_files', array('shareduserid
 
 if (count($sharedfiles) > 0) {
     if ($action == 'accept') {
-        echo html_writer::tag('p', 'The files from ' . $user->username .' have been received.');
+        echo html_writer::tag('p', get_string('received_files_1','block_ejsapp_file_browser') .
+            $user->username . get_string('received_files_2','block_ejsapp_file_browser'));
         // Prepare files
         foreach ($sharedfiles as $sharedfile) {
             if ($DB->record_exists('files', array('id' => $sharedfile->originalfileid))) {
@@ -122,7 +123,8 @@ if (count($sharedfiles) > 0) {
         $messageid = message_send($message);
     }
 } else {
-    echo html_writer::tag('p', 'There are no pending files to be received from ' . $user->username . '.');
+    echo html_writer::tag('p', get_string('no_pending_files','block_ejsapp_file_browser') .
+        $user->username . '.');
 }
 
 echo html_writer::empty_tag('br');

@@ -86,9 +86,13 @@ $string['small_message_2'] = 'Accept';
 $string['small_message_3'] = 'Reject';
 
 // Strings for action.php.
+$string['message_subject_response'] = 'Response to your file sharing request';
 $string['full_message_accepted'] = ' accepted your files.';
 $string['full_html_message_accepted'] = ' accepted your files.';
 $string['small_message_accepted'] = 'I just accepted your files.';
 $string['full_message_rejected'] = ' rejected your files.';
 $string['full_html_message_rejected'] =  ' rejected your files.';
 $string['small_message_rejected'] = 'I just rejected your files.';
+$string['received_files_1'] = 'The files from ';
+$string['received_files_2'] = ' have been received.';
+$string['no_pending_files'] = 'There are no pending files to be received from ';
