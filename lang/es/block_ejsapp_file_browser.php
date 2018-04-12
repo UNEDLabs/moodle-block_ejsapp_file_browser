@@ -71,3 +71,23 @@ $string['you_share_file'] = 'Ha compartido el archivo';
 $string['you_share_files'] = 'Ha compartido los archivos';
 $string['with_participants'] = 'Con los participantes';
 $string['no_file_selected'] = 'No hay archivos seleccionados';
+$string['full_message_1'] = ' quiere compartir algunos ficheros contigo: ' . "\r\n" . "\n";
+$string['full_message_2'] = "\r\n" . "\n" . 'Puedes aceptar (';
+$string['full_message_3'] = '), rechazar (';
+$string['full_message_4'] = ') o ignorar esta solicitud.';
+$string['full_message_html_1'] = ' quiere compartir algunos ficheros contigo: ';
+$string['full_message_html_2'] = 'Puedes ';
+$string['full_message_html_3'] = ' aceptar ';
+$string['full_message_html_4'] = ' rechazar ';
+$string['full_message_html_5'] ='o ignorar esta solicitud.';
+$string['small_message_1'] = 'Quiero compartir estos ficheros contigo: ';
+$string['small_message_2'] = 'Aceptar';
+$string['small_message_3'] = 'Rechazar';
+
+// Strings for action.php.
+$string['full_message_accepted'] = ' ha aceptado tus ficheros.';
+$string['full_html_message_accepted'] = ' ha aceptado tus ficheros.';
+$string['small_message_accepted'] = 'Acabo de aceptar tus ficheros.';
+$string['full_message_rejected'] = ' ha rechazado tus ficheros.';
+$string['full_html_message_rejected'] =  ' ha rechazado tus ficheros.';
+$string['small_message_rejected'] = 'Acabo de rechazar tus ficheros.';

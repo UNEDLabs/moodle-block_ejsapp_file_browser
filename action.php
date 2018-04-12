@@ -104,9 +104,10 @@ if (count($sharedfiles) > 0) {
             }
         }
         // Fill content of the 'accepted' message and send it
-        $message->fullmessage = $USER->username . ' accepted your files.';
-        $message->fullmessagehtml = '<p>' . $USER->username .  ' accepted your files.</p>';
-        $message->smallmessage = 'I just accepted your files.';
+        $message->fullmessage = $USER->username . get_string('full_message_accepted','block_ejsapp_file_browser');
+        $message->fullmessagehtml = '<p>' .
+            $USER->username . get_string('full_html_message_accepted','block_ejsapp_file_browser') . '</p>';
+        $message->smallmessage = get_string('small_message_accepted','block_ejsapp_file_browser');
         $messageid = message_send($message);
     } else if ($action == 'reject') {
         // Delete records in block_ejsapp_shared_files table
@@ -114,9 +115,10 @@ if (count($sharedfiles) > 0) {
             'originaluserid' => $originaluserid, 'sharedfileid' => 0));
         echo html_writer::tag('p', 'The files from ' . $user->username . ' have been rejected.');
         // Fill content of the 'rejected' message and send it
-        $message->fullmessage = $USER->username . ' rejected your files.';
-        $message->fullmessagehtml = '<p>' . $USER->username .  ' rejected your files.</p>';
-        $message->smallmessage = 'I just rejected your files.';
+        $message->fullmessage = $USER->username . get_string('full_message_rejected','block_ejsapp_file_browser');
+        $message->fullmessagehtml = '<p>' .
+            $USER->username . get_string('full_html_message_rejected','block_ejsapp_file_browser') . '</p>';
+        $message->smallmessage = get_string('small_message_rejected','block_ejsapp_file_browser');
         $messageid = message_send($message);
     }
 } else {

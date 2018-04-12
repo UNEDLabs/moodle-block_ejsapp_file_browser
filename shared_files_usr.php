@@ -268,20 +268,24 @@ if (($userlist) and ($countfiles > 0)) {
         $message->name = 'instantmessage';
         $message->userfrom = $USER;
         $message->userto = $user;
-        $message->subject = 'File sharing request';
+        $message->subject = get_string('message_subject','block_ejsapp_file_browser');
         $urlaccept = new moodle_url('/blocks/ejsapp_file_browser/action.php', array('courseid' => $courseid, 'contextid' =>
             $contextid, 'originaluserid' => $USER->id, 'action' => 'accept'));
         $urlreject = new moodle_url('/blocks/ejsapp_file_browser/action.php', array('courseid' => $courseid, 'contextid' =>
             $contextid, 'originaluserid' => $USER->id, 'action' => 'reject'));
-        $message->fullmessage = $USER->username . ' wants to share some files with you: ' . "\r\n" . "\n" .
-            implode(', ', $filenames) . "\r\n" . "\n" . 'You can either accept (https://www.w3schools.com), ' .
-            'reject (https://www.w3schools.com) or ignore this request.';
+        $message->fullmessage = $USER->username . get_string('full_message_1','block_ejsapp_file_browser') .
+            implode(', ', $filenames) . get_string('full_message_2','block_ejsapp_file_browser') .
+            $urlaccept . get_string('full_message_3','block_ejsapp_file_browser') . $urlreject .
+            get_string('full_message_3','block_ejsapp_file_browser');
         $message->fullmessageformat = FORMAT_MARKDOWN;
-        $message->fullmessagehtml = '<p>' . $USER->username .  ' wants to share some files with you: </p> <br>' .
-            "<p>PLACEHOLDER</p><br><p>You can either <a href=\"$urlaccept\">accept</a>," .
-            "<a href=\"$urlreject\">reject</a> or ignore this request.</p>";
-        $message->smallmessage = 'I want to share these files with you: ' . implode(', ', $filenames) . "\r\n" . "\n" .
-            "<a href=\"$urlaccept\">Accept</a>" .' - ' . "<a href=\"$urlreject\">Reject</a>";
+        $message->fullmessagehtml = '<p>' . $USER->username . get_string('full_message_html_1','block_ejsapp_file_browser') .
+            '</p> <br>' . "<p>PLACEHOLDER</p>" . "<br><p>" . get_string('full_message_html_1','block_ejsapp_file_browser') .
+            "<a href=\"$urlaccept\">" . get_string('full_message_html_3','block_ejsapp_file_browser') . "</a>," .
+            "<a href=\"$urlreject\">" . get_string('full_message_html_4','block_ejsapp_file_browser') . "</a>" .
+            get_string('full_message_html_5','block_ejsapp_file_browser') . "</p>";
+        $message->smallmessage = get_string('small_message_1','block_ejsapp_file_browser') . implode(', ', $filenames) .
+            "\r\n" . "\n" . "<a href=\"$urlaccept\">" . get_string('small_message_2','block_ejsapp_file_browser') . "</a>" .
+            ' - ' . "<a href=\"$urlreject\">" . get_string('small_message_3','block_ejsapp_file_browser') . "</a>";
         $message->notification = '0';
         $message->contexturl = $CFG->wwwroot;
         $message->contexturlname = $COURSE->fullname;

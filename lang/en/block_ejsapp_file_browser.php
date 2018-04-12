@@ -71,3 +71,24 @@ $string['you_share_file'] = 'You shared the file';
 $string['you_share_files'] = 'You shared the files';
 $string['with_participants'] = 'With the participants';
 $string['no_file_selected'] = 'No files selected';
+$string['message_subject'] = 'File sharing request';
+$string['full_message_1'] = ' wants to share some files with you: ' . "\r\n" . "\n";
+$string['full_message_2'] = "\r\n" . "\n" . 'You can either accept (';
+$string['full_message_3'] = '), reject (';
+$string['full_message_4'] = ') or ignore this request.';
+$string['full_message_html_1'] = ' wants to share some files with you: ';
+$string['full_message_html_2'] = 'You can either ';
+$string['full_message_html_3'] = ' accept ';
+$string['full_message_html_4'] = ' reject ';
+$string['full_message_html_5'] ='or ignore this request.';
+$string['small_message_1'] = 'I want to share these files with you: ';
+$string['small_message_2'] = 'Accept';
+$string['small_message_3'] = 'Reject';
+
+// Strings for action.php.
+$string['full_message_accepted'] = ' accepted your files.';
+$string['full_html_message_accepted'] = ' accepted your files.';
+$string['small_message_accepted'] = 'I just accepted your files.';
+$string['full_message_rejected'] = ' rejected your files.';
+$string['full_html_message_rejected'] =  ' rejected your files.';
+$string['small_message_rejected'] = 'I just rejected your files.';
