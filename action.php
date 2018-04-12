@@ -59,8 +59,6 @@ $message->notification = '0';
 $message->contexturl = $CFG->wwwroot;
 $message->contexturlname = $COURSE->fullname;
 $message->replyto = $USER->email;
-$content = array('*' => array('header' => ' test ', 'footer' => ' test '));
-$message->set_additional_content('email', $content);
 $message->courseid = $course->id;
 
 // Get info of files pending to be shared with this user by the original user who sent the file sharing request

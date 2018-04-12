@@ -279,8 +279,8 @@ if (($userlist) and ($countfiles > 0)) {
             get_string('full_message_3','block_ejsapp_file_browser');
         $message->fullmessageformat = FORMAT_MARKDOWN;
         $message->fullmessagehtml = '<p>' . $USER->username . get_string('full_message_html_1','block_ejsapp_file_browser') .
-            '</p> <br>' . "<p>PLACEHOLDER</p>" . "<br><p>" . get_string('full_message_html_1','block_ejsapp_file_browser') .
-            "<a href=\"$urlaccept\">" . get_string('full_message_html_3','block_ejsapp_file_browser') . "</a>," .
+            '</p> <br>' . "<p>PLACEHOLDER</p>" . "<br><p>" . get_string('full_message_html_2','block_ejsapp_file_browser') .
+            "<a href=\"$urlaccept\">" . get_string('full_message_html_3','block_ejsapp_file_browser') . "</a>, " .
             "<a href=\"$urlreject\">" . get_string('full_message_html_4','block_ejsapp_file_browser') . "</a>" .
             get_string('full_message_html_5','block_ejsapp_file_browser') . "</p>";
         $message->smallmessage = get_string('small_message_1','block_ejsapp_file_browser') . implode(', ', $filenames) .
@@ -290,8 +290,8 @@ if (($userlist) and ($countfiles > 0)) {
         $message->contexturl = $CFG->wwwroot;
         $message->contexturlname = $COURSE->fullname;
         $message->replyto = $USER->email;
-        $content = array('*' => array('header' => ' test ', 'footer' => ' test '));
-        $message->set_additional_content('email', $content);
+        /*$content = array('*' => array('header' => ' test ', 'footer' => ' test '));
+        $message->set_additional_content('email', $content);*/
         $message->courseid = $course->id;
         $messageid = message_send($message);
     } // End of: foreach ($userlist as $user)
