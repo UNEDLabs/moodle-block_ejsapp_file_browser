@@ -29,74 +29,93 @@
  */
 
 define(['jquery'], function($) {
+    var SELECTORS = {
+        // Block
+        HIDEBLOCKLY: "#hide_blockly",
+        SHOWBLOCKLY: "#show_blockly",
+        BLOCKLYCONTROL: "#blocklyControl",
+        HIDEINTERACTION: "#hide_interaction",
+        SHOWINTERACTION: "#show_interaction",
+        CAPTUREINTERACTION: "#captureInteraction",
+        STOPCAPTURE: "#stopCaptureButton",
+        RESETCAPTURE: "#resetCaptureButton",
+        STEPCAPTURE: "#stepCaptureButton",
+        STARTCAPTURE: "#startCaptureButton",
+        PLAYCAPTURE: "#playCaptureButton",
+        // Share files.php
+        SHARECHECKBOXES: "input.usercheckbox",
+        CHECKALLBUTTON: "#checkall",
+        CHECKNONEBUTTON: "#checknone"
+    };
+
     var t = {
         init: function(reproducing) {
-            $("#hide_blockly").click(function() {
-                $("#blocklyControl").hide();
+            $(SELECTORS.HIDEBLOCKLY).click(function() {
+                $(SELECTORS.BLOCKLYCONTROL).hide();
             });
 
-            $("#show_blockly").click(function() {
-                $("#blocklyControl").show();
+            $(SELECTORS.SHOWBLOCKLY).click(function() {
+                $(SELECTORS.BLOCKLYCONTROL).show();
             });
 
-            $("#hide_interaction").click(function() {
-                $("#captureInteraction").hide();
+            $(SELECTORS.HIDEINTERACTION).click(function() {
+                $(SELECTORS.CAPTUREINTERACTION).hide();
             });
 
-            $("#show_interaction").click(function() {
-                $("#captureInteraction").show();
+            $(SELECTORS.SHOWINTERACTION).click(function() {
+                $(SELECTORS.CAPTUREINTERACTION).show();
             });
 
-            $("#stopCaptureButton").prop('disabled', true);
+            $(SELECTORS.STOPCAPTURE).prop('disabled', true);
             if (!reproducing) {
-                $("#resetCaptureButton").prop('disabled', true);
-                $("#stepCaptureButton").prop('disabled', true);
+                $(SELECTORS.RESETCAPTURE).prop('disabled', true);
+                $(SELECTORS.STEPCAPTURE).prop('disabled', true);
             } else {
-                $("#startCaptureButton").prop('disabled', true);
-                $("#playCaptureButton").prop('disabled', true);
+                $(SELECTORS.STARTCAPTURE).prop('disabled', true);
+                $(SELECTORS.PLAYCAPTURE).prop('disabled', true);
             }
 
-            $("#startCaptureButton").click(function() {
+            $(SELECTORS.STARTCAPTURE).click(function() {
                 _model.startCapture();
-                $("#startCaptureButton").prop('disabled', true);
-                $("#stopCaptureButton").prop('disabled', false);
-                $("#resetCaptureButton").prop('disabled', false);
-                $("#playCaptureButton").prop('disabled', true);
-                $("#stepCaptureButton").prop('disabled', true);
+                $(SELECTORS.STARTCAPTURE).prop('disabled', true);
+                $(SELECTORS.STOPCAPTURE).prop('disabled', false);
+                $(SELECTORS.RESETCAPTURE).prop('disabled', false);
+                $(SELECTORS.PLAYCAPTURE).prop('disabled', true);
+                $(SELECTORS.STEPCAPTURE).prop('disabled', true);
             });
 
-            $("#stopCaptureButton").click(function() {
+            $(SELECTORS.STOPCAPTURE).click(function() {
                 _model.saveText('recording','rec',JSON.stringify(_model.stopCapture()));
-                $("#startCaptureButton").prop('disabled', false);
-                $("#stopCaptureButton").prop('disabled', true);
-                $("#resetCaptureButton").prop('disabled', false);
+                $(SELECTORS.STARTCAPTURE).prop('disabled', false);
+                $(SELECTORS.STOPCAPTURE).prop('disabled', true);
+                $(SELECTORS.RESETCAPTURE).prop('disabled', false);
             });
 
-            $("#resetCaptureButton").click(function() {
+            $(SELECTORS.RESETCAPTURE).click(function() {
                 _model.resetCapture();
-                $("#startCaptureButton").prop('disabled', false);
-                $("#stopCaptureButton").prop('disabled', true);
-                $("#resetCaptureButton").prop('disabled', false);
-                $("#playCaptureButton").prop('disabled', false);
+                $(SELECTORS.STARTCAPTURE).prop('disabled', false);
+                $(SELECTORS.STOPCAPTURE).prop('disabled', true);
+                $(SELECTORS.RESETCAPTURE).prop('disabled', false);
+                $(SELECTORS.PLAYCAPTURE).prop('disabled', false);
             });
 
-            $("#playCaptureButton").click(function() {
+            $(SELECTORS.PLAYCAPTURE).click(function() {
                 _model.readText(null,'.rec',function(content) {
                     _model.playCapture(JSON.parse(content),function() {
-                        $("#startCaptureButton").disabled=false;
-                        $("#playCaptureButton").disabled=false;
-                        $("#stepCaptureButton").disabled=false;
+                        $(SELECTORS.STARTCAPTURE).disabled=false;
+                        $(SELECTORS.PLAYCAPTURE).disabled=false;
+                        $(SELECTORS.STEPCAPTURE).disabled=false;
                         window.alert("End of reproduction");
                     });
                 });
-                $("#startCaptureButton").prop('disabled', true);
-                $("#stopCaptureButton").prop('disabled', true);
-                $("#resetCaptureButton").prop('disabled', false);
-                $("#playCaptureButton").prop('disabled', true);
-                $("#stepCaptureButton").prop('disabled', false);
+                $(SELECTORS.STARTCAPTURE).prop('disabled', true);
+                $(SELECTORS.STOPCAPTURE).prop('disabled', true);
+                $(SELECTORS.RESETCAPTURE).prop('disabled', false);
+                $(SELECTORS.PLAYCAPTURE).prop('disabled', true);
+                $(SELECTORS.STEPCAPTURE).prop('disabled', false);
             });
 
-            $("#stepCaptureButton").change(function() {
+            $(SELECTORS.STEPCAPTURE).change(function() {
                 var stepCapt;
                 if (stepCaptureButton.value >= 0) {
                     stepCapt = stepCaptureButton.value + 1;
@@ -104,6 +123,16 @@ define(['jquery'], function($) {
                     stepCapt = 1 + 1.8 * stepCaptureButton.value / 8;
                 }
                 _model.changeCaptureStep(stepCapt);
+            });
+        },
+
+        shareFilesWithUsers: function() {
+            $(SELECTORS.CHECKALLBUTTON).on('click', function() {
+                $(SELECTORS.SHARECHECKBOXES).prop('checked', true);
+            });
+
+            $(SELECTORS.CHECKNONEBUTTON).on('click', function() {
+                $(SELECTORS.SHARECHECKBOXES).prop('checked', false);
             });
         }
     };

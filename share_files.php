@@ -44,8 +44,8 @@ $context = context_course::instance($courseid);
 $title = get_string('sharefiles', 'block_ejsapp_file_browser');
 
 $PAGE->set_context($context);
-$PAGE->set_title($title);
-$PAGE->set_heading($title);
+$PAGE->set_title("$course->shortname: " . $title);
+$PAGE->set_heading($course->fullname);
 $PAGE->set_url('/block/block_ejsapp_file_browser/share_files.php', array('courseid' => $courseid, 'contextid' => $context->id));
 
 $courseurl = new moodle_url("$CFG->wwwroot/course/view.php?id=$courseid");
@@ -118,6 +118,7 @@ if ($course->id === SITEID) {
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('files_users_selection', 'block_ejsapp_file_browser'));
 
+$PAGE->requires->js_call_amd('block_ejsapp_file_browser/buttons_states', 'shareFilesWithUsers');
 
 /**
  *
@@ -361,24 +362,8 @@ $table->pagesize($perpage, $matchcount);
 // List of users at the current visible page - paging makes it relatively short.
 $userlist = $DB->get_recordset_sql("$select $from $where $sort", $params, $table->get_page_start(), $table->get_page_size());
 
-// If there are multiple Roles in the course, then show a drop down menu for switching.
-if (count($rolenames) > 1) {
-    $label = html_writer::label(get_string('currentrole', 'role'),'rolesform_jump');
-    $select = $OUTPUT->single_select($rolenamesurl, 'roleid', $rolenames, $roleid, null, 'rolesform');
-    echo html_writer::div($label . $select, 'rolesform');
-} else if (count($rolenames) == 1) {
-    // When all users with the same role - print its name.
-    $text = get_string('role') . get_string('labelsep', 'langconfig');
-    $rolename = reset($rolenames);
-    echo html_writer::div($label . $rolename, 'rolesform');
-}
-
 echo html_writer::start_tag('form', array('action' => "shared_files_usr.php?courseid=$courseid&contextid=$context->id",
         'method' => 'post', 'id' => 'participantsform')) . html_writer::start_tag('div');
-echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
-echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'returnto', 'value' => s(me())));
-
-echo html_writer::empty_tag('br');
 
 // Select files pulldown menu
 echo html_writer::tag('p', get_string('files_selection','block_ejsapp_file_browser'));
@@ -391,6 +376,23 @@ foreach ($tree->dir['files'] as $file){
 
 echo html_writer::select($files, 'files_selected[]', '', false, array('multiple' => true));
 echo html_writer::empty_tag('br');
+echo html_writer::empty_tag('br');
+
+// If there are multiple Roles in the course, then show a drop down menu for switching.
+if (count($rolenames) > 1) {
+    $label = html_writer::label(get_string('currentrole', 'role'),'rolesform_jump');
+    $select = $OUTPUT->single_select($rolenamesurl, 'roleid', $rolenames, $roleid, null, 'rolesform');
+    echo html_writer::div($label . $select, 'rolesform');
+} else if (count($rolenames) == 1) {
+    // When all users with the same role - print its name.
+    $text = get_string('role') . get_string('labelsep', 'langconfig');
+    $rolename = reset($rolenames);
+    echo html_writer::div($label . $rolename, 'rolesform');
+}
+
+echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
+echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'returnto', 'value' => s(me())));
+
 echo html_writer::empty_tag('br');
 
 $countrysort = (strpos($sort, 'country') !== false);
@@ -458,7 +460,8 @@ if ($userlist) {
             $data[] = $lastaccess;
         }
 
-        $data[] = html_writer::empty_tag('input', array('type' => 'checkbox', 'name' => 'user' . $user->id));
+        $data[] = html_writer::empty_tag('input', array('type' => 'checkbox', 'class' => 'usercheckbox',
+            'name' => 'user' . $user->id));
         $table->add_data($data);
         $usersids[] = $user->id;
     } // End of: foreach ($userlist as $user).
