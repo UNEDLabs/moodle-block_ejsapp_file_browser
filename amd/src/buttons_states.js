@@ -85,7 +85,7 @@ define(['jquery'], function($) {
             });
 
             $(SELECTORS.STOPCAPTURE).click(function() {
-                _model.saveText('recording','rec',JSON.stringify(_model.stopCapture()));
+                _model.saveText('recording', 'rec', JSON.stringify(_model.stopCapture()));
                 $(SELECTORS.STARTCAPTURE).prop('disabled', false);
                 $(SELECTORS.STOPCAPTURE).prop('disabled', true);
                 $(SELECTORS.RESETCAPTURE).prop('disabled', false);
@@ -95,16 +95,16 @@ define(['jquery'], function($) {
                 _model.resetCapture();
                 $(SELECTORS.STARTCAPTURE).prop('disabled', false);
                 $(SELECTORS.STOPCAPTURE).prop('disabled', true);
-                $(SELECTORS.RESETCAPTURE).prop('disabled', false);
+                $(SELECTORS.RESETCAPTURE).prop('disabled', true);
                 $(SELECTORS.PLAYCAPTURE).prop('disabled', false);
             });
 
             $(SELECTORS.PLAYCAPTURE).click(function() {
-                _model.readText(null,'.rec',function(content) {
-                    _model.playCapture(JSON.parse(content),function() {
-                        $(SELECTORS.STARTCAPTURE).disabled=false;
-                        $(SELECTORS.PLAYCAPTURE).disabled=false;
-                        $(SELECTORS.STEPCAPTURE).disabled=false;
+                _model.readText(null, '.rec', function(content) {
+                    _model.playCapture(JSON.parse(content), function() {
+                        $(SELECTORS.STARTCAPTURE).disabled = false;
+                        $(SELECTORS.PLAYCAPTURE).disabled = false;
+                        $(SELECTORS.STEPCAPTURE).disabled = false;
                         window.alert("End of reproduction");
                     });
                 });
