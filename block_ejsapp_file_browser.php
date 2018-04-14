@@ -105,6 +105,7 @@ class block_ejsapp_file_browser extends block_list {
 
         $this->content = new stdClass();
         $this->content->items = array();
+        $this->content->icons = array();
         $this->content->footer = '';
 
         if (isloggedin() && !isguestuser()) { // Show the block.
