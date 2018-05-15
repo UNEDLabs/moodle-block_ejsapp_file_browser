@@ -130,17 +130,14 @@ function htmllize_tree($tree, $dir) {
         if (!$frecord) {
             $source = array();
         } else {
-            if ($extension != 'cnt') {
-                preg_match('/ejsappid=(\d+)/', $frecord->source, $source);
-            }
+            preg_match('/ejsappid=(\d+)/', $frecord->source, $source);
         }
 
-        if (!empty($source) && ($extension == 'xml' || $extension == 'json' || $extension == 'exp' ||
-                $extension == 'rec' || $extension == 'blk')) { // An ejs state, experiment, recording or blockly file.
+        if (!empty($source) && ($extension == 'json' || $extension == 'rec' || $extension == 'blk')) { // An ejs state, recording or blockly file.
             $ejsappid = $source[1];
             $ejsapprecord = $DB->get_record('ejsapp', array('id' => $ejsappid));
             if ($ejsapprecord) {
-                if ($extension == 'xml' || $extension == 'json') {
+                if ($extension == 'json') {
                     $image = '<img class="icon" src="' . $CFG->wwwroot .
                         '/blocks/ejsapp_file_browser/pix/icon_state.svg' . '"/>';
                     $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsappid . "&state_file=" . $frecord->contextid .
@@ -155,18 +152,9 @@ function htmllize_tree($tree, $dir) {
                         '/blocks/ejsapp_file_browser/pix/icon_blockly.svg' . '"/>';
                     $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsappid . "&blk_file=" . $frecord->contextid .
                         "/mod_ejsapp/" . $frecord->filearea . "/" . $frecord->itemid . "/" . $frecord->filename;
-                } else if ($extension == 'exp') {
-                    $image = '<img class="icon" src="' . $CFG->wwwroot .
-                        '/blocks/ejsapp_file_browser/pix/icon_experiment.svg' . '"/>';
-                    $url = $CFG->wwwroot . "/mod/ejsapp/view.php?n=" . $ejsappid . "&exp_file=" . $frecord->contextid .
-                        "/mod_ejsapp/" . $frecord->filearea . "/" . $frecord->itemid . "/" . $frecord->filename;
                 }
             }
-        } else if ($extension == 'cnt') {
-            $image = '<img class="icon" src="' . $CFG->wwwroot . '/blocks/ejsapp_file_browser/pix/icon_controller.svg' . '"/>';
-            $url = new moodle_url('/pluginfile.php/' . $tree->context->id . '/user/private' .
-                $file->get_filepath() . $file->get_filename());
-        } else { // A non-state, non-recording, non-controller file.
+        } else { // A non-state, non-blockly, non-recording, file.
             $image = $OUTPUT->pix_icon(file_file_icon($file), $filename, 'moodle', array('class' => 'icon'));
             $url = new moodle_url('/pluginfile.php/' . $tree->context->id . '/user/private' .
                 $file->get_filepath() . $file->get_filename());
