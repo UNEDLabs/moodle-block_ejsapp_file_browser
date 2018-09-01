@@ -96,3 +96,6 @@ $string['small_message_rejected'] = 'Acabo de rechazar tus ficheros.';
 $string['received_files_1'] = 'Los ficheros de ';
 $string['received_files_2'] = ' han sido recibidos.';
 $string['no_pending_files'] = 'No hay archivos pendientes de ser recibidos de ';
+
+//Privacy
+$string['privacy:metadata'] = 'El bloque EJSApp Collab Session solo ofrece una vista de, y enlaces a, los ficheros privados de los usuarios.';
