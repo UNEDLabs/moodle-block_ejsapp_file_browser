@@ -15,6 +15,10 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="originalfileid" TYPE="foreign" FIELDS="originalfileid" REFTABLE="files" REFFIELDS="id"/>
+                <KEY NAME="originaluserid" TYPE="foreign" FIELDS="originaluserid" REFTABLE="user" REFFIELDS="id"/>
+                <KEY NAME="sharedfileid" TYPE="foreign" FIELDS="sharedfileid" REFTABLE="files" REFFIELDS="id"/>
+                <KEY NAME="shareduserid" TYPE="foreign" FIELDS="shareduserid" REFTABLE="user" REFFIELDS="id"/>
             </KEYS>
         </TABLE>
     </TABLES>
