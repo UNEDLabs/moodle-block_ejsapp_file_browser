@@ -91,6 +91,7 @@ class block_ejsapp_file_browser extends block_list {
      * @return null|stdClass|stdObject The content of the block
      * @throws coding_exception
      * @throws dml_exception
+     * @throws moodle_exception
      */
     public function get_content() {
         global $PAGE, $OUTPUT, $DB;

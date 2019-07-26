@@ -52,6 +52,7 @@ class block_ejsapp_file_browser_renderer extends plugin_renderer_base {
      * @param ejsapp_file_browser_tree $tree
      * @return string Html code that prints the tree view
      * @throws dml_exception
+     * @throws moodle_exception
      */
     public function render_ejsapp_file_browser_tree(ejsapp_file_browser_tree $tree) {
         global $CFG, $PAGE;
@@ -103,6 +104,7 @@ class ejsapp_file_browser_tree implements renderable {
  * @param array $dir
  * @return string result
  * @throws dml_exception
+ * @throws moodle_exception
  */
 function htmllize_tree($tree, $dir) {
     global $CFG, $OUTPUT, $DB, $USER;

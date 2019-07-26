@@ -379,8 +379,8 @@ echo html_writer::empty_tag('br');
 echo html_writer::empty_tag('br');
 
 // If there are multiple Roles in the course, then show a drop down menu for switching.
+$label = html_writer::label(get_string('currentrole', 'role'),'rolesform_jump');
 if (count($rolenames) > 1) {
-    $label = html_writer::label(get_string('currentrole', 'role'),'rolesform_jump');
     $select = $OUTPUT->single_select($rolenamesurl, 'roleid', $rolenames, $roleid, null, 'rolesform');
     echo html_writer::div($label . $select, 'rolesform');
 } else if (count($rolenames) == 1) {
