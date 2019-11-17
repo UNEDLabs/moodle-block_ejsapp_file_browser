@@ -18,7 +18,7 @@
     border: 1px solid lightgrey;
 }
 
-.block_ejsapp_file_browser .btn-secondary:hover
+.block_ejsapp_file_browser .btn-secondary:hover,
 .block_ejsapp_file_browser .show_button:hover,
 .block_ejsapp_file_browser .hide_button:hover,
 .block_ejsapp_file_browser .recording_button:hover,
