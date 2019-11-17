@@ -18,16 +18,13 @@
     border: 1px solid lightgrey;
 }
 
-.block_ejsapp_file_browser .btn-secondary:hover {
-    color: white!important;
-    background-color: rgba(24, 24, 24, 0.1);
-}
-
+.block_ejsapp_file_browser .btn-secondary:hover
 .block_ejsapp_file_browser .show_button:hover,
 .block_ejsapp_file_browser .hide_button:hover,
 .block_ejsapp_file_browser .recording_button:hover,
 .block_ejsapp_file_browser .blockly_button:hover {
-    background-color: rgba(24, 24, 24, 0.1);
+    color: white!important;
+    background-color: #009aca;
 }
 
 .block_ejsapp_file_browser .managefiles {
