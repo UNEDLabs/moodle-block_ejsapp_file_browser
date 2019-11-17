@@ -8,7 +8,7 @@
     margin-top: 2px;
 }
 
-.block_ejsapp_file_browser .remlab_button {
+.block_ejsapp_file_browser .btn-secondary {
     border-radius: 5px;
     background-color: transparent;
     color: black!important;
@@ -18,7 +18,7 @@
     border: 1px solid lightgrey;
 }
 
-.block_ejsapp_file_browser .remlab_button:hover {
+.block_ejsapp_file_browser .btn-secondary:hover {
     color: white!important;
     background-color: rgba(24, 24, 24, 0.1);
 }
