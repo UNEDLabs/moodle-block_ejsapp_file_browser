@@ -45,7 +45,6 @@ $capabilities = array(
 
     'block/ejsapp_file_browser:addinstance' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
-
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
         'archetypes' => array(
