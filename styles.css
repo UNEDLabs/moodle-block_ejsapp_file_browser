@@ -50,16 +50,22 @@
     padding: 5px;
     box-shadow: none;
     border: 1px solid lightgrey;
+    line-height: 0;
+    text-transform: none;
 }
 
 .block_ejsapp_file_browser .recordCapture,
 .block_ejsapp_file_browser .saveLoadCode,
 .block_ejsapp_file_browser .runCode {
     margin-top: 5px;
+    line-height: 0;
+    text-transform: none;
 }
 
 .block_ejsapp_file_browser .playCapture {
     margin-top: 3px;
+    line-height: 0;
+    text-transform: none;
 }
 
 .block_ejsapp_file_browser .velocity {
