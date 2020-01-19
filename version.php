@@ -31,10 +31,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2020011901;
+$plugin->version = 2020011902;
 $plugin->requires = 2013111800;
 $plugin->cron = 0;
 $plugin->component = 'block_ejsapp_file_browser'; // To check on upgrade, that module sits in correct place.
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.4 (Build: 2020011901)';
+$plugin->release = '1.4 (Build: 2020011902)';
 $plugin->dependencies = array('mod_ejsapp' => 2017021301);

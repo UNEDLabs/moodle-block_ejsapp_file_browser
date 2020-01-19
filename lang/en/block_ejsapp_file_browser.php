@@ -29,7 +29,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['title_of_the_block'] = 'EJSApp File Browser';
+$string['title_of_the_block'] = 'Files Panel';
 $string['managemyfiles'] = 'Manage my files';
 $string['sharefiles'] = 'Share files';
 $string['pluginname'] = 'EJSApp "private files" browser';

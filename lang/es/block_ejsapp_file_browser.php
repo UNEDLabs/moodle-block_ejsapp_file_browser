@@ -29,7 +29,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['title_of_the_block'] = 'Navegador EJSApp de archivos';
+$string['title_of_the_block'] = 'Panel de Ficheros';
 $string['managemyfiles'] = 'Gestionar archivos';
 $string['sharefiles'] = 'Compartir archivos';
 $string['pluginname'] = 'Navegador EJSApp de "archivos privados"';
