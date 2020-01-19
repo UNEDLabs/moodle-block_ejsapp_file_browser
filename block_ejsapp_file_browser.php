@@ -155,29 +155,17 @@ class block_ejsapp_file_browser extends block_list {
                                 html_writer::tag('legend',
                                     get_string('blockly_legend', 'block_ejsapp_file_browser'),
                                     array('class' => 'legend')) .
-                                html_writer::div(html_writer::tag('button',
-                                    get_string('show_blockly_options', 'block_ejsapp_file_browser'),
-                                    array('class' => 'show_button', 'id' => 'show_blockly')) .
-                                html_writer::tag('button',
-                                    get_string('hide_blockly_options', 'block_ejsapp_file_browser'),
-                                    array('class' => 'hide_button', 'id' => 'hide_blockly')), 'optionsBut') .
-                                html_writer::end_tag('fieldset');
-                            $content1 = html_writer::tag('button',
-                                        get_string('run_code', 'block_ejsapp_file_browser'),
-                                        array('class' => 'blockly_button', 'name' => 'runCode', 'id' => 'runCodeBut',
-                                        'onclick' => 'playCode()'));
-                            $content = html_writer::div($content1, 'runCode');
-                            $content2 = html_writer::tag('button',
+                                html_writer::start_tag('div', array('class' => 'blocklyFiles')) .
+                                    html_writer::tag('button',
                                         get_string('save_code', 'block_ejsapp_file_browser'),
                                         array('class' => 'blockly_button', 'type' => 'submit', 'name' => 'saveCode',
-                                        'id' => 'saveCodeBut', 'onclick' => 'saveCode()')) .
-                                        html_writer::tag('button',
+                                            'id' => 'saveCodeBut', 'onclick' => 'saveCode()')) .
+                                    html_writer::tag('button',
                                         get_string('load_code', 'block_ejsapp_file_browser'),
                                         array('class' => 'blockly_button', 'name' => 'loadCode', 'id' => 'loadCodeBut',
-                                        'onclick' => 'loadCode()'));
-                            $content .= html_writer::div($content2, 'saveLoadCode');
-                            $this->content->footer .= html_writer::div($content, 'blocklyControl',
-                                array('id' => 'blocklyControl', 'style' => 'display:none'));
+                                            'onclick' => 'loadCode()')) .
+                                html_writer::end_tag('div') .
+                            html_writer::end_tag('fieldset');
                         }
                     }
                     // End of blockly buttons.
@@ -191,7 +179,7 @@ class block_ejsapp_file_browser extends block_list {
                         html_writer::tag('button',
                                 get_string('hide_capture_options', 'block_ejsapp_file_browser'),
                                 array('class' => 'hide_button', 'id' => 'hide_interaction')), 'optionsBut') .
-                        html_writer::end_tag('fieldset');
+                    html_writer::end_tag('fieldset');
                     $content1 = html_writer::tag('button',
                             get_string('start_capture', 'block_ejsapp_file_browser'),
                             array('class' => 'recording_button', 'name' => 'startCapture', 'id' => 'startCaptureButton')) .

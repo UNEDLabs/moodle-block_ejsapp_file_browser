@@ -34,7 +34,7 @@
 
 .block_ejsapp_file_browser .captureInteraction,
 .block_ejsapp_file_browser .optionsBut,
-.block_ejsapp_file_browser .blocklyControl {
+.block_ejsapp_file_browser .blocklyFiles {
     text-align: center;
     margin: auto;
 }
@@ -53,9 +53,7 @@
     text-transform: none;
 }
 
-.block_ejsapp_file_browser .recordCapture,
-.block_ejsapp_file_browser .saveLoadCode,
-.block_ejsapp_file_browser .runCode {
+.block_ejsapp_file_browser .recordCapture {
     margin-top: 5px;
     text-transform: none;
 }

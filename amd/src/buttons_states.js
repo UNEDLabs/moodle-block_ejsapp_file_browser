@@ -31,9 +31,6 @@
 define(['jquery'], function($) {
     var SELECTORS = {
         // Block
-        HIDEBLOCKLY: "#hide_blockly",
-        SHOWBLOCKLY: "#show_blockly",
-        BLOCKLYCONTROL: "#blocklyControl",
         HIDEINTERACTION: "#hide_interaction",
         SHOWINTERACTION: "#show_interaction",
         CAPTUREINTERACTION: "#captureInteraction",
@@ -50,14 +47,6 @@ define(['jquery'], function($) {
 
     var t = {
         init: function(reproducing) {
-            $(SELECTORS.HIDEBLOCKLY).click(function() {
-                $(SELECTORS.BLOCKLYCONTROL).hide();
-            });
-
-            $(SELECTORS.SHOWBLOCKLY).click(function() {
-                $(SELECTORS.BLOCKLYCONTROL).show();
-            });
-
             $(SELECTORS.HIDEINTERACTION).click(function() {
                 $(SELECTORS.CAPTUREINTERACTION).hide();
             });
