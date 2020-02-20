@@ -32,7 +32,7 @@
 $string['title_of_the_block'] = 'Files Panel';
 $string['managemyfiles'] = 'Manage my files';
 $string['sharefiles'] = 'Share files';
-$string['pluginname'] = 'EJSApp "private files" browser';
+$string['pluginname'] = 'Files panel';
 $string['privatefiles'] = 'Private files';
 
 $string['blockly_legend'] = 'Blockly';

@@ -32,7 +32,7 @@
 $string['title_of_the_block'] = 'Panel de Ficheros';
 $string['managemyfiles'] = 'Gestionar archivos';
 $string['sharefiles'] = 'Compartir archivos';
-$string['pluginname'] = 'Navegador EJSApp de "archivos privados"';
+$string['pluginname'] = 'Panel de ficheros';
 $string['privatefiles'] = 'Archivos privados';
 
 $string['blockly_legend'] = 'Blockly';
