@@ -12,6 +12,9 @@ block without refreshing the entire page.
 The Java applets or the Javascript applications should have been created with version 5.1 (build 20150613 or later) of
 EJS to work properly.
 
+This plugin will not receive further updates. For more updated versions, contact the authors and/or Nebulous Systems at
+https://www.nebsyst.com or at https://irs.nebsyst.com.
+
 ## 2. License
 
 EJSApp File Browser is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
