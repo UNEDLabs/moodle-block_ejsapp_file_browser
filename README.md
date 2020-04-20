@@ -13,7 +13,7 @@ The Java applets or the Javascript applications should have been created with ve
 EJS to work properly.
 
 This plugin will not receive further updates. For more updated versions, contact the authors and/or Nebulous Systems at
-https://www.nebsyst.com or at https://irs.nebsyst.com.
+https://www.nebsyst.com, https://irs.nebsyst.com or contact@nebsyst.com.
 
 ## 2. License
 
